@@ -21,7 +21,8 @@ An “eclipse phase” is the period of time between when a cell is infected by 
 Eclipse Phase is published by Posthuman Studios, LLC. Additional information on the
 fantastic source material can be found here: https://eclipsephase.com
 
-# Features
+# Planned Features
+Fingers crossed, haha.
 - Three initial worlds:
    - Mars. Partially terraformed but the most populous planet in transhuman space.
    - Jupiter. Largest planet in the solar system with a massive system of moons.
