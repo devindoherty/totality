@@ -20,8 +20,8 @@ class Sittable(Object):
                 f"- {current.key} is already sitting there!")
             return
         self.db.sitter = sitter
-        # sitter.db.is_sitting = self.obj
-        sitter.msg(f"You sit on {self.key}")
+        sitter.db.is_sitting = True
+        sitter.msg(f"You sit on {self.key}.")
 
     def do_stand(self, stander):
         """
