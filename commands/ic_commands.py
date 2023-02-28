@@ -73,7 +73,6 @@ class CmdSit(Command):
             raise InterruptCommand
 
     def func(self):
-
         # self.search handles all error messages etc.
         sittable = self.caller.search(self.args)
         if not sittable:

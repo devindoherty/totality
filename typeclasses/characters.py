@@ -95,9 +95,6 @@ class Character(ObjectParent, DefaultCharacter):
         self.db.r_rep = random.randint(0, 50)
         self.db.x_rep = random.randint(0, 50)
 
-        # Conditions
-        self.db.is_sitting = False
-
     def get_aptitudes(self):
         """
         Printout the main aptitudes of the player's ego.
