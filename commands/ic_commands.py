@@ -16,7 +16,7 @@ class CmdHit(Command):
     A simple attack with or without a weapon.
 
     Usage:
-        hit <something>
+        hit <something> with <weapon>
 
     """
     key = "hit"
@@ -146,9 +146,58 @@ class CmdMap(Command):
     def func(self):
         self.caller.msg(f"[MAP] Current Location: {self.caller.location}")
 
+class CmdFork(Command):
+    """
+    Split an ego into two discreet entities, still under your control.
+    
+    Usage:
+        fork <target> with <ego bridge or similar device>
+    
+    Usage (to display all current forks of yourself):
+        forks
+    
+    Creating more than one alpha fork or more than two beta forks at a time 
+    will trigger a sanity test.
+    """
+    key = "fork"
+
+    def parse(self):
+        self.args = self.args.strip()
+        target, *ego_bridge = self.args.split(" with ", 1)
+        if not ego_bridge:
+            self.caller.msg(f"You need an ego bridge.")
+        self.target = target.strip()
+        if ego_bridge:
+            self.ego_bridge = ego_bridge[0].strip()
+        else:
+            raise InterruptCommand
+
+    def func(self):
+
+        # handle no args        
+        if not self.args:
+            self.caller.msg(f"Who are you trying to fork?")
+            return
+        
+        target = self.caller.search(self.target)
+        if not target:
+            return
+        
+
+        ego_bridge = None
+        if self.ego_bridge:
+            ego_bridge = self.caller.search(self.ego_bridge)
+        if ego_bridge:
+            ego_bridge_str = f"{ego_bridge.key}"
+
+
+        # report the hit
+        self.caller.msg(f"You fork {target.key} with {ego_bridge_str}.")
+        target.msg(f"Your ego is forked by {self.caller.key} with {ego_bridge_str}!")
 
 class CmdSetIC(CmdSet):
     def at_cmdset_creation(self):
+        self.add(CmdFork)
         self.add(CmdHit)
         self.add(CmdHud)
         self.add(CmdMap)
