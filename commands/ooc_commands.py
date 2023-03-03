@@ -32,8 +32,22 @@ class CmdQuickFind(Command):
             return
         self.caller.msg(f"Found match for {query}: {result}")
 
+class CmdStatus(Command):
+    """
+    A raw feed of aptitudes, stats, skills, and reputation scores. 
+    
+    Usage:
+        status
+    """
+    key = "status"
+
+    def func(self):
+        self.caller.get_status()
+        
+
 class CmdSetOOC(CmdSet):
 
     def at_cmdset_creation(self):
         self.add(CmdEcho)
         self.add(CmdQuickFind)
+        self.add(CmdStatus)

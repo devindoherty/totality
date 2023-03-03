@@ -99,52 +99,52 @@ class Character(ObjectParent, DefaultCharacter):
         """
         Printout the main aptitudes of the player's ego.
         """
-        print("Aptitudes")
-        print("************")
-        print(f"Cognition: {self.db.cognition}")
-        print(f"Intuition: {self.db.intuition}") 
-        print(f"Reflexes: {self.db.reflexes}")
-        print(f"Savvy: {self.db.savvy}"), 
-        print(f"Somatics: {self.db.somatics}")
-        print(f"Willpower: {self.db.willpower}|/")
+        self.msg("Aptitudes")
+        self.msg("************")
+        self.msg(f"Cognition: {self.db.cognition}")
+        self.msg(f"Intuition: {self.db.intuition}") 
+        self.msg(f"Reflexes: {self.db.reflexes}")
+        self.msg(f"Savvy: {self.db.savvy}"), 
+        self.msg(f"Somatics: {self.db.somatics}")
+        self.msg(f"Willpower: {self.db.willpower}|/")
 
     def get_stats(self):
         """
         Prints out derived and morph influenced stats.
         """
-        print("Stats")
-        print("************")
-        print(f"Health: {self.db.health}")
-        print(f"Stress: {self.db.stress}")
-        print(f"Initiative: {self.db.initiative}")
-        print(f"Durability: {self.db.durability}") 
-        print(f"Lucidity: {self.db.lucidity}")
-        print(f"Insanity: {self.db.insanity}|/") 
+        self.msg("Stats")
+        self.msg("************")
+        self.msg(f"Health: {self.db.health}")
+        self.msg(f"Stress: {self.db.stress}")
+        self.msg(f"Initiative: {self.db.initiative}")
+        self.msg(f"Durability: {self.db.durability}") 
+        self.msg(f"Lucidity: {self.db.lucidity}")
+        self.msg(f"Insanity: {self.db.insanity}|/") 
 
     def get_skills(self):
-        print("Skills")
-        print("************")
-        print(f"Athletics: {self.db.athletics}")
-        print(f"Deceive: {self.db.deceive}")
-        print(f"Fray: {self.db.fray}") 
-        print(f"Free Fall: {self.db.free_fall}")
-        print(f"Guns: {self.db.guns}")
-        print(f"Engineering: {self.db.engineering}|/")
+        self.msg("Skills")
+        self.msg("************")
+        self.msg(f"Athletics: {self.db.athletics}")
+        self.msg(f"Deceive: {self.db.deceive}")
+        self.msg(f"Fray: {self.db.fray}") 
+        self.msg(f"Free Fall: {self.db.free_fall}")
+        self.msg(f"Guns: {self.db.guns}")
+        self.msg(f"Engineering: {self.db.engineering}|/")
 
     def get_reps(self):
         """
         Prints out a PC's reputation scores
         """
         
-        print("Reputation Scores")
-        print("************")
-        print(f"@-rep: {self.db.circle_a_rep}")
-        print(f"c-rep: {self.db.c_rep}")
-        print(f"f-rep: {self.db.f_rep}")
-        print(f"g-rep: {self.db.g_rep}")
-        print(f"i-rep: {self.db.i_rep}")
-        print(f"r-rep: {self.db.r_rep}")
-        print(f"x-rep: {self.db.x_rep}|/")
+        self.msg("Reputation Scores")
+        self.msg("************")
+        self.msg(f"@-rep: {self.db.circle_a_rep}")
+        self.msg(f"c-rep: {self.db.c_rep}")
+        self.msg(f"f-rep: {self.db.f_rep}")
+        self.msg(f"g-rep: {self.db.g_rep}")
+        self.msg(f"i-rep: {self.db.i_rep}")
+        self.msg(f"r-rep: {self.db.r_rep}")
+        self.msg(f"x-rep: {self.db.x_rep}|/")
 
     def get_status(self):
         self.get_aptitudes()
