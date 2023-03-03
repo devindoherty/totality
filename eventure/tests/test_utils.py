@@ -8,7 +8,9 @@ class TestUtils(BaseEvenniaTest):
         # Make a simple testing object
         obj = create.create_object(
             key="testobj",
-            attributes=(("desc", "A test object"),)
+            attributes=(
+                ("desc", "A test object"),
+            )
         )
 
         # Run it through the function
@@ -17,15 +19,15 @@ class TestUtils(BaseEvenniaTest):
         # Check the result
         self.assertEqual(
             result,
-            """
-            |ctestobj|n
-            Value: ~|y10|n coins
+"""
+|ctestobj|n
+Value: ~|y10|n coins[Not carried]
 
-            A test object
+A test object
 
-            Slots: |w1|n, Used from: |wbackpack|n
-            Quality: |w3|n, Uses: |winfinite|n
-            Attacks using |wstrength|n against |warmor|n
-            Damage roll: |w1d6|n
-            """.strip()
+Slots: |w1|n, Used from: |wbackpack|n
+Quality: |w3|n, Uses: |winfinite|n
+Attacks using |wstrength|n against |warmor|n
+Damage roll: |w1d6|n
+""".strip()
         )
