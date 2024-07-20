@@ -2,15 +2,15 @@ function load_sprites()
     spritesheet = love.graphics.newImage("assets/spritesheet_colored_transparent_packed.png")
     sprites = {}
 
-    for x = 0, spritesheet:getWidth(), 16 do
-        for y = 0, spritesheet:getHeight(), 16 do
+    for x = 0, spritesheet:getWidth() - 15, 16 do
+        for y = 0, spritesheet:getHeight() - 15, 16 do
             sprite = love.graphics.newQuad(x, y, 16, 16, spritesheet)
             table.insert(sprites, sprite)
         end
     end
 
     player = {}
-    player.sprite = sprites[576]
+    player.sprite = sprites[551]
     player.x = 0
     player.y = 0
 end
@@ -74,7 +74,7 @@ function love.load()
 end
 
 function love.keypressed(key, scancode, isrepeat)
-    if key == "q" or "escape" then
+    if key == "q" or key == "escape" then
         love.event.quit(0)
     end
 end
@@ -86,5 +86,5 @@ end
 function love.draw()
     
     draw_map()
-    love.graphics.draw(spritesheet, player.sprite, player.x, player.y, 0)
+    love.graphics.draw(spritesheet, player.sprite, player.x, player.y, 0, 4)
 end
