@@ -15,7 +15,6 @@ end
 
 function love.draw()
     
-    -- draw_map()
-    love.graphics.draw(spritesheet, brick_wall.sprite, brick_wall.x, brick_wall.y, 0, 4)
-    love.graphics.draw(spritesheet, player.sprite, player.x, player.y, 0, 4)
+    draw_map()
+    love.graphics.draw(spritesheet, player.sprite, player.x * 64, player.y * 64, 0, 4)
 end

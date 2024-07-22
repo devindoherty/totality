@@ -2,18 +2,29 @@ function love.keypressed(key, scancode, isrepeat)
     if key == "q" or key == "escape" then
         love.event.quit(0)
     end
+    
+    local x = player.x
+    local y = player.y
+
     if key == "right" then
-        player.x = player.x + 50
+        x = player.x + 1
+    elseif key == "left" then
+        x = player.x - 1
+    elseif key == "up" then
+        y = player.y - 1
+    elseif key == "down" then
+        y = player.y + 1
     end
-    if key == "left" then
-        player.x = player.x - 50
+    
+    if empty_tile(x, y) then
+        player.x = x
+        player.y = y
+    else
+        print("Tile blocker at: " .. x .. ", " .. y)
     end
-    if key == "up" then
-        player.y = player.y - 50
-    end
-    if key == "down" then
-        player.y = player.y + 50
-    end
+
+    print("Player X: " .. player.x)
+    print("Player Y: " .. player.y)
 
 end
 

@@ -11,13 +11,21 @@ function load_sprites()
 
     player = {}
     player.sprite = sprites[551]
-    player.x = 4
-    player.y = 4
+    player.x = 2
+    player.y = 2
 
     brick_wall = {}
     brick_wall.sprite = sprites[146]
-    brick_wall.x = 64
-    brick_wall.y = 64
+    brick_wall.x = 0
+    brick_wall.y = 0
+
+    white_doorframe = {}
+    white_doorframe.sprite = sprites[187]
+    white_doorframe.x = 0
+    white_doorframe.y = 0
+
+    empty = {}
+    empty.sprite = sprites[1]
 end
 
 function draw_spritesheet()
