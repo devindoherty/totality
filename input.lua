@@ -18,7 +18,7 @@ function love.keypressed(key, scancode, isrepeat)
         y = player.y + 1
     end
     
-    if empty_tile(x, y) and no_mob(x, y) then
+    if empty_tile(x, y) and no_creature(x, y) then
         player.x = x
         player.y = y
     else

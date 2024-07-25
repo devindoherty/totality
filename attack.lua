@@ -1,0 +1,1 @@
+function attack(attacker, target)

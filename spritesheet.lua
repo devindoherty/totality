@@ -16,11 +16,17 @@ function load_sprites()
     player.sprite = sprites[551]
     player.x = 2
     player.y = 2
+    player.stats = {
+        defense = 10
+    }
 
     rat = {}
     rat.sprite = sprites[691]
     rat.x = 12
     rat.y = 2
+    rat.stats = {
+        defense = 3
+    }
     
     brick_wall = {}
     brick_wall.sprite = sprites[146]
@@ -40,7 +46,7 @@ function load_sprites()
 
 end
 
-function draw_spritesheet()
+function draw_sprites()
     x = 0
     y = 0
     -- for i = 1, #sprites do

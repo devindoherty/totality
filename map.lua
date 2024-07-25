@@ -35,9 +35,12 @@ function empty_tile(x, y)
     return tilemap[y][x] == 0 or tilemap[y][x] == 'O'
 end
 
-function no_mob(x, y)
+function no_creature(x, y)
     if x == rat.x and y == rat.y then
         return false
+    elseif 
+       x == player.x and y == player.y then
+        return false 
     else
         return tilemap[y][x]
     end
