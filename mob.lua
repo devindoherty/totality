@@ -1,15 +1,27 @@
-function move_toward_player(x, y)
-    print(x, y)
-    if x ~= player.x and y ~= player.y then
+function move_toward_player()
+    local x = rat.x
+    local y = rat.y
+    
+    
+    if x ~= player.x or y ~= player.y then
         if x < player.x then
-            rat.x = x + 1
+            x = x + 1
         else
-            rat.x = x - 1
+            x = x - 1
         end
         if y < player.y then
-            rat.y = y + 1
+            y = y + 1
         else
-            rat.y = y - 1
+            y = y - 1
+        end
+        if empty_tile(x, y) then
+            print("Rat blocked")
+            rat.x = x  
+            rat.y = y
         end
     end
+end
+
+function mob_turn()
+    move_toward_player()
 end

@@ -8,9 +8,6 @@ function love.keypressed(key, scancode, isrepeat)
     local x = player.x
     local y = player.y
 
-    local ratx = rat.x
-    local raty = rat.y
-
     if key == "d" then
         x = player.x + 1
     elseif key == "a" then
@@ -28,17 +25,12 @@ function love.keypressed(key, scancode, isrepeat)
         print("Tile blocker at: " .. x .. ", " .. y)
     end
 
-    move_toward_player(ratx, raty)
-
-    if empty_tile(ratx, raty) then
-        print("Rat X: " .. rat.x)
-        print("Rat Y: " .. rat.y)
-    end
-
+    mob_turn()
 
     print("Player X: " .. player.x)
     print("Player Y: " .. player.y)
-
+    print("Rat X: " .. rat.x)
+    print("Rat Y: " .. rat.y)
 end
 
 -- function player_movement(dt)
