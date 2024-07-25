@@ -10,11 +10,12 @@ function love.load()
 end
 
 function love.update(dt)
-    player_movement(dt)
+    -- player_movement(dt)
 end
 
 function love.draw()
     
     draw_map()
+    love.graphics.draw(spritesheet, rat.sprite, rat.x * 64, rat.y * 64, 0, 4)
     love.graphics.draw(spritesheet, player.sprite, player.x * 64, player.y * 64, 0, 4)
 end
