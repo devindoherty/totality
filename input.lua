@@ -16,6 +16,9 @@ function love.keypressed(key, scancode, isrepeat)
         y = player.y - 1
     elseif key == "s" then
         y = player.y + 1
+    elseif key == "space" then
+        x = player.x
+        y = player.y
     end
     
     if empty_tile(x, y) and no_creature(x, y) then
@@ -31,6 +34,10 @@ function love.keypressed(key, scancode, isrepeat)
     print("Player Y: " .. player.y)
     print("Rat X: " .. rat.x)
     print("Rat Y: " .. rat.y)
+
+    print("END OF TURN ".. turn)
+    print("####################")
+    turn = turn + 1
 end
 
 -- function player_movement(dt)

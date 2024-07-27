@@ -1,7 +1,26 @@
+function line_of_sight(observer, target)
+    local delta_x = observer.x - target.x
+    local delta_y = observer.y - target.y
+    print("Delta X" .. delta_x)
+    print("Delta Y" .. delta_y)
+
+    steep = math.abs(target.y - observer.y) > math.abs(target.x - observer.x)
+    slope = delta_x / delta_y
+    print(slope)
+    print(steep)
+
+    -- for observer.x, target.x, -1 do
+    --     print("test")
+    -- end 
+
+
+end
+
 function move_toward_player()
     local x = rat.x
     local y = rat.y
     
+    line_of_sight(rat, player)
     
     if x ~= player.x or y ~= player.y then
         if math.abs(player.x - x) > math.abs(player.y - y) then
@@ -19,10 +38,9 @@ function move_toward_player()
         end
         
         if empty_tile(x, y) and no_creature(x, y) then
-            print("Rat blocked")
             rat.x = x  
             rat.y = y
-        elseif not empty_tile(x, y) and no_creature(x, y) then
+        elseif not empty_tile(x, y) and not no_creature(x, y) then
             print("Path lost")
         end
     end

@@ -15,10 +15,11 @@ function love.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
     load_sprites()
     load_map()
+    turn = 0
 end
 
-function love.update()
-    -- player_movement(dt)
+function love.update(dt)
+
 end
 
 function love.draw()
@@ -26,4 +27,5 @@ function love.draw()
     draw_map()
     love.graphics.draw(spritesheet, rat.sprite, rat.x * DRAW_FACTOR, rat.y * DRAW_FACTOR, 0, SCALE_FACTOR)
     love.graphics.draw(spritesheet, player.sprite, player.x * DRAW_FACTOR, player.y * DRAW_FACTOR, 0, SCALE_FACTOR)
+    love.graphics.line((rat.x + .5) * DRAW_FACTOR, (rat.y + .5) * DRAW_FACTOR, (player.x + .5) * DRAW_FACTOR, (player.y + .5) * DRAW_FACTOR)
 end
