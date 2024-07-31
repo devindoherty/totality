@@ -14,7 +14,7 @@ function load_sprites()
 
     player = {}
     player.sprite = sprites[551]
-    player.x = 2
+    player.x = 12
     player.y = 2
     player.stats = {
         defense = 10
@@ -22,7 +22,7 @@ function load_sprites()
 
     rat = {}
     rat.sprite = sprites[691]
-    rat.x = 12
+    rat.x = 2
     rat.y = 2
     rat.stats = {
         defense = 3
