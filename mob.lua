@@ -8,7 +8,13 @@ function line_of_sight(observer, target)
     print("Step: " .. step)
 
     local y = observer.y
-    for x = observer.x, target.x do
+    if delta_x > 0 then
+        i = 1
+    else
+        i = -1
+    end
+
+    for x = observer.x, target.x, i do
         print("("..x..", "..y..")", empty_tile(x, y))
         if not empty_tile(x, y) then
             return false
