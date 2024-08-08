@@ -2,8 +2,8 @@ require("spritesheet")
 
 function load_entities()
     entities = {}
-
-    empty = {}
+    entity = {}
+    empty = entity
     empty.sprite = sprites[1]
 
     player = {}

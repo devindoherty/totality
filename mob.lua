@@ -1,45 +1,88 @@
 function line_of_sight(observer, target)
-    local delta_x = target.x - observer.x
-    local delta_y = target.y - observer.y
-    print("Delta X " .. delta_x)
-    print("Delta Y " .. delta_y)
-    step = 2 * delta_y - delta_x
-    print("Step: " .. step)
-    blocker.x = 0
-    blocker.y = 0
-    
-    local y = observer.y
-    if delta_x > 0 then
-        i = 1
-    else
-        i = -1
-    end
+    local x0 = observer.x
+    local y0 = observer.y
 
-    for x = observer.x, target.x, i do
-        print("("..x..", "..y..")", empty_tile(x, y))
+    local x1 = target.x
+    local y1 = target.y
+
+    blocker.x = target.x
+    blocker.y = target.y
+
+    if math.abs(y1 - y0) < math.abs(x1 - x0) then
+        if x0 > x1 then
+            return line_of_sight_low(x1, y1, x0, y0)
+        else
+            return line_of_sight_low(x0, y0, x1, y1)
+        end
+    else
+        if y0 > y1 then
+            return line_of_sight_high(x1, y1, x0, y0)
+        else
+            return line_of_sight_high(x0, y0, x1, y1)
+        end
+    end
+end
+
+function line_of_sight_low(x0, y0, x1, y1)
+    local dx = x1 - x0
+    local dy = y1 - y0
+    local yi = 1
+    if dy < 0 then
+        yi = -1
+        dy = -dy
+    end
+    local D = (2 * dy) - dx
+    local y = y0
+    for x = x0, x1 do
         if not empty_tile(x, y) then
             blocker.x = x
             blocker.y = y
-            print("blocker" .. blocker.x .. blocker.y)
             return false
         end
-        if step > 0 then
-            y = y + 1
-            step = step - 2 * delta_x
+        if D > 0 then
+            y = y + yi
+            D = D + (2 * (dy - dx))
+        else 
+            D = D + 2 * dy
         end
-        step = step + 2 * delta_y
     end
-    
-    return true 
+
+    return true
+end
+
+function line_of_sight_high(x0, y0, x1, y1)
+    local dx = x1 - x0
+    local dy = y1 - y0
+    local xi = 1
+    if dx < 0 then
+        xi = -1
+        dx = -dx
+    end
+    local D = (2 * dx) - dy
+    local x = x0
+    for y = y0, y1 do
+        if not empty_tile(x, y) then
+            blocker.x = x
+            blocker.y = y
+            return false
+        end
+        if D > 0 then
+            x = x + xi
+            D = D + (2 * (dx - dy))
+        else 
+            D = D + 2 * dx
+        end
+    end
+    return true
 end
 
 function draw_line_of_sight(observer, target)
-    if blocker.x > 0 and blocker.y > 0 then
+    if blocker.x ~= target.x or blocker.y ~= target.y then
         love.graphics.setColor(1, 0, 0)
-        love.graphics.line((rat.x + .5) * DRAW_FACTOR, (rat.y + .5) * DRAW_FACTOR, (blocker.x + .5) * DRAW_FACTOR, (blocker.y + .5) * DRAW_FACTOR)    
+        love.graphics.line((observer.x + .5) * DRAW_FACTOR, (observer.y + .5) * DRAW_FACTOR, (blocker.x + .5) * DRAW_FACTOR, (blocker.y + .5) * DRAW_FACTOR)    
     else
         love.graphics.setColor(0, 1, 0)
-        love.graphics.line((rat.x + .5) * DRAW_FACTOR, (rat.y + .5) * DRAW_FACTOR, (player.x + .5) * DRAW_FACTOR, (player.y + .5) * DRAW_FACTOR)
+        love.graphics.line((observer.x + .5) * DRAW_FACTOR, (observer.y + .5) * DRAW_FACTOR, (target.x + .5) * DRAW_FACTOR, (target.y + .5) * DRAW_FACTOR)
     end
     love.graphics.setColor(255, 255, 255)
 end
