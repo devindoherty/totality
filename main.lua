@@ -1,6 +1,7 @@
 require("input")
 require("spritesheet")
 require("map")
+require("entity")
 
 GAMESTATES = {"player_turn", "enemy_turn"}
 
@@ -14,8 +15,13 @@ function love.load()
     love.window.setIcon(icon)
     love.graphics.setDefaultFilter("nearest", "nearest")
     load_sprites()
+    load_entities()
     load_map()
+    gamestate = {}
     turn = 0
+    blocker = {}
+    blocker.x = 0
+    blocker.y = 0
 end
 
 function love.update(dt)
@@ -27,5 +33,5 @@ function love.draw()
     draw_map()
     love.graphics.draw(spritesheet, rat.sprite, rat.x * DRAW_FACTOR, rat.y * DRAW_FACTOR, 0, SCALE_FACTOR)
     love.graphics.draw(spritesheet, player.sprite, player.x * DRAW_FACTOR, player.y * DRAW_FACTOR, 0, SCALE_FACTOR)
-    love.graphics.line((rat.x + .5) * DRAW_FACTOR, (rat.y + .5) * DRAW_FACTOR, (player.x + .5) * DRAW_FACTOR, (player.y + .5) * DRAW_FACTOR)
+    draw_line_of_sight(rat, player)
 end

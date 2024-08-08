@@ -8,13 +8,13 @@ function love.keypressed(key, scancode, isrepeat)
     local x = player.x
     local y = player.y
 
-    if key == "d" then
-        x = player.x + 1
-    elseif key == "a" then
-        x = player.x - 1
-    elseif key == "w" then
+    if key == "w" or key == "kp8" then
         y = player.y - 1
-    elseif key == "s" then
+    elseif key == "a" or key == "kp4" then
+        x = player.x - 1
+    elseif key == "d" or key == "kp6" then
+        x = player.x + 1
+    elseif key == "s" or key == "kp2" then
         y = player.y + 1
     elseif key == "space" then
         x = player.x
@@ -28,7 +28,9 @@ function love.keypressed(key, scancode, isrepeat)
         print("Tile blocker at: " .. x .. ", " .. y)
     end
 
-    mob_turn()
+    if turn % 2 == 0 then
+        mob_turn()
+    end
 
     print("Player X: " .. player.x)
     print("Player Y: " .. player.y)

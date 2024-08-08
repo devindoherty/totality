@@ -3,10 +3,11 @@ function line_of_sight(observer, target)
     local delta_y = target.y - observer.y
     print("Delta X " .. delta_x)
     print("Delta Y " .. delta_y)
-
     step = 2 * delta_y - delta_x
     print("Step: " .. step)
-
+    blocker.x = 0
+    blocker.y = 0
+    
     local y = observer.y
     if delta_x > 0 then
         i = 1
@@ -17,6 +18,9 @@ function line_of_sight(observer, target)
     for x = observer.x, target.x, i do
         print("("..x..", "..y..")", empty_tile(x, y))
         if not empty_tile(x, y) then
+            blocker.x = x
+            blocker.y = y
+            print("blocker" .. blocker.x .. blocker.y)
             return false
         end
         if step > 0 then
@@ -27,6 +31,17 @@ function line_of_sight(observer, target)
     end
     
     return true 
+end
+
+function draw_line_of_sight(observer, target)
+    if blocker.x > 0 and blocker.y > 0 then
+        love.graphics.setColor(1, 0, 0)
+        love.graphics.line((rat.x + .5) * DRAW_FACTOR, (rat.y + .5) * DRAW_FACTOR, (blocker.x + .5) * DRAW_FACTOR, (blocker.y + .5) * DRAW_FACTOR)    
+    else
+        love.graphics.setColor(0, 1, 0)
+        love.graphics.line((rat.x + .5) * DRAW_FACTOR, (rat.y + .5) * DRAW_FACTOR, (player.x + .5) * DRAW_FACTOR, (player.y + .5) * DRAW_FACTOR)
+    end
+    love.graphics.setColor(255, 255, 255)
 end
 
 function move_toward_player()
@@ -51,8 +66,15 @@ function move_toward_player()
         if empty_tile(x, y) and no_creature(x, y) and line_of_sight(rat, player) then
             rat.x = x  
             rat.y = y
-        elseif not empty_tile(x, y) and not no_creature(x, y) then
-            print("Path lost")
+        end
+        if not empty_tile(x, y) then
+            print("Path blocked")
+        end
+        if not no_creature(x, y) then
+            print("Path occupied")
+        end
+        if not line_of_sight(rat, player) then
+            print("Path sightless")
         end
     end
 end
