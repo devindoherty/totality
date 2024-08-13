@@ -1,4 +1,4 @@
-### Accursed: Shadow of Totality
+# Accursed: Shadow of Totality
 Just a working title. Mainly playing around with LOVE and Lua.
 
 ## Premise
@@ -7,12 +7,12 @@ cult of the moongod, a permanent eclipse which has blotted out the sun itself.
 
 ## Features
 
-# Done
+### Done
 - Basic player movement
 - Monster movement
 - Basic collision
 
-# Next
+### Next
 - Basic combat
 - More interesting interactions
 - Talking to NPCs
