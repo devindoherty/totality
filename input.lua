@@ -1,10 +1,8 @@
 require("mob")
 
-function love.keypressed(key, scancode, isrepeat)
-    if key == "q" or key == "escape" then
-        love.event.quit(0)
-    end
-    
+function G_move_player(key)
+    local player = G_entities["player"]
+
     local x = player.x
     local y = player.y
 
@@ -17,39 +15,16 @@ function love.keypressed(key, scancode, isrepeat)
     elseif key == "s" or key == "kp2" then
         y = player.y + 1
     elseif key == "space" then
+        G_gamestate.end_turn = true
         x = player.x
         y = player.y
     end
     
-    if empty_tile(x, y) and no_creature(x, y) then
+    if G_empty_tile(x, y) and G_no_creature(x, y) then
+        G_gamestate.player_moved = true
         player.x = x
         player.y = y
     else
         print("Tile blocker at: " .. x .. ", " .. y)
     end
-
-    if turn % 2 == 0 then
-        mob_turn()
-    end
-
-    print("Player X: " .. player.x)
-    print("Player Y: " .. player.y)
-    print("Rat X: " .. rat.x)
-    print("Rat Y: " .. rat.y)
-
-    print("END OF TURN ".. turn)
-    print("####################")
-    turn = turn + 1
 end
-
--- function player_movement(dt)
---     if love.keyboard.isDown("w") then
---         player.y = player.y - 100 * dt
---     elseif love.keyboard.isDown("a") then
---         player.x = player.x - 100 * dt
---     elseif love.keyboard.isDown("s") then
---         player.y = player.y + 100 * dt
---     elseif love.keyboard.isDown("d") then
---         player.x = player.x + 100 * dt
---     end
--- end
