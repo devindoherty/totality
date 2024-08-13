@@ -49,7 +49,15 @@ function G_load_entities()
     croc.is_creature = true
     G_entities["croc"] = croc
 
+    local lothar = {}
+    lothar.sprite = G_sprites[529]
+    lothar.x = 2
+    lothar.y = 6
+    lothar.is_creature = true
+    lothar.name = "Lothar"
+    G_entities["lothar"] = lothar
 
+    ------------ Structures -----------------
     local brick_wall = {}
     brick_wall.sprite = G_sprites[146]
     brick_wall.x = 0
@@ -76,4 +84,12 @@ function G_load_entities()
     water.y = 0
     G_entities["water"] = water
 
+end
+
+function G_draw_creatures()
+    for _i, entity in pairs(G_entities) do
+        if entity.is_creature == true then
+            love.graphics.draw(G_spritesheet, entity.sprite, entity.x * DRAW_FACTOR, entity.y * DRAW_FACTOR, 0, SCALE_FACTOR)
+        end
+    end
 end

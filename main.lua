@@ -76,9 +76,10 @@ function love.draw()
     local rat = G_entities["rat"]
     local croc = G_entities["croc"]
     G_draw_map()
-    love.graphics.draw(G_spritesheet, rat.sprite, rat.x * DRAW_FACTOR, rat.y * DRAW_FACTOR, 0, SCALE_FACTOR)
-    love.graphics.draw(G_spritesheet, player.sprite, player.x * DRAW_FACTOR, player.y * DRAW_FACTOR, 0, SCALE_FACTOR)
-    love.graphics.draw(G_spritesheet, croc.sprite, croc.x * DRAW_FACTOR, croc.y * DRAW_FACTOR, 0, SCALE_FACTOR)
+    -- love.graphics.draw(G_spritesheet, rat.sprite, rat.x * DRAW_FACTOR, rat.y * DRAW_FACTOR, 0, SCALE_FACTOR)
+    -- love.graphics.draw(G_spritesheet, player.sprite, player.x * DRAW_FACTOR, player.y * DRAW_FACTOR, 0, SCALE_FACTOR)
+    -- love.graphics.draw(G_spritesheet, croc.sprite, croc.x * DRAW_FACTOR, croc.y * DRAW_FACTOR, 0, SCALE_FACTOR)
+    G_draw_creatures()
     G_draw_line_of_sight(rat, player)
 end
 
