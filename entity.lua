@@ -1,23 +1,33 @@
 require("spritesheet")
 
--- 22 G_sprites[idx] between columns in same row
+Entity = {}
+
+function Entity:new(name, sprite, x, y, is_creature)
+    local e = {}
+    setmetatable(e, self)
+    self.__index = self
+    e.name = name
+    e.sprite = sprite
+    e.x = x
+    e.y = y
+    e.is_creature = is_creature
+    e.stats = {}
+    return e
+end
+
+function Entity:set_stat(stat, value)
+    self.stats[stat] = value
+end
+
 function G_load_entities()
     G_entities = {}
 
-    local empty = {}
-    empty.sprite = G_sprites[1]
+    local empty = Entity:new("empty", G_sprites[1], 0, 0, false)
     G_entities["empty"] = empty
 
-    local player = {}
-    player.sprite = G_sprites[551]
-    player.x = 2
-    player.y = 2
-    player.name = "Player"
-    player.stats = {
-        health = 20,
-        defense = 10
-    }
-    player.is_creature = true
+    local player = Entity:new("player", G_sprites[551], 2, 2, true)
+    player:set_stat("health", 20)
+    player:set_stat("defense", 12)
     G_entities["player"] = player
 
     local rat = {}

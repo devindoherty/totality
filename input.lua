@@ -24,7 +24,5 @@ function G_move_player(key)
         G_gamestate.player_moved = true
         player.x = x
         player.y = y
-    else
-        print("Tile blocker at: " .. x .. ", " .. y)
     end
 end
