@@ -28,7 +28,7 @@ end
 function Entity:draw_stats()
     local health = self.stats["health"]
     local defense = self.stats["defense"]
-    love.graphics.print("Health: " .. health .. "    Defense: " .. defense, SCREEN_WIDTH / 14, SCREEN_HEIGHT + 30, 0, 2)
+    love.graphics.print("Health: " .. health .. "    Defense: " .. defense, SCREEN_WIDTH , SCREEN_HEIGHT, 0)
 end
 
 function G_init_entities()
@@ -51,7 +51,7 @@ function G_init_entities()
     local croc = Entity:new("croc", G_sprites[647], 14, 7, true)
     croc:set_stat("health", 20)
     croc:set_stat("defense", 15)
-    croc.behavior = "neutral"
+    croc.behavior = "loitering"
     croc.quips = {
         "Do you have the time?",
         "My teeth need a cleaning.",

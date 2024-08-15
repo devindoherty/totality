@@ -106,14 +106,14 @@ end
 --------------------------------Draw--------------------------------
 function love.draw()
     local player = G_entities["player"]
+    love.graphics.push()
     -- "Camera"
     love.graphics.translate((-player.x * DRAW_FACTOR) + (SCREEN_WIDTH / 2), (-player.y * DRAW_FACTOR) + (SCREEN_HEIGHT / 2))
     G_draw_map()
     G_draw_creatures()
-    G_draw_all_lines_of_sight() --TODO: Figure out why bugged on rat death
-    love.graphics.origin()
+    -- G_draw_all_lines_of_sight() --TODO: Figure out why bugged on rat death
+    love.graphics.pop()
     player:draw_stats()
-
 
 end
 

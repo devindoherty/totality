@@ -183,10 +183,12 @@ function G_mob_turn()
         if entity.is_creature and entity.name ~= "player" then
             if entity.behavior == "aggressive" then
                 move_toward_player(entity)
-            elseif entity.behavior == "neutral" then
+            elseif entity.behavior == "loitering" then
                 move_idly(entity)
             elseif entity.behavior == "skittish" then
                 move_along_walls(entity)
+            elseif entity.behavior == "neutral" then
+                -- TODO: Standing around behavior
             else
                 print(entity.name .. " does not have behavior.")
             end
