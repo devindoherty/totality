@@ -34,10 +34,10 @@ function G_init_map()
     }
 
 
-    init_creature_locations()
+    G_init_creature_locations()
 end
 
-function init_creature_locations()
+function G_init_creature_locations()
     for y = 1, #G_tilemap do
         for x = 1, #G_tilemap[y] do
             for i, entity in pairs(G_entities) do
@@ -72,6 +72,7 @@ function G_draw_map()
             elseif G_tilemap[y][x] == 'T' then
                 tile_sprite = tree.sprite
             else
+                G_tilemap[y][x] = 0
                 tile_sprite = empty.sprite
             end
             love.graphics.draw(G_spritesheet, tile_sprite, x * DRAW_FACTOR, y * DRAW_FACTOR, 0, SCALE_FACTOR)
