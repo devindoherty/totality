@@ -22,13 +22,12 @@ function love.load()
     local icon = love.image.newImageData("assets/eclipse.png")
     love.window.setIcon(icon)
     
+    screen_canvas = love.graphics.newCanvas(SCREEN_WIDTH, SCREEN_HEIGHT)
     love.graphics.setDefaultFilter("nearest", "nearest")
     
     G_load_sprites()
     G_init_entities()
-    G_load_map()
-
-    print(G_entities["rat"].stats["health"])
+    G_init_map()
 
     G_gamestate = {}
     G_gamestate.turn = 0
@@ -105,16 +104,23 @@ end
 
 --------------------------------Draw--------------------------------
 function love.draw()
+
     local player = G_entities["player"]
+    love.graphics.setCanvas(screen_canvas)
+    love.graphics.clear()
+
     love.graphics.push()
-    -- "Camera"
-    love.graphics.translate((-player.x * DRAW_FACTOR) + (SCREEN_WIDTH / 2), (-player.y * DRAW_FACTOR) + (SCREEN_HEIGHT / 2))
+    G_player_camera()
     G_draw_map()
+    G_draw_items()
     G_draw_creatures()
-    -- G_draw_all_lines_of_sight() --TODO: Figure out why bugged on rat death
+    G_draw_all_lines_of_sight() --TODO: Figure out why bugged on rat death
     love.graphics.pop()
+    
+    love.graphics.setCanvas()
     player:draw_stats()
 
+    love.graphics.draw(screen_canvas)
 end
 
 function love.quit()

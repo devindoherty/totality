@@ -1,22 +1,45 @@
 require("mob")
 
-function G_load_map()
+function G_init_map()
     local D = 'D'
     local W = 'W'
     local O = 'O'
+    
+    local P = 'player'
+    local L = 'lothar'
+    local R = 'rat'
+    local C = 'croc'
+
     G_tilemap = {
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, D},
-        {1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, O, 0, 0, 0, 0, 0, 0, 0, W, W, 1},
-        {1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, W, W, W, 1},
-        {1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, W, W, W, 1},
-        {1, 0, 0, 0, 1, 0, 0, 0, 0, 0, W, W, W, W, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, W, W},
+        {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, W, W},
+        {0, 1, P, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, R, 1, 0, 0, W, W},
+        {0, 1, 0, 0, 0, 1, 0, 0, D, 0, D, 0, 0, 0, 0, 1, 0, 0, W, W},
+        {0, 1, 1, D, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, W, W},
+        {0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, D, 1, 1, 1, 0, 0, W, W},
+        {0, 1, 0, 0, 0, D, 0, 0, 0, 0, 0, 0, 0, 0, 0, D, 0, 0, W, W},
+        {0, 1, 0, 0, 0, 1, 1, 1, 1, D, 1, 1, D, 1, 1, 1, 0, W, W, C},
+        {0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, W, W, 0},
+        {0, 1, L, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, W, W, 0},
+        {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, W, W, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, W, W, 0},
     }
 
+
+    init_creature_locations()
+end
+
+function init_creature_locations()
+    for y = 1, #G_tilemap do
+        for x = 1, #G_tilemap[y] do
+            for i, entity in pairs(G_entities) do
+                if G_tilemap[y][x] == i then
+                    G_entities[i].x = x
+                    G_entities[i].y = y
+                end
+            end
+        end
+    end
 end
 
 function G_draw_map()
@@ -50,6 +73,13 @@ function G_empty_tile(x, y)
     -- TODO return map_tile.blocker == false
 end
 
+function G_inbounds(x, y)
+    if y < 1 or x < 1 then return false end
+    if x > #G_tilemap[y] then return false end
+    if y > #G_tilemap then return false end
+    return true
+end 
+
 function G_no_creature(x, y)
     for _i, j in pairs(G_entities) do
         if x == j.x and y == j.y and j.is_creature == true then
@@ -69,6 +99,20 @@ function G_creature_adjacent(x, y)
         end
     end
     return false
+end
+
+function G_openable_tile_adjacent(x, y)
+    -- TODO: Maptile as entity rewrite
+    -- for _i, entity in pairs(G_entities) do
+    --     if entity.x == x and entity.y == y then
+    --         if entity.is_item and entity.is_openable then
+    --             return true
+    --         end
+    --     end
+    -- end
+    print("test openable")
+    print(G_tilemap[y][x])
+    return G_tilemap[y][x] == 'D'
 end
 
 function G_get_creature_with_xy(x, y)

@@ -21,15 +21,20 @@ function G_move_player(key)
         y = player.y
     end
     
-    if G_empty_tile(x, y) and G_no_creature(x, y) then
+    if not G_inbounds(x, y) then
+        return
+    elseif G_empty_tile(x, y) and G_no_creature(x, y) and G_inbounds(x, y) then
         G_gamestate.player_moved = true
         player.x = x
         player.y = y
         return
-    end
-
-    if not G_no_creature(x, y) then
+    elseif not G_no_creature(x, y) then
         local defender = G_get_creature_with_xy(x, y)
         G_set_attacking(player, defender)
+    elseif not G_empty_tile(x, y) then
+        if G_openable_tile_adjacent(x, y) then
+            G_open_item(x, y)
+        end
     end
+
 end

@@ -10,6 +10,8 @@ function Entity:new(name, sprite, x, y, is_creature)
     e.x = x
     e.y = y
     e.is_creature = is_creature
+    e.is_item = false
+    e.is_openable = false
     e.is_attacking = false
     e.is_friendly = false
     e.target = {}
@@ -28,7 +30,8 @@ end
 function Entity:draw_stats()
     local health = self.stats["health"]
     local defense = self.stats["defense"]
-    love.graphics.print("Health: " .. health .. "    Defense: " .. defense, SCREEN_WIDTH , SCREEN_HEIGHT, 0)
+    love.graphics.print("Health: " .. health, 0, 0, 0)
+    love.graphics.print("Defense: " .. defense, 0, 13, 0)
 end
 
 function G_init_entities()
@@ -37,7 +40,7 @@ function G_init_entities()
     local empty = Entity:new("empty", G_sprites[1], 0, 0, false)
     G_entities["empty"] = empty
 
-    local player = Entity:new("player", G_sprites[551], 2, 2, true)
+    local player = Entity:new("player", G_sprites[551], 3, 3, true)
     player:set_stat("health", 100)
     player:set_stat("defense", 12)
     
@@ -58,7 +61,7 @@ function G_init_entities()
         "Cold blooded doesn't mean coldhearted.",
     }
 
-    local lothar = Entity:new("lothar", G_sprites[529], 2, 7, true)
+    local lothar = Entity:new("lothar", G_sprites[529], 2, 9, true)
     lothar:set_stat("health", 25)
     lothar:set_stat("defense", 16)
     lothar.behavior = "neutral"
@@ -69,7 +72,7 @@ function G_init_entities()
     G_entities["croc"] = croc
     G_entities["lothar"] = lothar
 
-    ------------ Structures -----------------
+    ------------ Terrain -----------------
     local brick_wall = {}
     brick_wall.sprite = G_sprites[146]
     brick_wall.x = 0
@@ -81,6 +84,7 @@ function G_init_entities()
     white_door.sprite = G_sprites[210]
     white_door.x = 0
     white_door.y = 0
+    white_door.is_openable = true
     G_entities["white_door"] = white_door
 
     local white_doorframe = {}
@@ -96,6 +100,16 @@ function G_init_entities()
     water.y = 0
     G_entities["water"] = water
 
+--------------Furniture---------------
+    local wooden_bed = {}
+    wooden_bed.sprite = G_sprites[119]
+    wooden_bed.x = 3
+    wooden_bed.y = 3
+    wooden_bed.blocker = false
+    wooden_bed.is_creature = false
+    wooden_bed.is_item = true
+    G_entities["wooden_bed"] = wooden_bed
+
 end
 
 function G_draw_creatures()
@@ -106,8 +120,15 @@ function G_draw_creatures()
     end
 end
 
-function G_player_camera()
-    local player = G_entities["player"]
-    love.graphics.translate(-player.x + 600, -player.y + 400)
+function G_draw_items()
+    for _i, entity in pairs(G_entities) do
+        if entity.is_item == true then
+            love.graphics.draw(G_spritesheet, entity.sprite, entity.x * DRAW_FACTOR, entity.y * DRAW_FACTOR, 0, SCALE_FACTOR)
+        end
+    end
 end
 
+function G_player_camera()
+    local player = G_entities["player"]
+    love.graphics.translate((-player.x * DRAW_FACTOR) + (SCREEN_WIDTH / 2) -32, (-player.y * DRAW_FACTOR) + (SCREEN_HEIGHT / 2) -32)
+end
