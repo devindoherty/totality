@@ -100,6 +100,12 @@ function G_init_entities()
     water.y = 0
     G_entities["water"] = water
 
+    local tree = {}
+    tree.sprite = G_sprites[2]
+    tree.x = 0
+    tree.y = 0
+    G_entities["tree"] = tree
+
 --------------Furniture---------------
     local wooden_bed = {}
     wooden_bed.sprite = G_sprites[119]

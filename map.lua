@@ -4,6 +4,7 @@ function G_init_map()
     local D = 'D'
     local W = 'W'
     local O = 'O'
+    local T = 'T'
     
     local P = 'player'
     local L = 'lothar'
@@ -23,6 +24,13 @@ function G_init_map()
         {0, 1, L, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, W, W, 0},
         {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, W, W, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, W, W, 0},
+        {0, 0, 0, 0, 0, 0, T, 0, 0, 0, 0, 0, T, 0, 0, 0, W, W, W, 0},
+        {0, 0, 0, T, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, W, W, W, W, 0},
+        {0, 0, 0, 0, 0, 0, 0, T, 0, 0, 0, T, 0, 0, 0, W, W, W, 0, 0},
+        {0, 0, T, 0, T, 0, T, 0, 0, 0, 0, T, 0, 0, T, W, W, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, W, W, 0, 0, 0},
+        {0, 0, 0, T, 0, T, 0, 0, 0, 0, 0, 0, 0, 0, W, W, W, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, W, W, 0, 0, 0, 0},
     }
 
 
@@ -48,6 +56,7 @@ function G_draw_map()
     local white_door = G_entities["white_door"]
     local empty = G_entities["empty"]
     local water = G_entities["water"]
+    local tree = G_entities["tree"]
     local tile_sprite = empty
 
     for y = 1, #G_tilemap do
@@ -60,6 +69,8 @@ function G_draw_map()
                 tile_sprite = white_door.sprite
             elseif G_tilemap[y][x] == 'W' then
                 tile_sprite = water.sprite
+            elseif G_tilemap[y][x] == 'T' then
+                tile_sprite = tree.sprite
             else
                 tile_sprite = empty.sprite
             end
@@ -76,7 +87,7 @@ end
 function G_inbounds(x, y)
     if y < 1 or x < 1 then return false end
     if x > #G_tilemap[y] then return false end
-    if y > #G_tilemap then return false end
+    if y >= #G_tilemap then return false end
     return true
 end 
 

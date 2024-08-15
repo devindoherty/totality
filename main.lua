@@ -114,7 +114,7 @@ function love.draw()
     G_draw_map()
     G_draw_items()
     G_draw_creatures()
-    G_draw_all_lines_of_sight() --TODO: Figure out why bugged on rat death
+    -- G_draw_all_lines_of_sight() --TODO: Figure out why bugged on rat death
     love.graphics.pop()
     
     love.graphics.setCanvas()
