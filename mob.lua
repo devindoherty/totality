@@ -88,12 +88,20 @@ function G_draw_line_of_sight(observer, target)
     love.graphics.setColor(255, 255, 255)
 end
 
-local function move_toward_player()
+function G_draw_all_lines_of_sight()
     local player = G_entities["player"]
-    local rat = G_entities["rat"]
+    for i, entity in pairs(G_entities) do
+        if entity.is_creature and entity.name ~= "player" then
+            G_draw_line_of_sight(entity, player)
+        end
+    end
+end
 
-    local x = rat.x
-    local y = rat.y
+local function move_toward_player(mob)
+    local player = G_entities["player"]
+
+    local x = mob.x
+    local y = mob.y
 
     if x ~= player.x or y ~= player.y then
         if math.abs(player.x - x) > math.abs(player.y - y) then
@@ -110,17 +118,15 @@ local function move_toward_player()
             end
         end
         
-        if G_empty_tile(x, y) and G_no_creature(x, y) and G_line_of_sight(rat, player) then
-            rat.x = x
-            rat.y = y
-        end
-        if not G_empty_tile(x, y) and G_line_of_sight then
+        if G_empty_tile(x, y) and G_no_creature(x, y) and G_line_of_sight(mob, player) then
+            mob.x = x
+            mob.y = y
+        elseif not G_empty_tile(x, y) and G_line_of_sight then
             print("Path blocked with sight")
-        end
-        if not G_no_creature(x, y) then
-            print("Path occupied")
-        end
-        if not G_line_of_sight(rat, player) then
+        elseif not G_no_creature(x, y) then
+            local defender = G_get_creature_with_xy(x, y)
+            G_attack(mob, defender)
+        elseif not G_line_of_sight(mob, player) then
             print("Path sightless")
         end
     end
@@ -156,7 +162,7 @@ local function move_idly(mob)
     end
 end
 
-local function move_along_walls()
+local function move_along_walls(mob)
 end
 
 local function move_along_shoreline()
@@ -173,9 +179,17 @@ function G_draw_quip()
 end
 
 function G_mob_turn()
-    move_toward_player()
-    move_idly(G_entities["croc"])
-    select_quip(G_entities["croc"])
-    move_along_walls()
-    
+    for _i, entity in pairs(G_entities) do
+        if entity.is_creature and entity.name ~= "player" then
+            if entity.behavior == "aggressive" then
+                move_toward_player(entity)
+            elseif entity.behavior == "neutral" then
+                move_idly(entity)
+            elseif entity.behavior == "skittish" then
+                move_along_walls(entity)
+            else
+                print(entity.name .. " does not have behavior.")
+            end
+        end
+    end
 end

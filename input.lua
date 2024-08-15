@@ -1,4 +1,5 @@
 require("mob")
+require("actions")
 
 function G_move_player(key)
     local player = G_entities["player"]
@@ -24,5 +25,11 @@ function G_move_player(key)
         G_gamestate.player_moved = true
         player.x = x
         player.y = y
+        return
+    end
+
+    if not G_no_creature(x, y) then
+        local defender = G_get_creature_with_xy(x, y)
+        G_set_attacking(player, defender)
     end
 end

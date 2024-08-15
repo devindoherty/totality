@@ -1,7 +1,6 @@
 require("spritesheet")
 
 Entity = {}
-
 function Entity:new(name, sprite, x, y, is_creature)
     local e = {}
     setmetatable(e, self)
@@ -11,6 +10,9 @@ function Entity:new(name, sprite, x, y, is_creature)
     e.x = x
     e.y = y
     e.is_creature = is_creature
+    e.is_attacking = false
+    e.is_friendly = false
+    e.target = {}
     e.stats = {}
     return e
 end
@@ -19,52 +21,52 @@ function Entity:set_stat(stat, value)
     self.stats[stat] = value
 end
 
-function G_load_entities()
+function Entity:inflict_damage(damage)
+    self.stats["health"] = self.stats["health"] - damage
+end
+
+function Entity:draw_stats()
+    local health = self.stats["health"]
+    local defense = self.stats["defense"]
+    love.graphics.print("Health: " .. health .. "    Defense: " .. defense, SCREEN_WIDTH / 14, SCREEN_HEIGHT + 30, 0, 2)
+end
+
+function G_init_entities()
     G_entities = {}
 
     local empty = Entity:new("empty", G_sprites[1], 0, 0, false)
     G_entities["empty"] = empty
 
     local player = Entity:new("player", G_sprites[551], 2, 2, true)
-    player:set_stat("health", 20)
+    player:set_stat("health", 100)
     player:set_stat("defense", 12)
-    G_entities["player"] = player
+    
 
-    local rat = {}
-    rat.sprite = G_sprites[691]
-    rat.x = 12
-    rat.y = 2
-    rat.name = "Rat"
-    rat.stats = {
-        health = 20,
-        defense = 3
-    }
-    rat.is_creature = true
-    G_entities["rat"] = rat
+    local rat = Entity:new("rat", G_sprites[691], 14, 2, true)
+    rat:set_stat("health", 20)
+    rat:set_stat("defense", 3)
+    rat.behavior = "aggressive"
+    
 
-    local croc = {}
-    croc.sprite = G_sprites[647]
-    croc.x = 12
-    croc.y = 6
-    croc.name = "Croc"
-    croc.stats = {
-        health = 20,
-        defense = 3
-    }
+    local croc = Entity:new("croc", G_sprites[647], 14, 7, true)
+    croc:set_stat("health", 20)
+    croc:set_stat("defense", 15)
+    croc.behavior = "neutral"
     croc.quips = {
         "Do you have the time?",
         "My teeth need a cleaning.",
         "Cold blooded doesn't mean coldhearted.",
     }
-    croc.is_creature = true
-    G_entities["croc"] = croc
 
-    local lothar = {}
-    lothar.sprite = G_sprites[529]
-    lothar.x = 2
-    lothar.y = 6
-    lothar.is_creature = true
-    lothar.name = "Lothar"
+    local lothar = Entity:new("lothar", G_sprites[529], 2, 7, true)
+    lothar:set_stat("health", 25)
+    lothar:set_stat("defense", 16)
+    lothar.behavior = "neutral"
+    lothar.is_friendly = true
+    
+    G_entities["player"] = player
+    G_entities[rat.name] = rat
+    G_entities["croc"] = croc
     G_entities["lothar"] = lothar
 
     ------------ Structures -----------------
@@ -103,3 +105,9 @@ function G_draw_creatures()
         end
     end
 end
+
+function G_player_camera()
+    local player = G_entities["player"]
+    love.graphics.translate(-player.x + 600, -player.y + 400)
+end
+
