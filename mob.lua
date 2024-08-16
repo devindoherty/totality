@@ -13,6 +13,7 @@ function G_line_of_sight(observer, target)
         if x0 > x1 then
             return G_line_of_sight_low(x1, y1, x0, y0)
         else
+
             return G_line_of_sight_low(x0, y0, x1, y1)
         end
     else
@@ -78,9 +79,9 @@ function G_line_of_sight_high(x0, y0, x1, y1)
 end
 
 function G_draw_line_of_sight(observer, target)
-    if G_blocker.x ~= target.x or G_blocker.y ~= target.y then
+    if observer.last_seen.x or observer.last_seen.y then
         love.graphics.setColor(1, 0, 0)
-        love.graphics.line((observer.x + .5) * DRAW_FACTOR, (observer.y + .5) * DRAW_FACTOR, (G_blocker.x + .5) * DRAW_FACTOR, (G_blocker.y + .5) * DRAW_FACTOR)    
+        love.graphics.line((observer.x + .5) * DRAW_FACTOR, (observer.y + .5) * DRAW_FACTOR, (observer.last_seen.x + .5) * DRAW_FACTOR, (observer.last_seen.y + .5) * DRAW_FACTOR)    
     else
         love.graphics.setColor(0, 1, 0)
         love.graphics.line((observer.x + .5) * DRAW_FACTOR, (observer.y + .5) * DRAW_FACTOR, (target.x + .5) * DRAW_FACTOR, (target.y + .5) * DRAW_FACTOR)
@@ -126,23 +127,24 @@ local function move_toward_player(mob)
         elseif not G_no_creature(x, y) then
             local defender = G_get_creature_with_xy(x, y)
             G_attack(mob, defender)
-        elseif not G_line_of_sight(mob, player) then
-            print("Path sightless")
         end
     end
 end
 
 local function move_idly(mob)
+    local player = G_entities["player"]
+
     local x = mob.x
     local y = mob.y
 
     local prob_move = love.math.random()
+    local prob_x_y = love.math.random()
     local prob_dir = love.math.random()
 
     -- Whether moving at all
     if prob_move >= .5 then
         -- X or Y
-        if prob_move >= .5 then
+        if prob_x_y >= .5 then
             if prob_dir >= .5 then
                 x = x + 1
             else
@@ -168,6 +170,11 @@ end
 local function move_along_shoreline()
 end
 
+local function do_nothing(mob)
+
+end
+
+
 local function select_quip(mob)
     if mob.quips then
         local quip_idx = love.math.random(1, #mob.quips)
@@ -179,8 +186,16 @@ function G_draw_quip()
 end
 
 function G_mob_turn()
+    local player = G_entities["player"]
     for _i, entity in pairs(G_entities) do
         if entity.is_creature and entity.name ~= "player" then
+            if not G_line_of_sight(entity, player) then
+                entity.last_seen.x = G_blocker.x
+                entity.last_seen.y = G_blocker.y
+            else
+                entity.last_seen.x = nil
+                entity.last_seen.y = nil
+            end
             if entity.behavior == "aggressive" then
                 move_toward_player(entity)
             elseif entity.behavior == "loitering" then
@@ -188,7 +203,7 @@ function G_mob_turn()
             elseif entity.behavior == "skittish" then
                 move_along_walls(entity)
             elseif entity.behavior == "neutral" then
-                -- TODO: Standing around behavior
+                do_nothing(entity)
             else
                 print(entity.name .. " does not have behavior.")
             end

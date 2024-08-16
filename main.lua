@@ -22,7 +22,7 @@ function love.load()
     local icon = love.image.newImageData("assets/eclipse.png")
     love.window.setIcon(icon)
     
-    screen_canvas = love.graphics.newCanvas(SCREEN_WIDTH, SCREEN_HEIGHT)
+    G_screen_canvas = love.graphics.newCanvas(SCREEN_WIDTH, SCREEN_HEIGHT)
     love.graphics.setDefaultFilter("nearest", "nearest")
     
     G_load_sprites()
@@ -57,7 +57,7 @@ function love.keyreleased(key)
 
  function love.mousereleased(x, y, button, istouch)
     if button == 1 then
-       print("Left mouse button pressed")
+       print("Left mouse button pressed at ".. math.floor(x) / 64 .. math.floor(y) / 64)
     end
  end
 --------------------------------Update--------------------------------
@@ -104,9 +104,8 @@ end
 
 --------------------------------Draw--------------------------------
 function love.draw()
-
     local player = G_entities["player"]
-    love.graphics.setCanvas(screen_canvas)
+    love.graphics.setCanvas(G_screen_canvas)
     love.graphics.clear()
 
     love.graphics.push()
@@ -114,13 +113,13 @@ function love.draw()
     G_draw_map()
     G_draw_items()
     G_draw_creatures()
-    -- G_draw_all_lines_of_sight() --TODO: Figure out why bugged on rat death
+    G_draw_all_lines_of_sight() --TODO: Figure out why bugged on rat death
     love.graphics.pop()
     
     love.graphics.setCanvas()
     player:draw_stats()
 
-    love.graphics.draw(screen_canvas)
+    love.graphics.draw(G_screen_canvas)
 end
 
 function love.quit()

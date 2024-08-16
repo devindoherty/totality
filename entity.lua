@@ -15,6 +15,12 @@ function Entity:new(name, sprite, x, y, is_creature)
     e.is_attacking = false
     e.is_friendly = false
     e.target = {}
+    if e.name ~= "player" then
+        e.last_seen = {
+            x = 0,
+            y = 0
+        }
+    end
     e.stats = {}
     return e
 end
@@ -45,13 +51,13 @@ function G_init_entities()
     player:set_stat("defense", 12)
     
 
-    local rat = Entity:new("rat", G_sprites[691], 14, 2, true)
+    local rat = Entity:new("rat", G_sprites[691], 15, 3, true)
     rat:set_stat("health", 20)
     rat:set_stat("defense", 3)
     rat.behavior = "aggressive"
     
 
-    local croc = Entity:new("croc", G_sprites[647], 14, 7, true)
+    local croc = Entity:new("croc", G_sprites[647], 18, 7, true)
     croc:set_stat("health", 20)
     croc:set_stat("defense", 15)
     croc.behavior = "loitering"
@@ -61,7 +67,7 @@ function G_init_entities()
         "Cold blooded doesn't mean coldhearted.",
     }
 
-    local lothar = Entity:new("lothar", G_sprites[529], 2, 9, true)
+    local lothar = Entity:new("lothar", G_sprites[685], 3, 10, true)
     lothar:set_stat("health", 25)
     lothar:set_stat("defense", 16)
     lothar.behavior = "neutral"
