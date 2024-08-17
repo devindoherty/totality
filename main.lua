@@ -65,37 +65,21 @@ function love.update(dt)
     local player = G_entities["player"]
 
     -- Check for dead
-    for _i, entity in pairs(G_entities) do
-        if entity.is_creature then
-            if entity.stats["health"] <= 0 then
-                G_entities[entity.name] = nil
-            end
-        end
-    end
+    G_update_dead_creatures()
 
     if G_gamestate.player_moved or G_gamestate.end_turn or player.is_attacking then
 
         if G_gamestate.turn % 2 == 0 then
             G_mob_turn()
         end
-        
+
         -- Attacking
-        for _i, entity in pairs(G_entities) do
-            if entity.is_creature then
-                if entity.is_attacking then
-                    local defender = entity.target
-                    defender:inflict_damage(5)
-                    entity.is_attacking = false
-                    entity.target = nil
-                    print(defender.name, defender.stats["health"])
-                end
-            end
-        end
+        G_update_attacks()
 
         G_gamestate.turn = G_gamestate.turn + 1
         G_gamestate.player_moved = false
         G_gamestate.end_turn = false
-        
+
         if DEBUG then
             G_print_debug()
         end
@@ -113,13 +97,17 @@ function love.draw()
     G_draw_map()
     G_draw_items()
     G_draw_creatures()
-    G_draw_all_lines_of_sight() --TODO: Figure out why bugged on rat death
+    if DEBUG then G_draw_all_lines_of_sight() end --TODO: Figure out why lines don't stop at first blocker
     love.graphics.pop()
     
     love.graphics.setCanvas()
-    player:draw_stats()
-
     love.graphics.draw(G_screen_canvas)
+
+    player:draw_stats()
+    if DEBUG then
+        love.graphics.print("FPS: " .. love.timer.getFPS( ), 0, 26, 0)
+    end
+
 end
 
 function love.quit()

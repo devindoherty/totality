@@ -126,7 +126,7 @@ local function move_toward_player(mob)
             print("Path blocked with sight")
         elseif not G_no_creature(x, y) then
             local defender = G_get_creature_with_xy(x, y)
-            G_attack(mob, defender)
+            G_set_attacking(mob, defender)
         end
     end
 end

@@ -12,6 +12,7 @@ function Entity:new(name, sprite, x, y, is_creature)
     e.is_creature = is_creature
     e.is_item = false
     e.is_openable = false
+    e.is_effect = false
     e.is_attacking = false
     e.is_friendly = false
     e.target = {}
@@ -29,15 +30,22 @@ function Entity:set_stat(stat, value)
     self.stats[stat] = value
 end
 
-function Entity:inflict_damage(damage)
-    self.stats["health"] = self.stats["health"] - damage
-end
-
 function Entity:draw_stats()
     local health = self.stats["health"]
     local defense = self.stats["defense"]
+    
+    love.graphics.setColor(love.math.colorFromBytes(0,191,255))
+    love.graphics.rectangle("fill", 0, 0, 128, 64) -- TODO MAKE WORD
+    love.graphics.setColor(255, 255, 255)
+
     love.graphics.print("Health: " .. health, 0, 0, 0)
     love.graphics.print("Defense: " .. defense, 0, 13, 0)
+
+
+end
+
+function Entity:inflict_damage(damage)
+    self.stats["health"] = self.stats["health"] - damage
 end
 
 function G_init_entities()
@@ -99,6 +107,13 @@ function G_init_entities()
     white_doorframe.y = 0
     G_entities["white_doorframe"] = white_doorframe
 
+    local wooden_downstairs = {}
+    wooden_downstairs.sprite = G_sprites[73]
+    wooden_downstairs.x = 7
+    wooden_downstairs.y = 4
+    wooden_downstairs.is_item = true
+    G_entities["wooden_downstairs"] = wooden_downstairs
+
     local water = {}
     water.sprite = G_sprites[182]
     water.alt_sprites = {}
@@ -112,6 +127,18 @@ function G_init_entities()
     tree.y = 0
     G_entities["tree"] = tree
 
+    local bush = {}
+    bush.sprite = G_sprites[25]
+    bush.x = 0
+    bush.y = 0
+    G_entities["bush"] = bush
+
+    local dirt_road = {}
+    dirt_road.sprite = G_sprites[67]
+    dirt_road.x = 0
+    dirt_road.y = 0
+    G_entities["dirt_road"] = dirt_road
+
 --------------Furniture---------------
     local wooden_bed = {}
     wooden_bed.sprite = G_sprites[119]
@@ -121,6 +148,16 @@ function G_init_entities()
     wooden_bed.is_creature = false
     wooden_bed.is_item = true
     G_entities["wooden_bed"] = wooden_bed
+
+
+--------------Effects----------------
+
+    local slash = {}
+    slash.sprite = G_sprites[540]
+    slash.x = 5
+    slash.y = 5
+    slash.is_effect = true
+    G_entities["slash"] = slash
 
 end
 
@@ -143,4 +180,14 @@ end
 function G_player_camera()
     local player = G_entities["player"]
     love.graphics.translate((-player.x * DRAW_FACTOR) + (SCREEN_WIDTH / 2) -32, (-player.y * DRAW_FACTOR) + (SCREEN_HEIGHT / 2) -32)
+end
+
+function G_update_dead_creatures()
+    for _i, entity in pairs(G_entities) do
+        if entity.is_creature then
+            if entity.stats["health"] <= 0 then
+                G_entities[entity.name] = nil
+            end
+        end
+    end
 end

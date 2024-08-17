@@ -10,3 +10,4 @@ function G_print_debug()
     print("END OF TURN ".. G_gamestate.turn)
     print("####################")
 end
+
