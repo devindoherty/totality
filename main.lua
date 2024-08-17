@@ -33,7 +33,13 @@ function love.load()
     G_gamestate.turn = 0
     G_gamestate.end_turn = false
     G_gamestate.player_moved = false
-    
+    G_gamestate.attack_queue = {} -- TODO for attack rewrite
+    G_gamestate.drawn_attack = {
+        x = 0,
+        y = 0
+    }
+
+
     G_blocker = {}
     G_blocker.x = 0
     G_blocker.y = 0
@@ -74,11 +80,12 @@ function love.update(dt)
         end
 
         -- Attacking
-        G_update_attacks()
+        G_update_attacks(dt)
 
         G_gamestate.turn = G_gamestate.turn + 1
         G_gamestate.player_moved = false
         G_gamestate.end_turn = false
+        
 
         if DEBUG then
             G_print_debug()
@@ -97,6 +104,7 @@ function love.draw()
     G_draw_map()
     G_draw_items()
     G_draw_creatures()
+    G_draw_attack()
     if DEBUG then G_draw_all_lines_of_sight() end --TODO: Figure out why lines don't stop at first blocker
     love.graphics.pop()
     

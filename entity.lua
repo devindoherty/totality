@@ -157,6 +157,7 @@ function G_init_entities()
     slash.x = 5
     slash.y = 5
     slash.is_effect = true
+    slash.animation_frame = 1
     G_entities["slash"] = slash
 
 end
