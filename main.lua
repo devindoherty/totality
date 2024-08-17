@@ -38,6 +38,7 @@ function love.load()
         x = 0,
         y = 0
     }
+    G_gamestate.attack_update = false
 
 
     G_blocker = {}
@@ -69,6 +70,7 @@ function love.keyreleased(key)
 --------------------------------Update--------------------------------
 function love.update(dt)
     local player = G_entities["player"]
+    -- local animate_update = false
 
     -- Check for dead
     G_update_dead_creatures()
@@ -80,17 +82,26 @@ function love.update(dt)
         end
 
         -- Attacking
-        G_update_attacks(dt)
+        if G_update_attacks(dt) then G_gamestate.attack_update = true end
 
         G_gamestate.turn = G_gamestate.turn + 1
         G_gamestate.player_moved = false
         G_gamestate.end_turn = false
         
-
         if DEBUG then
             G_print_debug()
+        end    
+    end
+
+    -- Animation update
+    if G_gamestate.attack_update == true then
+        G_entities["slash"].animation_frame = G_entities["slash"].animation_frame + 10 * dt
+        if G_entities["slash"].animation_frame >= 4 then
+            G_entities["slash"].animation_frame = 1
+            G_gamestate.attack_update = false
         end
     end
+
 end
 
 --------------------------------Draw--------------------------------
