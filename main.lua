@@ -95,6 +95,7 @@ function love.update(dt)
 
     -- Animation update
     if G_gamestate.attack_update == true then
+
         G_entities["slash"].animation_frame = G_entities["slash"].animation_frame + 10 * dt
         if G_entities["slash"].animation_frame >= 4 then
             G_entities["slash"].animation_frame = 1
@@ -115,7 +116,7 @@ function love.draw()
     G_draw_map()
     G_draw_items()
     G_draw_creatures()
-    G_draw_attack()
+    G_draw_attacks()
     if DEBUG then G_draw_all_lines_of_sight() end --TODO: Figure out why lines don't stop at first blocker
     love.graphics.pop()
     

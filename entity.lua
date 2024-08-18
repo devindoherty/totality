@@ -14,6 +14,7 @@ function Entity:new(name, sprite, x, y, is_creature)
     e.is_openable = false
     e.is_effect = false
     e.is_attacking = false
+    e.is_defending = false
     e.is_friendly = false
     e.target = {}
     if e.name ~= "player" then
@@ -156,13 +157,13 @@ function G_init_entities()
 
 --------------Effects----------------
 
-    local slash = {}
-    slash.sprite = G_sprites[540]
-    slash.x = 5
-    slash.y = 5
-    slash.is_effect = true
-    slash.animation_frame = 1
-    G_entities["slash"] = slash
+    -- local slash = {}
+    -- slash.sprite = G_sprites[540]
+    -- slash.x = 5
+    -- slash.y = 5
+    -- slash.is_effect = true
+    -- slash.animation_frame = 1
+    -- G_entities["slash"] = slash
 
 end
 

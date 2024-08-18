@@ -11,6 +11,10 @@ function G_set_attacking(attacker, defender)
 end
 
 function G_update_attacks(dt)
+    for i, _j in pairs(G_gamestate.attack_queue) do
+        G_gamestate.attack_queue[i] = nil
+    end
+    
     for _i, entity in pairs(G_entities) do
         if entity.is_creature then
             if entity.is_attacking then
@@ -21,6 +25,11 @@ function G_update_attacks(dt)
                 print(defender.name, defender.stats["health"], "health")
                 G_gamestate.drawn_attack.x = defender.x
                 G_gamestate.drawn_attack.y = defender.y
+                table.insert(G_gamestate.attack_queue, {x = G_gamestate.drawn_attack.x, y = G_gamestate.drawn_attack.y})
+                slash = Entity:new("slash", G_sprites[540], G_gamestate.drawn_attack.x, G_gamestate.drawn_attack.y, false)
+                slash.is_effect = true
+                slash.animation_frame = 1
+                G_entities["slash"] = slash
                 return true
             end
         end
@@ -28,9 +37,11 @@ function G_update_attacks(dt)
 
 end
 
-function G_draw_attack()
+function G_draw_attacks()
     if G_gamestate.attack_update then
-        love.graphics.draw(G_spritesheet, G_entities["slash"].sprite, G_gamestate.drawn_attack.x * DRAW_FACTOR, G_gamestate.drawn_attack.y * DRAW_FACTOR, 0, G_entities["slash"].animation_frame)
+        for i, attack in pairs(G_gamestate.attack_queue) do
+            love.graphics.draw(G_spritesheet, G_entities["slash"].sprite, attack.x * DRAW_FACTOR, attack.y * DRAW_FACTOR, 0, G_entities["slash"].animation_frame)
+        end
     end
 end
 
