@@ -40,12 +40,16 @@ function Entity:draw_stats()
 
     love.graphics.print("Health: " .. health, 0, 0, 0)
     love.graphics.print("Defense: " .. defense, 0, 13, 0)
-
-
 end
 
 function Entity:inflict_damage(damage)
     self.stats["health"] = self.stats["health"] - damage
+end
+
+function Entity:draw_injured()
+    if self.stats["health"] < 10 then
+        -- TODO self.sprite
+    end
 end
 
 function G_init_entities()

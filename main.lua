@@ -52,7 +52,7 @@ function love.keypressed(key, scancode, isrepeat)
         love.event.quit(0)
     end
 
-    G_move_player(key)
+    G_player_input(key)
 end
 
 

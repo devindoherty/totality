@@ -1,7 +1,7 @@
 require("mob")
 require("actions")
 
-function G_move_player(key)
+function G_player_input(key)
     local player = G_entities["player"]
 
     local x = player.x
