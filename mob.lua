@@ -6,14 +6,13 @@ function G_line_of_sight(observer, target)
     local x1 = target.x
     local y1 = target.y
 
-    G_blocker.x = target.x
-    G_blocker.y = target.y
+    -- G_blocker.x = target.x
+    -- G_blocker.y = target.y
 
     if math.abs(y1 - y0) < math.abs(x1 - x0) then
         if x0 > x1 then
             return G_line_of_sight_low(x1, y1, x0, y0)
         else
-
             return G_line_of_sight_low(x0, y0, x1, y1)
         end
     else
@@ -44,7 +43,7 @@ function G_line_of_sight_low(x0, y0, x1, y1)
         if D > 0 then
             y = y + yi
             D = D + (2 * (dy - dx))
-        else 
+        else
             D = D + 2 * dy
         end
     end
@@ -71,7 +70,7 @@ function G_line_of_sight_high(x0, y0, x1, y1)
         if D > 0 then
             x = x + xi
             D = D + (2 * (dx - dy))
-        else 
+        else
             D = D + 2 * dx
         end
     end
@@ -81,7 +80,7 @@ end
 function G_draw_line_of_sight(observer, target)
     if observer.last_seen.x or observer.last_seen.y then
         love.graphics.setColor(1, 0, 0)
-        love.graphics.line((observer.x + .5) * DRAW_FACTOR, (observer.y + .5) * DRAW_FACTOR, (observer.last_seen.x + .5) * DRAW_FACTOR, (observer.last_seen.y + .5) * DRAW_FACTOR)    
+        love.graphics.line((observer.x + .5) * DRAW_FACTOR, (observer.y + .5) * DRAW_FACTOR, (observer.last_seen.x + .5) * DRAW_FACTOR, (observer.last_seen.y + .5) * DRAW_FACTOR)
     else
         love.graphics.setColor(0, 1, 0)
         love.graphics.line((observer.x + .5) * DRAW_FACTOR, (observer.y + .5) * DRAW_FACTOR, (target.x + .5) * DRAW_FACTOR, (target.y + .5) * DRAW_FACTOR)
@@ -122,8 +121,6 @@ local function move_toward_player(mob)
         if G_empty_tile(x, y) and G_inbounds(x, y) and G_no_creature(x, y) and G_line_of_sight(mob, player) then
             mob.x = x
             mob.y = y
-        elseif not G_empty_tile(x, y) and G_line_of_sight then
-            print("Path blocked with sight")
         elseif not G_no_creature(x, y) then
             local defender = G_get_creature_with_xy(x, y)
             G_set_attacking(mob, defender)

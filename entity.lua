@@ -59,6 +59,12 @@ function G_init_entities()
     local empty = Entity:new("empty", G_sprites[1], 0, 0, false)
     G_entities["empty"] = empty
 
+    local grass = Entity:new("grass", G_sprites[111], 0, 0, false)
+    G_entities["grass"] = grass
+
+    local dirt = Entity:new("dirt", G_sprites[67], 0, 0, false)
+    G_entities["dirt"] = dirt
+
     local player = Entity:new("player", G_sprites[551], 3, 3, true)
     player:set_stat("health", 100)
     player:set_stat("defense", 12)
@@ -87,7 +93,7 @@ function G_init_entities()
     yarl.is_friendly = true
 
     local lothar = Entity:new("lothar", G_sprites[619], 18, 8, true)
-    lothar:set_stat("health", 25)
+    lothar:set_stat("health", 40)
     lothar:set_stat("defense", 16)
     lothar.behavior = "aggressive"
     lothar.is_friendly = false
