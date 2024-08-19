@@ -52,3 +52,9 @@ end
 function G_close_item(x, y)
     G_tilemap[y][x] = 'D'
 end
+
+function G_set_interacting()
+end
+
+function G_interact()
+end

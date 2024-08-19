@@ -131,8 +131,8 @@ end
 
 function G_inbounds(x, y)
     if y < 1 or x < 1 then return false end
+    if y >= #G_tilemap + 1 then return false end
     if x > #G_tilemap[y] then return false end
-    if y >= #G_tilemap then return false end
     return true
 end 
 

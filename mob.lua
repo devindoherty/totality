@@ -183,9 +183,6 @@ local function select_quip(mob)
     end
 end
 
-function G_draw_quip()
-end
-
 function G_mob_turn()
     local player = G_entities["player"]
     print("MOB TURN")

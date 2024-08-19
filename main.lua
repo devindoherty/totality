@@ -1,11 +1,10 @@
 require("bug")
+require("dialog")
 require("entity")
 require("input")
 require("map")
 require("sprite")
 require("state")
-
-GAMESTATES = {"player_turn", "enemy_turn"}
 
 -- 1920 X 1080 / 2
 SCREEN_WIDTH = 960
@@ -28,7 +27,11 @@ function love.load()
     G_load_sprites()
     G_init_entities()
     G_init_map()
+    
+    G_dialogs = {}
+    G_dialogs["intro"] = Dialog:new("You followed the old astronomer's advice and took the mountain pass into the eclipse-cursed lands. \n\nIn the fall of the unnatural night, your foot caught on a twig and you tumbled into the darkness. You've awakened in an old farmhouse. \n\nPress ENTER to continue...")
 
+    G_conversations = {}
 end
 
 --------------------------------Input--------------------------------
@@ -40,12 +43,11 @@ function love.keypressed(key, scancode, isrepeat)
     G_player_input(key)
 end
 
-
--- function love.keyreleased(key)
---     if key == 'b' then
---        print(key .. "was realease")
---     end
---  end
+function love.keyreleased(key)
+    if key == 'b' then
+       print(key .. "was realease")
+    end
+ end
 
  function love.mousereleased(x, y, button, istouch)
     if button == 1 then
@@ -54,7 +56,6 @@ end
  end
 --------------------------------Update--------------------------------
 function love.update(dt)
-    
     local player = G_entities["player"]
     
     -- Check for dead
@@ -64,18 +65,12 @@ function love.update(dt)
     if G_gamestate.player_moved or G_gamestate.end_turn or player.is_attacking then
         G_gamestate:start_round()
 
-        print("spacebar test")
-
         -- Mobs act on even turns
         if G_gamestate.turn % 2 == 0 then
             G_mob_turn()
         end
-
-        print("spacebar test2")
         -- Attacking
         G_update_attacks(dt)
-
-        print("spacebar test3")
 
         if DEBUG then G_print_debug() end
 
@@ -105,13 +100,20 @@ function love.draw()
     G_draw_items()
     G_draw_creatures()
     G_draw_attacks()
-    if DEBUG then G_draw_all_lines_of_sight() end --TODO: Figure out why lines don't stop at first blocker
+    if DEBUG then G_draw_all_lines_of_sight() end --TODO: player y < observer and player x < observer glitching
+    G_entities["yarl"]:draw_quip("hello")
+
     love.graphics.pop()
     
     love.graphics.setCanvas()
     love.graphics.draw(G_screen_canvas)
 
+    if G_gamestate.current_mode == "dialoging" then
+        G_dialogs[G_gamestate.current_dialog]:draw()
+    end
+
     player:draw_stats()
+    
 
 end
 

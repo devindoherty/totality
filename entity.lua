@@ -1,43 +1,48 @@
 Entity = {}
 function Entity:new(name, sprite, x, y, is_creature)
-    local e = {}
-    setmetatable(e, self)
+    local entity = {}
+    setmetatable(entity, self)
     self.__index = self
-    e.name = name
-    e.sprite = sprite
-    e.x = x
-    e.y = y
-    e.is_creature = is_creature
-    e.is_item = false
-    e.is_openable = false
-    e.is_effect = false
-    e.is_attacking = false
-    e.is_defending = false
-    e.is_friendly = false
-    e.target = {}
-    if e.name ~= "player" then
-        e.last_seen = {
+    entity.name = name
+    entity.sprite = sprite
+    entity.x = x
+    entity.y = y
+    entity.is_creature = is_creature
+    entity.is_item = false
+    entity.is_openable = false
+    entity.is_effect = false
+    entity.is_attacking = false
+    entity.is_defending = false
+    entity.is_friendly = false
+    entity.target = {}
+    if entity.name ~= "player" then
+        entity.last_seen = {
             x = 0,
             y = 0
         }
-        e.los = {
+        entity.los = {
             x = 0,
             y = 0
         }
     end
-    e.stats = {}
-    return e
+    entity.stats = {}
+    return entity
 end
 
 function Entity:set_stat(stat, value)
     self.stats[stat] = value
 end
 
+function Entity:inflict_damage(damage)
+    self.stats["health"] = self.stats["health"] - damage
+end
+
 function Entity:draw_stats()
     local health = self.stats["health"]
     local defense = self.stats["defense"]
     
-    love.graphics.setColor(love.math.colorFromBytes(0,191,255))
+    -- love.math.colorFromBytes(0,191,255)
+    love.graphics.setColor(0,0,0)
     love.graphics.rectangle("fill", 0, 0, 128, 64) -- TODO MAKE WORD
     love.graphics.setColor(255, 255, 255)
 
@@ -45,8 +50,12 @@ function Entity:draw_stats()
     love.graphics.print("Defense: " .. defense, 0, 13, 0)
 end
 
-function Entity:inflict_damage(damage)
-    self.stats["health"] = self.stats["health"] - damage
+function Entity:draw_quip(topic)
+    love.graphics.setColor(0, 0, 0, .75)
+    love.graphics.rectangle("fill", self.x * DRAW_FACTOR + 25, self.y * DRAW_FACTOR - 35, 200, 36)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.printf(self.quips[topic], self.x * DRAW_FACTOR + 25, self.y * DRAW_FACTOR - 35, 200)
+    love.graphics.setColor(255, 255, 255)
 end
 
 function Entity:draw_injured()
@@ -83,22 +92,25 @@ function G_init_entities()
     croc:set_stat("defense", 15)
     croc.behavior = "loitering"
     croc.quips = {
-        "Do you have the time?",
         "My teeth need a cleaning.",
         "Cold blooded doesn't mean coldhearted.",
     }
+    croc.quips["hello"] = "Do you have the time?"
 
     local yarl = Entity:new("yarl", G_sprites[685], 3, 10, true)
     yarl:set_stat("health", 25)
     yarl:set_stat("defense", 16)
     yarl.behavior = "neutral"
     yarl.is_friendly = true
+    yarl.quips = {}
+    yarl.quips["hello"] = "You're awake! C'mere, let me get a look at ya."
 
     local lothar = Entity:new("lothar", G_sprites[619], 18, 8, true)
     lothar:set_stat("health", 40)
     lothar:set_stat("defense", 16)
     lothar.behavior = "aggressive"
     lothar.is_friendly = false
+    
 
     local kryll = Entity:new("kryll", G_sprites[620], 18, 8, true)
 
