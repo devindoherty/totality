@@ -1,10 +1,9 @@
-require("input")
-require("spritesheet")
-require("map")
-require("entity")
--- require("player")
 require("bug")
-
+require("entity")
+require("input")
+require("map")
+require("spritesheet")
+require("state")
 
 GAMESTATES = {"player_turn", "enemy_turn"}
 
@@ -25,25 +24,11 @@ function love.load()
     G_screen_canvas = love.graphics.newCanvas(SCREEN_WIDTH, SCREEN_HEIGHT)
     love.graphics.setDefaultFilter("nearest", "nearest")
     
+    G_gamestate:init()
     G_load_sprites()
     G_init_entities()
     G_init_map()
 
-    G_gamestate = {}
-    G_gamestate.turn = 0
-    G_gamestate.end_turn = false
-    G_gamestate.player_moved = false
-    G_gamestate.attack_queue = {} -- TODO for attack rewrite
-    G_gamestate.drawn_attack = {
-        x = 0,
-        y = 0
-    }
-    G_gamestate.attack_update = false
-
-
-    G_blocker = {}
-    G_blocker.x = 0
-    G_blocker.y = 0
 end
 
 --------------------------------Input--------------------------------
@@ -75,34 +60,32 @@ function love.update(dt)
     -- Check for dead
     G_update_dead_creatures()
 
+    -- Turn Update
     if G_gamestate.player_moved or G_gamestate.end_turn or player.is_attacking then
-
+        -- Mobs act on even turns
         if G_gamestate.turn % 2 == 0 then
             G_mob_turn()
         end
 
         -- Attacking
-        if G_update_attacks(dt) then G_gamestate.attack_update = true end
+        if G_update_attacks(dt) then G_gamestate.update_attacks_animation = true end
 
-        G_gamestate.turn = G_gamestate.turn + 1
-        G_gamestate.player_moved = false
-        G_gamestate.end_turn = false
-        
-        if DEBUG then
-            G_print_debug()
-        end    
+        if DEBUG then G_print_debug() end
+
+        G_gamestate:end_round()
     end
 
-    -- Animation update
-    if G_gamestate.attack_update == true then
+    -- Animation Updates
+    if G_gamestate.update_attacks_animation == true then
+        for i, attack in ipairs(G_gamestate.attack_queue) do
+            attack.animation_frame = attack.animation_frame + 10 * dt
+            if attack.animation_frame >= 4 then
+                G_gamestate.attack_queue[i] = nil
+                -- G_gamestate.update_attacks_animation = false
 
-        G_entities["slash"].animation_frame = G_entities["slash"].animation_frame + 10 * dt
-        if G_entities["slash"].animation_frame >= 4 then
-            G_entities["slash"].animation_frame = 1
-            G_gamestate.attack_update = false
+            end
         end
     end
-
 end
 
 --------------------------------Draw--------------------------------
@@ -124,9 +107,6 @@ function love.draw()
     love.graphics.draw(G_screen_canvas)
 
     player:draw_stats()
-    if DEBUG then
-        love.graphics.print("FPS: " .. love.timer.getFPS( ), 0, 26, 0)
-    end
 
 end
 

@@ -80,15 +80,25 @@ function G_init_entities()
         "Cold blooded doesn't mean coldhearted.",
     }
 
-    local lothar = Entity:new("lothar", G_sprites[685], 3, 10, true)
+    local yarl = Entity:new("yarl", G_sprites[685], 3, 10, true)
+    yarl:set_stat("health", 25)
+    yarl:set_stat("defense", 16)
+    yarl.behavior = "neutral"
+    yarl.is_friendly = true
+
+    local lothar = Entity:new("lothar", G_sprites[619], 18, 8, true)
     lothar:set_stat("health", 25)
     lothar:set_stat("defense", 16)
-    lothar.behavior = "neutral"
-    lothar.is_friendly = true
+    lothar.behavior = "aggressive"
+    lothar.is_friendly = false
+
+    local kryll = Entity:new("kryll", G_sprites[620], 18, 8, true)
+
     
     G_entities["player"] = player
     G_entities[rat.name] = rat
     G_entities["croc"] = croc
+    G_entities["yarl"] = yarl
     G_entities["lothar"] = lothar
 
     ------------ Terrain -----------------
@@ -98,6 +108,13 @@ function G_init_entities()
     brick_wall.y = 0
     brick_wall.blocker = true
     G_entities["brick_wall"] = brick_wall
+
+    local mudrock_wall = {}
+    mudrock_wall.sprite = G_sprites[244]
+    mudrock_wall.x = 0
+    mudrock_wall.y = 0
+    mudrock_wall.blocker = true
+    G_entities["mudrock_wall"] = mudrock_wall
 
     local white_door = {}
     white_door.sprite = G_sprites[210]
@@ -114,8 +131,8 @@ function G_init_entities()
 
     local wooden_downstairs = {}
     wooden_downstairs.sprite = G_sprites[73]
-    wooden_downstairs.x = 7
-    wooden_downstairs.y = 4
+    wooden_downstairs.x = 9
+    wooden_downstairs.y = 6
     wooden_downstairs.is_item = true
     G_entities["wooden_downstairs"] = wooden_downstairs
 
@@ -147,8 +164,8 @@ function G_init_entities()
 --------------Furniture---------------
     local wooden_bed = {}
     wooden_bed.sprite = G_sprites[119]
-    wooden_bed.x = 3
-    wooden_bed.y = 3
+    wooden_bed.x = 5
+    wooden_bed.y = 5
     wooden_bed.blocker = false
     wooden_bed.is_creature = false
     wooden_bed.is_item = true

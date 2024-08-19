@@ -119,7 +119,7 @@ local function move_toward_player(mob)
             end
         end
         
-        if G_empty_tile(x, y) and G_no_creature(x, y) and G_line_of_sight(mob, player) then
+        if G_empty_tile(x, y) and G_inbounds(x, y) and G_no_creature(x, y) and G_line_of_sight(mob, player) then
             mob.x = x
             mob.y = y
         elseif not G_empty_tile(x, y) and G_line_of_sight then
@@ -157,7 +157,7 @@ local function move_idly(mob)
                 y = y - 1
             end
         end
-        if G_empty_tile(x, y) and G_no_creature(x, y) then
+        if G_empty_tile(x, y) and G_no_creature(x, y) and G_inbounds(x, y) then
             mob.x = x
             mob.y = y
         end
@@ -171,7 +171,11 @@ local function move_along_shoreline()
 end
 
 local function do_nothing(mob)
-
+    local x = mob.x
+    local y = mob.y
+    if G_inbounds(x, y) then
+        
+    end
 end
 
 
@@ -187,6 +191,7 @@ end
 
 function G_mob_turn()
     local player = G_entities["player"]
+    print("MOB TURN")
     for _i, entity in pairs(G_entities) do
         if entity.is_creature and entity.name ~= "player" then
             if not G_line_of_sight(entity, player) then
