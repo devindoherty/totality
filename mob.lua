@@ -97,7 +97,7 @@ function G_draw_all_lines_of_sight()
     end
 end
 
-local function move_toward_player(mob)
+local function move_toward_target(mob, target)
     local player = G_entities["player"]
 
     local x = mob.x
@@ -118,7 +118,7 @@ local function move_toward_player(mob)
             end
         end
         
-        if G_empty_tile(x, y) and G_inbounds(x, y) and G_no_creature(x, y) and G_line_of_sight(mob, player) then
+        if G_empty_tile(x, y) and G_inbounds(x, y) and G_no_creature(x, y) and G_line_of_sight(mob, target) then
             mob.x = x
             mob.y = y
         elseif not G_no_creature(x, y) then
@@ -164,7 +164,7 @@ end
 local function move_along_walls(mob)
 end
 
-local function move_along_shoreline()
+local function move_aquatically()
 end
 
 local function do_nothing(mob)
@@ -199,7 +199,7 @@ function G_mob_turn()
                 entity.last_seen.y = nil
             end
             if entity.behavior == "aggressive" then
-                move_toward_player(entity)
+                move_toward_target(entity, player)
             elseif entity.behavior == "loitering" then
                 move_idly(entity)
             elseif entity.behavior == "skittish" then

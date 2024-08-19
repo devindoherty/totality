@@ -17,8 +17,8 @@ function G_player_input(key)
         y = player.y + 1
     elseif key == "space" then
         G_gamestate.end_turn = true
-        x = player.x
-        y = player.y
+        print("spacebar pressed")
+        return
     end
     
     if not G_inbounds(x, y) then

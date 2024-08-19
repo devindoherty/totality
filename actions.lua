@@ -21,27 +21,27 @@ function G_update_attacks(dt)
                 defender:inflict_damage(5)
                 print(entity.name .. " is attacking " .. defender.name)
                 print(defender.name, defender.stats["health"] .. " health")
-                entity.is_attacking = false
-                entity.target = nil
+
                 local drawn_attack_x = defender.x
                 local drawn_attack_y = defender.y
                 local slash = Entity:new("slash", G_sprites[540], drawn_attack_x, drawn_attack_y, false)
                 slash.is_effect = true
                 slash.animation_frame = 1
                 table.insert(G_gamestate.attack_queue, slash)
-                return true
+
+                entity.is_attacking = false
+                entity.target = nil
             end
         end
     end
-
 end
 
 function G_draw_attacks()
-    if G_gamestate.update_attacks_animation then
-        for _i, attack in pairs(G_gamestate.attack_queue) do
-            love.graphics.draw(G_spritesheet, attack.sprite, attack.x * DRAW_FACTOR, attack.y * DRAW_FACTOR, 0, attack.animation_frame)
-        end
+    for _i, attack in pairs(G_gamestate.attack_queue) do
+        print("Drawing: " .. attack.name, attack.animation_frame)
+        love.graphics.draw(G_spritesheet, attack.sprite, attack.x * DRAW_FACTOR, attack.y * DRAW_FACTOR, 0, attack.animation_frame)
     end
+    
 end
 
 function G_open_item(x, y)

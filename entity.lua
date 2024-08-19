@@ -1,5 +1,3 @@
-require("spritesheet")
-
 Entity = {}
 function Entity:new(name, sprite, x, y, is_creature)
     local e = {}
@@ -19,6 +17,10 @@ function Entity:new(name, sprite, x, y, is_creature)
     e.target = {}
     if e.name ~= "player" then
         e.last_seen = {
+            x = 0,
+            y = 0
+        }
+        e.los = {
             x = 0,
             y = 0
         }
@@ -208,7 +210,7 @@ end
 
 function G_player_camera()
     local player = G_entities["player"]
-    love.graphics.translate((-player.x * DRAW_FACTOR) + (SCREEN_WIDTH / 2) -32, (-player.y * DRAW_FACTOR) + (SCREEN_HEIGHT / 2) -32)
+    love.graphics.translate((-player.x * DRAW_FACTOR) + (SCREEN_WIDTH / 2) -32, (-player.y * DRAW_FACTOR) + (SCREEN_HEIGHT / 2) - 32)
 end
 
 function G_update_dead_creatures()

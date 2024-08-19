@@ -2,7 +2,7 @@ require("bug")
 require("entity")
 require("input")
 require("map")
-require("spritesheet")
+require("sprite")
 require("state")
 
 GAMESTATES = {"player_turn", "enemy_turn"}
@@ -41,11 +41,11 @@ function love.keypressed(key, scancode, isrepeat)
 end
 
 
-function love.keyreleased(key)
-    if key == 'b' then
-       print(key .. "was realease")
-    end
- end
+-- function love.keyreleased(key)
+--     if key == 'b' then
+--        print(key .. "was realease")
+--     end
+--  end
 
  function love.mousereleased(x, y, button, istouch)
     if button == 1 then
@@ -54,21 +54,28 @@ function love.keyreleased(key)
  end
 --------------------------------Update--------------------------------
 function love.update(dt)
+    
     local player = G_entities["player"]
-    -- local animate_update = false
-
+    
     -- Check for dead
     G_update_dead_creatures()
 
     -- Turn Update
     if G_gamestate.player_moved or G_gamestate.end_turn or player.is_attacking then
+        G_gamestate:start_round()
+
+        print("spacebar test")
+
         -- Mobs act on even turns
         if G_gamestate.turn % 2 == 0 then
             G_mob_turn()
         end
 
+        print("spacebar test2")
         -- Attacking
-        if G_update_attacks(dt) then G_gamestate.update_attacks_animation = true end
+        G_update_attacks(dt)
+
+        print("spacebar test3")
 
         if DEBUG then G_print_debug() end
 
@@ -76,14 +83,12 @@ function love.update(dt)
     end
 
     -- Animation Updates
-    if G_gamestate.update_attacks_animation == true then
-        for i, attack in ipairs(G_gamestate.attack_queue) do
-            attack.animation_frame = attack.animation_frame + 10 * dt
-            if attack.animation_frame >= 4 then
-                G_gamestate.attack_queue[i] = nil
-                -- G_gamestate.update_attacks_animation = false
-
-            end
+    for i, attack in pairs(G_gamestate.attack_queue) do
+        print("Updating Attack " .. attack.name, attack.animation_frame)
+        print("Number of attacks " .. #G_gamestate.attack_queue)
+        attack.animation_frame = attack.animation_frame + 10 * dt
+        if attack.animation_frame >= 4 then
+            G_gamestate.attack_queue[i] = nil
         end
     end
 end
