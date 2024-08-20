@@ -62,7 +62,9 @@ function G_line_of_sight_high(x0, y0, x1, y1)
     local D = (2 * dx) - dy
     local x = x0
     for y = y0, y1 do
+        
         if not G_empty_tile(x, y) then
+            local closest_blocker -- Test to see if global blocker abs is bigger, if not then return false
             G_blocker.x = x
             G_blocker.y = y
             return false

@@ -51,7 +51,7 @@ function love.keyreleased(key)
 
  function love.mousereleased(x, y, button, istouch)
     if button == 1 then
-       print("Left mouse button pressed at ".. math.floor(x) / 64 .. math.floor(y) / 64)
+       print("Left mouse button pressed at ", math.floor(x) / 64 , math.floor(y) / 64)
     end
  end
 --------------------------------Update--------------------------------
