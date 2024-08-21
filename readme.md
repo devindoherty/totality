@@ -11,8 +11,10 @@ cult of the moongod, a permanent eclipse which has blotted out the sun itself.
 - Basic player movement
 - Monster movement
 - Basic collision
+- Basic combat
+
 
 ### Next
-- Basic combat
+- Map rewrite
 - More interesting interactions
 - Talking to NPCs
