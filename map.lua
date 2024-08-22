@@ -178,3 +178,14 @@ function G_get_creature_with_xy(x, y)
         end
     end
 end
+
+function G_get_distance_between_two_points(point1, point2)
+    local x1 = point1.x
+    local y1 = point1.y
+
+    local x2 = point2.x
+    local y2 = point2.y
+
+    return math.sqrt(((x2 - x1) ^ 2) + ((y2 - y1) ^ 2))
+
+end

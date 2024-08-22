@@ -24,10 +24,8 @@ function G_player_input(key)
             y = player.y + 1
         elseif key == "space" then
             G_gamestate.end_turn = true
-            print("spacebar pressed")
-            return
         elseif key == "e" then
-            
+            G_set_interacting(player, G_entities["yarl"])
         end
 
         if not G_inbounds(x, y) then
@@ -45,5 +43,6 @@ function G_player_input(key)
                 G_open_item(x, y)
             end
         end
-    end 
+    
+    end
 end

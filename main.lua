@@ -29,7 +29,7 @@ function love.load()
     G_init_map()
     
     G_dialogs = {}
-    G_dialogs["intro"] = Dialog:new("You followed the old astronomer's advice and took the mountain pass into the eclipse-cursed lands. \n\nIn the fall of the unnatural night, your foot caught on a twig and you tumbled into the darkness. You've awakened in an old farmhouse. \n\nPress ENTER to continue...")
+    G_dialogs["intro"] = Dialog:new("You followed the old astronomer's advice and took the mountain pass into the eclipse-cursed lands. \n\nIn the twilight of the unnatural night, your foot caught on a twig and you tumbled into the darkness. You've awakened in an old farmhouse. \n\nPress ENTER to continue...")
 
     G_conversations = {}
 end
@@ -51,7 +51,7 @@ function love.keyreleased(key)
 
  function love.mousereleased(x, y, button, istouch)
     if button == 1 then
-       print("Left mouse button pressed at ", math.floor(x) / 64 , math.floor(y) / 64)
+       print("Left mouse button pressed at ", math.floor(x / 64) , math.floor(y / 64) )
     end
  end
 --------------------------------Update--------------------------------
@@ -61,31 +61,30 @@ function love.update(dt)
     -- Check for dead
     G_update_dead_creatures()
 
-    -- Turn Update
+    G_update_mouse_position()
+
+    ---------Turn Update----------
     if G_gamestate.player_moved or G_gamestate.end_turn or player.is_attacking then
         G_gamestate:start_round()
 
-        -- Mobs act on even turns
+        -- Mobs act on even turns (For now)
         if G_gamestate.turn % 2 == 0 then
             G_mob_turn()
         end
-        -- Attacking
-        G_update_attacks(dt)
+        
+        -- Attacks
+        G_update_attacks()
 
         if DEBUG then G_print_debug() end
 
         G_gamestate:end_round()
+
     end
+    ---------End Turn Update----------
 
     -- Animation Updates
-    for i, attack in pairs(G_gamestate.attack_queue) do
-        print("Updating Attack " .. attack.name, attack.animation_frame)
-        print("Number of attacks " .. #G_gamestate.attack_queue)
-        attack.animation_frame = attack.animation_frame + 10 * dt
-        if attack.animation_frame >= 4 then
-            G_gamestate.attack_queue[i] = nil
-        end
-    end
+    G_update_attack_draws(dt)
+
 end
 
 --------------------------------Draw--------------------------------
@@ -101,8 +100,10 @@ function love.draw()
     G_draw_creatures()
     G_draw_attacks()
     if DEBUG then G_draw_all_lines_of_sight() end --TODO: player y < observer and player x < observer glitching
-    G_entities["yarl"]:draw_quip("hello")
-
+    
+    if G_get_distance_between_two_points(player, G_entities["yarl"]) < 4 then
+        G_entities["yarl"]:draw_quip("hello")
+    end
     love.graphics.pop()
     
     love.graphics.setCanvas()
@@ -110,6 +111,9 @@ function love.draw()
 
     if G_gamestate.current_mode == "dialoging" then
         G_dialogs[G_gamestate.current_dialog]:draw()
+    end
+    if G_gamestate.current_mode == "player_turn" then
+        G_draw_tile_cursor()
     end
 
     player:draw_stats()
@@ -119,4 +123,4 @@ end
 
 function love.quit()
     print("Thanks for playing! Come back soon!")
-  end
+end

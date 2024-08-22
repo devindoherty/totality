@@ -7,6 +7,8 @@ function G_print_debug()
         end
     end
 
+    print("Mouse X: " .. G_gamestate.mouse.x, "Mouse Y: " .. G_gamestate.mouse.y)
+
     print("END OF TURN ".. G_gamestate.turn)
     print("####################")
 end

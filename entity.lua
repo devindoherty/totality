@@ -11,6 +11,7 @@ function Entity:new(name, sprite, x, y, is_creature)
     entity.is_item = false
     entity.is_openable = false
     entity.is_effect = false
+    entity.is_conversing = false
     entity.is_attacking = false
     entity.is_defending = false
     entity.is_friendly = false
@@ -103,16 +104,30 @@ function G_init_entities()
     yarl.behavior = "neutral"
     yarl.is_friendly = true
     yarl.quips = {}
-    yarl.quips["hello"] = "You're awake! C'mere, let me get a look at ya."
+    yarl.quips["hello"] = "You're awake! Sit a while, if ya like. Took a nasty fall there."
+    yarl.quips["intro"] = "I'm Yarl, this is my farm."
+    yarl.quips["yarl"] = "That's my name, don't wear it thin. Been living on this farm since the sun died."
+    yarl.quips["sun"] = "You must've really hit your head. The eclipse covered the sun some ten years ago, and never ended."
+    yarl.quips["farm"] = "My little homestead. The crops are different since the sun died, but niteberries taste good enough."
+    yarl.quips["fall"] = "You took quite a fall, there. Didn't break anything I hope. It's dangerous out there."
+    yarl.quips["dangerous"] = "Aye, the eclipse-cursed lands aren't all smiles and rainbows. Fair share of darkins out there."
+    yarl.quips["darkins"] = "Evil creatures. Goblins and redcaps and all sorts of vile types. Since the eclipse, they've infested these lands."
+    yarl.quips["offer"] = "I got a task for ya, if you're up to it."
+    yarl.quips["task"] = "While I was out tending to you, a bunch of rats snuck into the larder downstairs. If you could ask em to leave, I'd appreciate it."
+    yarl.quips["rats"] = "Nasty vermin. Don't let 'em give you mouth."
+    yarl.quips["leave"] = "I don't care where they go, as long as it ain't here. You can be nice or mean about it."
+    yarl.quips["mean"] = "There's a butcher's knife lying around here somewheres."
 
     local lothar = Entity:new("lothar", G_sprites[619], 18, 8, true)
     lothar:set_stat("health", 40)
     lothar:set_stat("defense", 16)
     lothar.behavior = "aggressive"
     lothar.is_friendly = false
-    
+
+
 
     local kryll = Entity:new("kryll", G_sprites[620], 18, 8, true)
+
 
     
     G_entities["player"] = player
@@ -123,6 +138,7 @@ function G_init_entities()
 
     ------------ Terrain -----------------
     local brick_wall = {}
+    brick_wall.name = "brick_wall"
     brick_wall.sprite = G_sprites[146]
     brick_wall.x = 0
     brick_wall.y = 0
@@ -130,6 +146,7 @@ function G_init_entities()
     G_entities["brick_wall"] = brick_wall
 
     local mudrock_wall = {}
+    mudrock_wall.name = "mudrock_wall"
     mudrock_wall.sprite = G_sprites[244]
     mudrock_wall.x = 0
     mudrock_wall.y = 0
@@ -137,6 +154,7 @@ function G_init_entities()
     G_entities["mudrock_wall"] = mudrock_wall
 
     local white_door = {}
+    white_door.name = "white_door"
     white_door.sprite = G_sprites[210]
     white_door.x = 0
     white_door.y = 0
@@ -230,6 +248,9 @@ function G_update_dead_creatures()
         if entity.is_creature then
             if entity.stats["health"] <= 0 then
                 G_entities[entity.name] = nil
+                local bones = Entity:new("bones", G_sprites[16], entity.x, entity.y, false)
+                bones.is_item = true
+                G_entities[#G_entities+1] = bones
             end
         end
     end
