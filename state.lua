@@ -1,5 +1,5 @@
 G_gamestate = {}
-MODES = {"dialoging", "player_turn", "enemy_turn", "conversing"}
+MODES = {"dialoging", "player_turn", "mob_turn", "conversing"}
 
 function G_gamestate:init()
     self.current_mode = MODES[1]
@@ -8,6 +8,7 @@ function G_gamestate:init()
     self.player_moved = false
     self.attack_queue = {}
     self.action_queue = {}
+    self.log = {}
     self.current_dialog = "intro"
     self.mouse = {
         x = 0,
@@ -42,7 +43,7 @@ end
 function G_draw_tile_cursor()
     love.graphics.setColor(1, 1, 1)
     love.graphics.setLineWidth(5)
-    love.graphics.rectangle("line", G_gamestate.mouse.x * DRAW_FACTOR, G_gamestate.mouse.y * DRAW_FACTOR - 18, 64, 64)
+    love.graphics.rectangle("line", G_gamestate.mouse.x * DRAW_FACTOR, G_gamestate.mouse.y * DRAW_FACTOR, 64, 64)
     love.graphics.setLineWidth(1)
     love.graphics.setColor(1, 1, 1)
 end

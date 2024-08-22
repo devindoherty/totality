@@ -21,7 +21,7 @@ function G_update_attacks(dt)
                 defender:inflict_damage(5)
                 print(entity.name .. " is attacking " .. defender.name)
                 print(defender.name, defender.stats["health"] .. " health")
-
+                local log_text = entity.name .. " attacked " .. defender.name
                 local drawn_attack_x = defender.x
                 local drawn_attack_y = defender.y
                 local slash = Entity:new("slash", G_sprites[540], drawn_attack_x, drawn_attack_y, false)

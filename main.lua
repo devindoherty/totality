@@ -1,6 +1,7 @@
 require("bug")
 require("dialog")
 require("entity")
+require("entities")
 require("input")
 require("map")
 require("sprite")
