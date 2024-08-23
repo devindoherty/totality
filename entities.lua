@@ -24,7 +24,7 @@ function G_init_entities()
     local croc = Entity:new("croc", G_sprites[647], 18, 7, true)
     croc:set_stat("health", 20)
     croc:set_stat("defense", 15)
-    croc.behavior = "loitering"
+    croc.behavior = "aggressive"
     croc.quips = {
         "My teeth need a cleaning.",
         "Cold blooded doesn't mean coldhearted.",
@@ -102,6 +102,7 @@ function G_init_entities()
     G_entities["white_doorframe"] = white_doorframe
 
     local wooden_downstairs = {}
+    wooden_downstairs.name = "wooden_downstairs"
     wooden_downstairs.sprite = G_sprites[73]
     wooden_downstairs.x = 9
     wooden_downstairs.y = 6
@@ -116,6 +117,7 @@ function G_init_entities()
     G_entities["water"] = water
 
     local tree = {}
+    tree.name = "tree"
     tree.sprite = G_sprites[2]
     tree.x = 0
     tree.y = 0
@@ -135,6 +137,7 @@ function G_init_entities()
 
 --------------Furniture---------------
     local wooden_bed = {}
+    wooden_bed.name = "wooden_bed"
     wooden_bed.sprite = G_sprites[119]
     wooden_bed.x = 5
     wooden_bed.y = 5

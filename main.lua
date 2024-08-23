@@ -58,20 +58,19 @@ function love.keyreleased(key)
 --------------------------------Update--------------------------------
 function love.update(dt)
     local player = G_entities["player"]
-    
+    G_update_mouse_position()
+
     -- Check for dead
     G_update_dead_creatures()
 
-    G_update_mouse_position()
 
     ---------Turn Update----------
     if G_gamestate.player_moved or G_gamestate.end_turn or player.is_attacking then
         G_gamestate:start_round()
 
+        G_detect_interactible(player)
         -- Mobs act on even turns (For now)
-        if G_gamestate.turn % 2 == 0 then
-            G_mob_turn()
-        end
+        if G_gamestate.turn % 2 == 0 then G_mob_turn() end
         
         -- Attacks
         G_update_attacks()
@@ -79,7 +78,6 @@ function love.update(dt)
         if DEBUG then G_print_debug() end
 
         G_gamestate:end_round()
-
     end
     ---------End Turn Update----------
 
@@ -95,16 +93,16 @@ function love.draw()
     love.graphics.clear()
 
     love.graphics.push()
-    G_player_camera()
-    G_draw_map()
-    G_draw_items()
-    G_draw_creatures()
-    G_draw_attacks()
-    if DEBUG then G_draw_all_lines_of_sight() end --TODO: player y < observer and player x < observer glitching
-    
-    if G_get_distance_between_two_points(player, G_entities["yarl"]) < 4 then
-        G_entities["yarl"]:draw_quip("hello")
-    end
+        G_player_camera()
+        G_draw_map()
+        G_draw_items()
+        G_draw_creatures()
+        G_draw_attacks()
+        if DEBUG then G_draw_all_lines_of_sight() end --TODO: player y < observer and player x < observer glitching
+
+        if G_get_distance_between_two_points(player, G_entities["yarl"]) < 4 then
+            G_entities["yarl"]:draw_quip("hello")
+        end
     love.graphics.pop()
     
     love.graphics.setCanvas()
@@ -116,9 +114,9 @@ function love.draw()
     if G_gamestate.current_mode == "player_turn" then
         G_draw_tile_cursor()
     end
+    G_draw_interactible_detection()
 
     player:draw_stats()
-    
 
 end
 

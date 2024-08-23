@@ -6,6 +6,10 @@ function G_gamestate:init()
     self.turn = 0
     self.end_turn = false
     self.player_moved = false
+    self.nearby_interactible = {
+        ["creature"] = false,
+        ["item"] = false,
+    }
     self.attack_queue = {}
     self.action_queue = {}
     self.log = {}

@@ -53,9 +53,9 @@ end
 
 function Entity:draw_quip(topic)
     love.graphics.setColor(0, 0, 1, .75)
-    love.graphics.rectangle("fill", self.x * DRAW_FACTOR + 25, self.y * DRAW_FACTOR - 35, 200, 36, 25, 25)
+    love.graphics.rectangle("fill", self.x * DRAW_FACTOR + 25, self.y * DRAW_FACTOR - 35, 225, 36, 15, 15)
     love.graphics.setColor(1, 1, 1)
-    love.graphics.printf(self.quips[topic], self.x * DRAW_FACTOR + 25, self.y * DRAW_FACTOR - 35, 200)
+    love.graphics.printf(self.quips[topic], self.x * DRAW_FACTOR + 25, self.y * DRAW_FACTOR - 35, 225)
     love.graphics.setColor(255, 255, 255)
 end
 
