@@ -21,7 +21,7 @@ function G_update_attacks(dt)
                 defender:inflict_damage(5)
                 print(entity.name .. " is attacking " .. defender.name)
                 print(defender.name, defender.stats["health"] .. " health")
-                local log_text = entity.name .. " attacked " .. defender.name
+                G_log_text = entity.name .. " attacked " .. defender.name
                 local drawn_attack_x = defender.x
                 local drawn_attack_y = defender.y
                 local slash = Entity:new("slash", G_sprites[540], drawn_attack_x, drawn_attack_y, false)
@@ -52,7 +52,12 @@ function G_draw_attacks()
         print("Drawing: " .. attack.name, attack.animation_frame)
         love.graphics.draw(G_spritesheet, attack.sprite, attack.x * DRAW_FACTOR, attack.y * DRAW_FACTOR, 0, attack.animation_frame)
     end
-    
+end
+
+function G_draw_attacks_log(dt)
+    if G_log_text then
+        love.graphics.print(G_log_text, SCREEN_HEIGHT / 2, SCREEN_WIDTH / 2, 0, 2)
+    end
 end
 
 function G_open_item(x, y)
@@ -72,6 +77,7 @@ function G_detect_interactible(interactor)
                     print(entity.name .. " is interactible!")
                     if entity.is_creature and entity.is_friendly then
                         G_gamestate.nearby_interactible["creature"] = true
+                        G_gamestate.nearby_interactible.target = entity
                         return
                     elseif entity.is_item then
                         G_gamestate.nearby_interactible["item"] = true
@@ -89,8 +95,14 @@ end
 
 function G_draw_interactible_detection()
     if G_gamestate.nearby_interactible["creature"] then
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.rectangle("fill", SCREEN_HEIGHT / 2, SCREEN_WIDTH / 2, 400, 200)
+        love.graphics.setColor(1, 1, 1)
         love.graphics.print("Press E to Talk", SCREEN_HEIGHT / 2, SCREEN_WIDTH / 2, 0, 2)
     elseif G_gamestate.nearby_interactible["item"] then
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.rectangle("fill", SCREEN_HEIGHT / 2, SCREEN_WIDTH / 2, 400, 200)
+        love.graphics.setColor(1, 1, 1)
         love.graphics.print("Press E to Interact", SCREEN_HEIGHT / 2, SCREEN_WIDTH / 2, 0, 2)
     end
 end
@@ -99,8 +111,9 @@ function G_set_interacting(interactor, interactible)
     if interactible.is_creature and interactible.is_friendly then
         interactor.is_conversing = true
         interactor.target = interactible
+        print(interactor.name .. " is conversing with " .. interactible.name)
+        G_gamestate.current_mode = "conversing"
     end
-
 end
 
 function G_interact()

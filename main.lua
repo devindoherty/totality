@@ -33,6 +33,7 @@ function love.load()
     G_dialogs["intro"] = Dialog:new("You followed the old astronomer's advice and took the mountain pass into the eclipse-cursed lands. \n\nIn the twilight of the unnatural night, your foot caught on a twig and you tumbled into the darkness. You've awakened in an old farmhouse. \n\nPress ENTER to continue...")
 
     G_conversations = {}
+    
 end
 
 --------------------------------Input--------------------------------
@@ -48,7 +49,7 @@ function love.keyreleased(key)
     if key == 'b' then
        print(key .. "was realease")
     end
- end
+end
 
  function love.mousereleased(x, y, button, istouch)
     if button == 1 then
@@ -63,14 +64,15 @@ function love.update(dt)
     -- Check for dead
     G_update_dead_creatures()
 
-
     ---------Turn Update----------
     if G_gamestate.player_moved or G_gamestate.end_turn or player.is_attacking then
         G_gamestate:start_round()
 
         G_detect_interactible(player)
         -- Mobs act on even turns (For now)
-        if G_gamestate.turn % 2 == 0 then G_mob_turn() end
+        if G_gamestate.turn % 2 == 0 then
+            G_mob_turn()
+        end
         
         -- Attacks
         G_update_attacks()
@@ -83,7 +85,6 @@ function love.update(dt)
 
     -- Animation Updates
     G_update_attack_draws(dt)
-
 end
 
 --------------------------------Draw--------------------------------
@@ -100,7 +101,7 @@ function love.draw()
         G_draw_attacks()
         if DEBUG then G_draw_all_lines_of_sight() end --TODO: player y < observer and player x < observer glitching
 
-        if G_get_distance_between_two_points(player, G_entities["yarl"]) < 4 then
+        if G_get_distance_between_two_points(player, G_entities["yarl"]) < 4 and G_gamestate.current_mode == "player_turn" then
             G_entities["yarl"]:draw_quip("hello")
         end
     love.graphics.pop()
@@ -113,9 +114,10 @@ function love.draw()
     end
     if G_gamestate.current_mode == "player_turn" then
         G_draw_tile_cursor()
+        G_draw_interactible_detection()
+        G_draw_attacks_log()    
     end
-    G_draw_interactible_detection()
-
+    
     player:draw_stats()
 
 end

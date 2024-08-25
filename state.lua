@@ -9,6 +9,7 @@ function G_gamestate:init()
     self.nearby_interactible = {
         ["creature"] = false,
         ["item"] = false,
+        target = nil
     }
     self.attack_queue = {}
     self.action_queue = {}

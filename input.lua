@@ -2,6 +2,10 @@ require("mob")
 require("actions")
 
 function G_player_input(key)
+    if G_gamestate.current_mode == "conversing" then
+        
+    end
+    
     if G_gamestate.current_mode == "dialoging" then
         if key == "return" then
             G_gamestate:change_mode(2)
@@ -25,7 +29,7 @@ function G_player_input(key)
         elseif key == "space" then
             G_gamestate.end_turn = true
         elseif key == "e" then
-            G_set_interacting(player, G_entities["yarl"])
+            G_set_interacting(player, G_gamestate.nearby_interactible["target"])
         end
 
         if not G_inbounds(x, y) then
