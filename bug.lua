@@ -8,7 +8,6 @@ function G_print_debug()
     end
 
     print("Mouse X: " .. G_gamestate.mouse.x, "Mouse Y: " .. G_gamestate.mouse.y)
-    print(G_gamestate.nearby_interactible)
 
     print("END OF TURN ".. G_gamestate.turn)
     print("####################")

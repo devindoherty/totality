@@ -30,7 +30,7 @@ function love.load()
     G_init_map()
     
     G_dialogs = {}
-    G_dialogs["intro"] = Dialog:new("You followed the old astronomer's advice and took the mountain pass into the eclipse-cursed lands. \n\nIn the twilight of the unnatural night, your foot caught on a twig and you tumbled into the darkness. You've awakened in an old farmhouse. \n\nPress ENTER to continue...")
+    G_dialogs["intro"] = Dialog:new("You followed father's advice and took the starry pass into the eclipse-cursed lands. \n\nBut in the twilight of the unnatural night, you stumbled and fell into darkness. You've awakened in an old farmhouse. \n\nPress ENTER to continue...")
 
     G_conversations = {}
     
@@ -46,9 +46,9 @@ function love.keypressed(key, scancode, isrepeat)
 end
 
 function love.keyreleased(key)
-    if key == 'b' then
-       print(key .. "was realease")
-    end
+    -- if key == 'b' then
+    --    print(key .. "was realease")
+    -- end
 end
 
  function love.mousereleased(x, y, button, istouch)
@@ -85,6 +85,11 @@ function love.update(dt)
 
     -- Animation Updates
     G_update_attack_draws(dt)
+
+    if player.is_conversing then
+        G_update_interact()
+    end
+
 end
 
 --------------------------------Draw--------------------------------
@@ -101,9 +106,9 @@ function love.draw()
         G_draw_attacks()
         if DEBUG then G_draw_all_lines_of_sight() end --TODO: player y < observer and player x < observer glitching
 
-        if G_get_distance_between_two_points(player, G_entities["yarl"]) < 4 and G_gamestate.current_mode == "player_turn" then
-            G_entities["yarl"]:draw_quip("hello")
-        end
+        -- if G_get_distance_between_two_points(player, G_entities["yarl"]) < 4 and G_gamestate.current_mode == "player_turn" then
+        --     G_entities["yarl"]:draw_quip("intro")
+        -- end
     love.graphics.pop()
     
     love.graphics.setCanvas()
@@ -115,11 +120,12 @@ function love.draw()
     if G_gamestate.current_mode == "player_turn" then
         G_draw_tile_cursor()
         G_draw_interactible_detection()
-        G_draw_attacks_log()    
+        G_draw_attacks_log()
+        player:draw_stats()
     end
-    
-    player:draw_stats()
-
+    if G_gamestate.current_mode == "conversing" then
+        G_draw_interact()
+    end
 end
 
 function love.quit()

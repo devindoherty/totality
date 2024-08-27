@@ -37,20 +37,20 @@ function G_init_entities()
     yarl.behavior = "neutral"
     yarl.is_friendly = true
     yarl.quips = {}
-    yarl.quips["hello"] = "You're awake! Sit a while, if ya like. Took a nasty fall there."
-    yarl.quips["intro"] = "I'm Yarl, this is my farm."
-    yarl.quips["yarl"] = "That's my name, don't wear it thin. Been living on this farm since the sun died."
-    yarl.quips["sun"] = "You must've really hit your head. The eclipse covered the sun some ten years ago, and never ended."
-    yarl.quips["farm"] = "My little homestead. The crops are different since the sun died, but niteberries taste good enough."
-    yarl.quips["fall"] = "You took quite a fall, there. Didn't break anything I hope. It's dangerous out there."
-    yarl.quips["dangerous"] = "Aye, the eclipse-cursed lands aren't all smiles and rainbows. Fair share of darkins out there."
-    yarl.quips["darkins"] = "Evil, dark creatures. Goblins and redcaps and all sorts of vile types. Since the eclipse, they've infested these lands."
-    yarl.quips["offer"] = "I got a task for ya, if you're up to it."
-    yarl.quips["task"] = "While I was out tending to you, a bunch of rats snuck into the larder downstairs. If you could ask em to leave, I'd pay you for your trouble."
+    yarl.quips["intro"] = "You're awake! Sit a while, if ya like. Took a nasty fall there. I'm Yarl, this is my farm."
+    yarl.quips["yarl"] = "That's my name, don't wear it thin. Been living on this farm since sundown."
+    yarl.quips["sundown"] = "How long's it been since the eclipse, going on a decade now?"
+    yarl.quips["eclipse"] = "You must've really hit your head in that fall. The eclipse darkened the sun some ten years ago, and never ended. Some say the gods cursed us. What for, I couldn't tell ya."
+    yarl.quips["gods"] = "I'm not a superstitious man, but finding you alive in that crater the same night as that comet? Gives me pause."
+    yarl.quips["comet"] = "There was a shooting star same night I found you. Bright as, well, the sun."
+    yarl.quips["farm"] = "My little homestead. Sometimes I miss the daylight crops, but niteberries taste good enough. If you want to try your hand at farm life, I gotta task for ya."
+    yarl.quips["fall"] = "I wasn't so sure if ya were ever going to wake up or not. It's a miracle you didn't break anything, you must've fallen clear off the mountain. It's dangerous enough out there without a splinted leg."
+    yarl.quips["dangerous"] = "Aye, the eclipse-cursed lands aren't all smiles and rainbows. Since the eclipse, dark things have crawled into the fields and forests."
+    yarl.quips["task"] = "While I was out rescuing you, a bunch of rats snuck into the larder downstairs. If you could ask em to leave, I'd pay you for your trouble."
     yarl.quips["rats"] = "Nasty vermin. Don't let 'em give you mouth."
     yarl.quips["leave"] = "I don't care where they go, as long as it ain't here. You can be nice or mean about it."
     yarl.quips["mean"] = "There's a butcher's knife lying around here somewheres."
-    yarl.quips["pay"] = "How about 100 sols and I'll also teach you some herbalism?"
+    yarl.quips["pay"] = "How about 100 lunes and I'll also learn you a thing or two about herbalism?"
 
     local lothar = Entity:new("lothar", G_sprites[619], 18, 8, true)
     lothar:set_stat("health", 40)
@@ -144,6 +144,8 @@ function G_init_entities()
     wooden_bed.blocker = false
     wooden_bed.is_creature = false
     wooden_bed.is_item = true
+    wooden_bed.is_friendly = false
+    wooden_bed.flavor = "A country bed made from blackwood."
     G_entities["wooden_bed"] = wooden_bed
 
 

@@ -19,6 +19,11 @@ function G_gamestate:init()
         x = 0,
         y = 0
     }
+    self.response = {
+        active = "",
+        entered = "intro",
+        answer = ""
+    }
 end
 
 function G_gamestate:start_round()

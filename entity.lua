@@ -15,6 +15,7 @@ function Entity:new(name, sprite, x, y, is_creature)
     entity.is_attacking = false
     entity.is_defending = false
     entity.is_friendly = false
+    entity.is_known = false
     entity.target = {}
     if entity.name ~= "player" then
         entity.last_seen = {
@@ -44,11 +45,13 @@ function Entity:draw_stats()
     
     -- love.math.colorFromBytes(0,191,255)
     love.graphics.setColor(0,0,0)
-    love.graphics.rectangle("fill", 0, 0, 128, 64) -- TODO MAKE WORD
-    love.graphics.setColor(255, 255, 255)
+    love.graphics.rectangle("fill", 0, SCREEN_HEIGHT - 64, 128, 64) -- TODO MAKE WORD
+    love.graphics.setColor(1, 1, 0)
+    love.graphics.rectangle("line", 0, SCREEN_HEIGHT - 64, 128, 64)
+    love.graphics.setColor(1, 1, 1)
 
-    love.graphics.print("Health: " .. health, 0, 0, 0)
-    love.graphics.print("Defense: " .. defense, 0, 13, 0)
+    love.graphics.print("Health: " .. health, 3, SCREEN_HEIGHT - 60)
+    love.graphics.print("Defense: " .. defense, 3, SCREEN_HEIGHT - 50)
 end
 
 function Entity:draw_quip(topic)
