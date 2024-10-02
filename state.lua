@@ -1,8 +1,21 @@
-G_gamestate = {}
-MODES = {"dialoging", "player_turn", "mob_turn", "conversing"}
+State = {}
+
+function State:new(name)
+    local state = {}
+    setmetatable(state, self)
+    self.__index = self
+    self.name = name
+    return state
+end
+
+function State:init() end
+function State:enter() end
+function State:input() end
+function State:update(dt) end
+function State:render() end
+function State:exit() end
 
 function G_gamestate:init()
-    self.current_mode = MODES[1]
     self.turn = 0
     self.end_turn = false
     self.player_moved = false

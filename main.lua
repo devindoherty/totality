@@ -6,6 +6,8 @@ require("input")
 require("map")
 require("sprite")
 require("state")
+require("gamestate")
+require("states/playerturnstate")
 
 -- 1920 X 1080 / 2
 SCREEN_WIDTH = 960
@@ -24,7 +26,11 @@ function love.load()
     G_screen_canvas = love.graphics.newCanvas(SCREEN_WIDTH, SCREEN_HEIGHT)
     love.graphics.setDefaultFilter("nearest", "nearest")
     
-    G_gamestate:init()
+    Gamestate:init({
+    ["player_turn_state"] = PlayerTurnState()
+    })
+    Gamestate:change("player_turn_state")
+    
     G_load_sprites()
     G_init_entities()
     G_init_map()

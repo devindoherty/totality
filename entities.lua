@@ -13,13 +13,11 @@ function G_init_entities()
     local player = Entity:new("player", G_sprites[551], 3, 3, true)
     player:set_stat("health", 100)
     player:set_stat("defense", 12)
-    
 
     local rat = Entity:new("rat", G_sprites[691], 15, 3, true)
     rat:set_stat("health", 20)
     rat:set_stat("defense", 3)
     rat.behavior = "aggressive"
-    
 
     local croc = Entity:new("croc", G_sprites[647], 18, 7, true)
     croc:set_stat("health", 20)
