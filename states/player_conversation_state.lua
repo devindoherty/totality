@@ -1,7 +1,8 @@
-require("mob")
-require("actions")
+PlayerConversationState = State:new()
 
-function G_player_input(key)    
+function PlayerConversationState:init() end
+function PlayerConversationState:enter() end
+function PlayerConversationState:input(key)
     if G_gamestate.current_mode == "conversing" then
         function love.textinput(t)
             G_gamestate.response.active = G_gamestate.response.active .. t
@@ -20,4 +21,7 @@ function G_player_input(key)
         end
     end
 end
+function PlayerConversationState:update(dt) end
+function PlayerConversationState:render() end
+function PlayerConversationState:exit() end
 

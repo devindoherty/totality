@@ -1,5 +1,5 @@
 Entity = {}
-function Entity:new(name, sprite, x, y, is_creature)
+function Entity:new(name, sprite, x, y)
     local entity = {}
     setmetatable(entity, self)
     self.__index = self
@@ -7,16 +7,16 @@ function Entity:new(name, sprite, x, y, is_creature)
     entity.sprite = sprite
     entity.x = x
     entity.y = y
-    entity.is_creature = is_creature
-    entity.is_item = false
-    entity.is_openable = false
-    entity.is_effect = false
-    entity.is_conversing = false
-    entity.is_attacking = false
-    entity.is_defending = false
-    entity.is_friendly = false
-    entity.is_known = false
-    entity.target = {}
+    -- entity.is_mob = false
+    -- entity.is_item = false
+    -- entity.is_openable = false
+    -- entity.is_effect = false
+    -- entity.is_conversing = false
+    -- entity.is_attacking = false
+    -- entity.is_defending = false
+    -- entity.is_friendly = false
+    -- entity.is_known = false
+    -- entity.target = {}
     if entity.name ~= "player" then
         entity.last_seen = {
             x = 0,

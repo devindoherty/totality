@@ -1,13 +1,4 @@
-function G_set_attacking(attacker, defender)
-    if attacker == defender then
-        return
-    elseif defender.is_friendly then
-        return
-    else
-        attacker.is_attacking = true
-        attacker.target = defender
-    end
-end
+
 
 function G_update_attacks(dt)
     -- for i, _j in pairs(G_gamestate.attack_queue) do

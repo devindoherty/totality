@@ -1,4 +1,4 @@
-function G_init_entities()
+function G_define_entities()
     G_entities = {}
 
     local empty = Entity:new("empty", G_sprites[1], 0, 0, false)
