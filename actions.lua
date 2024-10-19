@@ -1,5 +1,3 @@
-
-
 function G_update_attacks(dt)
     -- for i, _j in pairs(G_gamestate.attack_queue) do
     --     G_gamestate.attack_queue[i] = nil

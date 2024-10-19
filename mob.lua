@@ -1,5 +1,9 @@
 Mob = Entity:new()
 
+function Mob:init(params)
+
+end
+
 -- Bresenham's line algorithm
 function Mob:line_of_sight(target)
     local x0 = self.x
@@ -116,8 +120,8 @@ function Mob:move_toward_target(target)
             self.x = x
             self.y = y
         elseif not G_no_creature(x, y) then
-            local defender = G_get_creature_with_xy(x, y)
-            G_set_attacking(self, defender)
+            local defender = self.map:get_creature_with_xy(x, y)
+            self:set_attacking(defender)
         end
     end
 end
@@ -166,6 +170,22 @@ function Mob:do_nothing()
     local y = self.y
     if G_inbounds(x, y) then
         
+    end
+end
+
+function Mob:check_movement()
+    self.action = ""
+    if not self.map:inbounds(x, y) then
+        return false
+    elseif self.map:empty_tile(x, y) and G_no_creature(x, y) and G_inbounds(x, y) then
+        return
+    elseif not G_no_creature(x, y) then
+        local defender = self.map:get_creature_with_xy(x, y)
+        self:set_attacking(player, defender)
+    elseif not G_empty_tile(x, y) then
+        if G_openable_tile_adjacent(x, y) then
+            G_open_item(x, y)
+        end
     end
 end
 

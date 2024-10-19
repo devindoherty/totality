@@ -4,113 +4,42 @@ function Map:new(tiles, objects, mobs)
 
 end
 
-
-
-function G_init_creature_locations()
-    for y = 1, #G_tilemap do
-        for x = 1, #G_tilemap[y] do
-            for i, entity in pairs(G_entities) do
-                if G_tilemap[y][x] == i then
-                    G_entities[i].x = x
-                    G_entities[i].y = y
-                end
-            end
+function Map:render()
+    for y = 1, #self.tiles do
+        for x = 1, #self.tiles[y] do
+            love.graphics.draw(G_spritesheet, self.tiles[y][x].sprite, (x - 1) * DRAW_FACTOR, (y - 1) * DRAW_FACTOR, 0, SCALE_FACTOR)
         end
     end
 end
 
-function G_draw_map()
-    local brick_wall = G_entities["brick_wall"]
-    local white_doorframe = G_entities["white_doorframe"]
-    local white_door = G_entities["white_door"]
-    local empty = G_entities["empty"]
-    local grass = G_entities["grass"]
-    local dirt = G_entities["dirt"]
-    local water = G_entities["water"]
-    local tree = G_entities["tree"]
-    local bush = G_entities["bush"]
-    local wooden_downstairs = G_entities["wooden_downstairs"]
-    local dirt_road = G_entities["dirt_road"]
-    local mudrock_wall = G_entities["mudrock_wall"]
+function Map:empty_tile(x, y)
+    return self.tiles[y][x] == 0 or self.tiles[y][x] == 1 or self.tiles[y][x] == 2 or self.tiles[y][x] == 'O' or self.tiles[y][x] == 'W'
+end
 
-    
-    local tile_sprite = empty
-
-    for y = 1, #G_tilemap do
-        for x = 1, #G_tilemap[y] do
-            if G_tilemap[y][x] == 1 then
-                tile_sprite = dirt.sprite   
-            elseif G_tilemap[y][x] == 2 then
-                tile_sprite = grass.sprite
-            elseif G_tilemap[y][x] == 3 then
-                tile_sprite = brick_wall.sprite
-            elseif G_tilemap[y][x] == 4 then
-                tile_sprite = mudrock_wall.sprite
-            elseif G_tilemap[y][x] == 'O' then
-                tile_sprite = white_doorframe.sprite
-            elseif G_tilemap[y][x] == 'D' then
-                tile_sprite = white_door.sprite
-            elseif G_tilemap[y][x] == 'W' then
-                tile_sprite = water.sprite
-            elseif G_tilemap[y][x] == 'T' then
-                tile_sprite = tree.sprite
-            elseif G_tilemap[y][x] == 'B' then
-                tile_sprite = bush.sprite
-            elseif G_tilemap[y][x] == 'S' then
-                tile_sprite = wooden_downstairs.sprite
-            else
----@diagnostic disable-next-line: assign-type-mismatch
-                G_tilemap[y][x] = 0
-                tile_sprite = empty.sprite
-            end
-            love.graphics.draw(G_spritesheet, tile_sprite, x * DRAW_FACTOR, y * DRAW_FACTOR, 0, SCALE_FACTOR)
-        end
+function Map:inbounds(x, y)
+    if y < 1 or x < 1 then
+         return false
+    elseif y >= #self.tiles + 1 then
+        return false
+    elseif x > #self.tiles[y] then
+        return false
+    else
+        return true
     end
 end
 
-function G_empty_tile(x, y)
-    return G_tilemap[y][x] == 0 or G_tilemap[y][x] == 1 or G_tilemap[y][x] == 2 or G_tilemap[y][x] == 'O' or G_tilemap[y][x] == 'W'
-    -- TODO return map_tile.blocker == false
-end
-
-function G_inbounds(x, y)
-    if y < 1 or x < 1 then return false end
-    if y >= #G_tilemap + 1 then return false end
-    if x > #G_tilemap[y] then return false end
-    return true
-end 
-
-function G_no_creature(x, y)
-    for _i, j in pairs(G_entities) do
-        if x == j.x and y == j.y and j.is_creature == true then
+function Map:no_creature(x, y)
+    for _i, mob in pairs(self.mob) do
+        if x == mob.x and y == mob.y and mob.is_creature == true then
             return false
         end
     end
 
-    return G_tilemap[y][x]
+    return self.tiles[y][x]
 end
 
-function G_creature_adjacent(x, y)
-    for _i, entity in pairs(G_entities) do
-        if entity.x == x and entity.y == y then
-            if entity.is_creature == true then
-                return true
-            end
-        end
-    end
-    return false
-end
-
-function G_openable_tile_adjacent(x, y)
-    -- TODO: Maptile as entity rewrite
-    -- for _i, entity in pairs(G_entities) do
-    --     if entity.x == x and entity.y == y then
-    --         if entity.is_item and entity.is_openable then
-    --             return true
-    --         end
-    --     end
-    -- end
-    return G_tilemap[y][x] == 'D'
+function Map:openable_tile(x, y)
+    return self.tiles[y][x] == 'D'
 end
 
 function Map:get_creature_with_xy(x, y)
@@ -123,7 +52,7 @@ function Map:get_creature_with_xy(x, y)
     end
 end
 
-function G_get_distance_between_two_points(point1, point2)
+function Map:get_distance_between_two_points(point1, point2)
     local x1 = point1.x
     local y1 = point1.y
 
@@ -131,5 +60,4 @@ function G_get_distance_between_two_points(point1, point2)
     local y2 = point2.y
 
     return math.sqrt(((x2 - x1) ^ 2) + ((y2 - y1) ^ 2))
-
 end

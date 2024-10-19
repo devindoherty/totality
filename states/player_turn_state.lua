@@ -4,16 +4,22 @@ function PlayerTurnState:init(params)
     self.turn = 0
     self.action = ""
     self.log = {}
+    self.mouse = {
+        x = love.mouse.getX(),
+        y = love.mouse.getY()
+    }
+
     self.player = Player:new()
     self.player:init()
+
+    self.map = Map:new()
 end
 
-function PlayerTurnState:enter()
-    print("START OF TURN " .. self.turn)
+function PlayerTurnState:enter(params)
+    self.map = Map:new(params.tiles, params.objects, params.mobs)
 end
 
 function PlayerTurnState:input(key)
-    print("psupdate")
     if key == "w" or key == "kp8" then
         -- y = player.y - 1
         self.action = "player_move_up"
@@ -25,7 +31,6 @@ function PlayerTurnState:input(key)
         self.action = "player_move_right"
     elseif key == "s" or key == "kp2" then
         -- y = self.y + 1
-        print("yooo")
         self.action = "player_move_down"
     elseif key == "space" then
         self.action = "player_end_turn"
@@ -36,50 +41,31 @@ function PlayerTurnState:input(key)
 end
 
 function PlayerTurnState:update(dt)
+    self.mouse.x, self.mouse.y = math.floor(self.mouse.x / 64), math.floor(self.mouse.y / 64)
+
     local x = self.player.x
     local y = self.player.y
 
-        if self.action == "player_move_up" then
-            print("Yo")
-            y = y - 1
-        elseif self.action == "player_move_down" then
-            y = y + 1
-        elseif self.action == "player_move_left" then
-            x = x - 1
-        elseif self.action == "player_move_right" then
-            x = x + 1
-        end
+    if self.action == "player_move_up" then
+        y = y - 1
+    elseif self.action == "player_move_down" then
+        y = y + 1
+    elseif self.action == "player_move_left" then
+        x = x - 1
+    elseif self.action == "player_move_right" then
+        x = x + 1
+    end
     
-    self.player.x = x
-    self.player.y = y
+    if self.map:inbounds(x, y) then
+        self.player.x = x
+        self.player.y = y
+    end
 
-    -- self.action = ""
---     if not G_inbounds(x, y) then
---         return
---     elseif G_empty_tile(x, y) and G_no_creature(x, y) and G_inbounds(x, y) then
---         self.player_moved = true
---         self.x = x
---         self.y = y
---         return
---     elseif not G_no_creature(x, y) then
---         local defender = self.map:get_creature_with_xy(x, y)
---         self:set_attacking(player, defender)
---     elseif not G_empty_tile(x, y) then
---         if G_openable_tile_adjacent(x, y) then
---             G_open_item(x, y)
---         end
---     end
-end
-
-
-
-
-function PlayerTurnState:update_mouse_position()
-    local mx, my = love.mouse.getPosition()
-    G_gamestate.mouse.x, G_gamestate.mouse.y = math.floor(mx / 64), math.floor(my / 64)
+    G_gs:change("mob_turn_state")
 end
 
 function PlayerTurnState:render()
+    self.map:render()
     self.player:render()
 end
 

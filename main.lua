@@ -17,7 +17,9 @@ require("states/player_conversation_state")
 require("states/mob_turn_state")
 
 require("data/dialogs")
-require("data/entities")
+require("data/mobs")
+require("data/objects")
+require("data/tiles")
 
 function love.load()
     love.window.setMode(SCREEN_WIDTH, SCREEN_HEIGHT)
