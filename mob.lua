@@ -1,7 +1,10 @@
-Mob = Entity:new()
+Mob = {}
 
-function Mob:init(params)
-
+function Mob:new()
+    local mob = {}
+    setmetatable(mob, self)
+    self.__index = self
+    return mob
 end
 
 -- Bresenham's line algorithm
@@ -216,4 +219,21 @@ function Mob:set_attacking(defender)
         self.is_attacking = true
         self.target = defender
     end
+end
+
+
+function Mob:draw_quip(topic)
+    love.graphics.setColor(0, 0, 1, .75)
+    love.graphics.rectangle("fill", self.x * DRAW_FACTOR + 25, self.y * DRAW_FACTOR - 35, 225, 36, 15, 15)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.printf(self.quips[topic], self.x * DRAW_FACTOR + 25, self.y * DRAW_FACTOR - 35, 225)
+    love.graphics.setColor(255, 255, 255)
+end
+
+function Mob:set_stat(stat, value)
+    self.stats[stat] = value
+end
+
+function Mob:inflict_damage(damage)
+    self.stats["health"] = self.stats["health"] - damage
 end

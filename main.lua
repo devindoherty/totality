@@ -1,7 +1,6 @@
 require("bug")
 require("constants")
 require("dialog")
-require("entity")
 require("gamestate")
 require("map")
 require("mob")

@@ -6,7 +6,7 @@ function StartState:init()
     self.action = ""
 
     self.params = {
-        tiles = area_one_map
+        tiles = G_area_one_map
     }
     
 end

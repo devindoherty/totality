@@ -210,3 +210,22 @@ local function select_quip(mob)
     end
 end
 
+function G_player_camera()
+    local player = G_entities["player"]
+    love.graphics.translate((-player.x * DRAW_FACTOR) + (SCREEN_WIDTH / 2) -32, (-player.y * DRAW_FACTOR) + (SCREEN_HEIGHT / 2) - 16)
+end
+
+function Player:draw_stats()
+    local health = self.stats["health"]
+    local defense = self.stats["defense"]
+    
+    -- love.math.colorFromBytes(0,191,255)
+    love.graphics.setColor(0,0,0)
+    love.graphics.rectangle("fill", 0, SCREEN_HEIGHT - 64, 128, 64) -- TODO MAKE WORD
+    love.graphics.setColor(1, 1, 0)
+    love.graphics.rectangle("line", 0, SCREEN_HEIGHT - 64, 128, 64)
+    love.graphics.setColor(1, 1, 1)
+
+    love.graphics.print("Health: " .. health, 3, SCREEN_HEIGHT - 60)
+    love.graphics.print("Defense: " .. defense, 3, SCREEN_HEIGHT - 50)
+end

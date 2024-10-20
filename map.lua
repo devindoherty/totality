@@ -14,7 +14,6 @@ function Map:new(params)
         for x = 1, #params.tiles[y] do
             local type = G_tiles[string.sub(params.tiles[y], x, x)]
             local tile = Tile:new(type.name, type.glyph, G_sprites[type.sprite], x, y)
-            print(tile.glyph)
             table.insert(self.tiles[y], tile)
         end
     end
@@ -29,7 +28,7 @@ end
 function Map:render()
     for y = 1, #self.tiles do
         for x = 1, #self.tiles[y] do
-            love.graphics.draw(G_spritesheet, self.tiles[y][x].sprite, x, y, 0)
+            love.graphics.draw(G_spritesheet, self.tiles[y][x].sprite, x * DRAW_FACTOR, y * DRAW_FACTOR, 0, SCALE_FACTOR)
         end
     end
 end
@@ -82,4 +81,33 @@ function Map:get_distance_between_two_points(point1, point2)
     local y2 = point2.y
 
     return math.sqrt(((x2 - x1) ^ 2) + ((y2 - y1) ^ 2))
+end
+
+function G_draw_creatures()
+    for _i, entity in pairs(G_entities) do
+        if entity.is_creature == true then
+            love.graphics.draw(G_spritesheet, entity.sprite, entity.x * DRAW_FACTOR, entity.y * DRAW_FACTOR, 0, SCALE_FACTOR)
+        end
+    end
+end
+
+function G_draw_items()
+    for _i, entity in pairs(G_entities) do
+        if entity.is_item == true then
+            love.graphics.draw(G_spritesheet, entity.sprite, entity.x * DRAW_FACTOR, entity.y * DRAW_FACTOR, 0, SCALE_FACTOR)
+        end
+    end
+end
+
+function Map:update_dead_creatures()
+    for _i, entity in pairs(G_entities) do
+        if entity.is_creature then
+            if entity.stats["health"] <= 0 then
+                G_entities[entity.name] = nil
+                local bones = Entity:new("bones", G_sprites[16], entity.x, entity.y, false)
+                bones.is_item = true
+                G_entities[#G_entities+1] = bones
+            end
+        end
+    end
 end
