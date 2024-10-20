@@ -7,6 +7,7 @@ require("map")
 require("mob")
 require("player")
 require("sprite")
+require("tile")
 
 
 require("states/state")
@@ -20,6 +21,7 @@ require("data/dialogs")
 require("data/mobs")
 require("data/objects")
 require("data/tiles")
+require("data/maps")
 
 function love.load()
     love.window.setMode(SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -27,7 +29,7 @@ function love.load()
     local icon = love.image.newImageData("assets/eclipse.png")
     love.window.setIcon(icon)
     
-    G_screen_canvas = love.graphics.newCanvas(SCREEN_WIDTH, SCREEN_HEIGHT)
+    -- G_screen_canvas = love.graphics.newCanvas(SCREEN_WIDTH, SCREEN_HEIGHT)
     love.graphics.setDefaultFilter("nearest", "nearest")
     
     G_load_sprites()
@@ -43,8 +45,6 @@ function love.load()
         ["world_turn_state"] = function() return MobTurnState end,
     })
     G_gs:change("start_state")
-    
-
 
     G_blocker = {}
     G_blocker.x = 0
@@ -56,7 +56,6 @@ function love.keypressed(key, scancode, isrepeat)
     if key == "q" or key == "escape" then
         love.event.quit(0)
     end
-    print(key)
 
     G_gs:input(key)
     -- G_player_input(key)
@@ -68,7 +67,7 @@ end
 
  function love.mousereleased(x, y, button, istouch)
     if button == 1 then
-       print("Left mouse button pressed at ", math.floor(x / 64) , math.floor(y / 64) )
+    --    print("Left mouse button pressed at ", math.floor(x / 64) , math.floor(y / 64) )
     end
  end
 --------------------------------Update--------------------------------

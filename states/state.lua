@@ -8,7 +8,7 @@ function State:new(params)
 end
 
 function State:init() end
-function State:enter() end
+function State:enter(params) end
 function State:input(key) end
 function State:update(dt) end
 function State:render() end

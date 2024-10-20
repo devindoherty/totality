@@ -1,13 +1,35 @@
 Map = {}
 
-function Map:new(tiles, objects, mobs)
+function Map:new(params)
+    local map = {}
+    setmetatable(map, self)
+    self.__index = self
+
+    self.tiles = {}
+    self.objects = {}
+    self.mobs = {}
+    
+    for y = 1, #params.tiles do
+        table.insert(self.tiles, {})
+        for x = 1, #params.tiles[y] do
+            local type = G_tiles[string.sub(params.tiles[y], x, x)]
+            local tile = Tile:new(type.name, type.glyph, G_sprites[type.sprite], x, y)
+            print(tile.glyph)
+            table.insert(self.tiles[y], tile)
+        end
+    end
+
+    return map
+end
+
+function Map:update()
 
 end
 
 function Map:render()
     for y = 1, #self.tiles do
         for x = 1, #self.tiles[y] do
-            love.graphics.draw(G_spritesheet, self.tiles[y][x].sprite, (x - 1) * DRAW_FACTOR, (y - 1) * DRAW_FACTOR, 0, SCALE_FACTOR)
+            love.graphics.draw(G_spritesheet, self.tiles[y][x].sprite, x, y, 0)
         end
     end
 end

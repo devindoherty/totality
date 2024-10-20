@@ -1,14 +1,17 @@
 G_tiles = {
-    ["empty"] = {
+    [" "] = {
+        name = "empty",
         glyph = " ",
-        sprite = G_sprites[1],
+        sprite = 1,
     },
-    ["brick_wall"] = {
+    ["#"] = {
+        name = "brick_wall",
         glyph = "#",
-        sprite = G_sprites[146],
+        sprite = 146,
     },
-    ["tree"] = {
+    ["T"] = {
+        name = "tree",
         glyph = "T",
-        sprite = G_sprites[2],
+        sprite = 2,
     },
 }

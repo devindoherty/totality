@@ -12,7 +12,6 @@ function MobTurnState:input(key)
 end
 
 function MobTurnState:update(dt)
-    local player = G_entities["player"]
     for _i, mob in pairs(self.area.mobs) do
         if mob.is_creature and mob.name ~= "player" then
             if not mob:line_of_sight(player) then

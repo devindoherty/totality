@@ -6,4 +6,6 @@ function Tile:new(name, glyph, sprite, x, y)
     self.sprite = sprite
     self.x = x
     self.y = y
+
+    return self
 end

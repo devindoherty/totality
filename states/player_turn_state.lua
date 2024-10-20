@@ -11,12 +11,10 @@ function PlayerTurnState:init(params)
 
     self.player = Player:new()
     self.player:init()
-
-    self.map = Map:new()
 end
 
 function PlayerTurnState:enter(params)
-    self.map = Map:new(params.tiles, params.objects, params.mobs)
+    self.map = Map:new(params)
 end
 
 function PlayerTurnState:input(key)
@@ -36,7 +34,7 @@ function PlayerTurnState:input(key)
         self.action = "player_end_turn"
     elseif key == "e" then
         -- G_set_interacting(player, self.nearby_interactible["target"])
-        self.action = "player_move_up"
+        self.action = "player_interact"
     end
 end
 
@@ -61,7 +59,7 @@ function PlayerTurnState:update(dt)
         self.player.y = y
     end
 
-    G_gs:change("mob_turn_state")
+    -- G_gs:change("mob_turn_state")
 end
 
 function PlayerTurnState:render()
