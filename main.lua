@@ -16,6 +16,7 @@ require("states/character_creation_state")
 require("states/player_turn_state")
 require("states/player_conversation_state")
 require("states/mob_turn_state")
+require("states/world_turn_state")
 
 require("data/dialogs")
 require("data/mobs")
@@ -42,7 +43,7 @@ function love.load()
         ["player_turn_state"] = function() return PlayerTurnState end,
         ["player_conversation_state"] = function () return PlayerConversationState end,
         ["mob_turn_state"] = function() return MobTurnState end,
-        ["world_turn_state"] = function() return MobTurnState end,
+        ["world_turn_state"] = function() return WorldTurnState end,
     })
     G_gs:change("start_state")
 

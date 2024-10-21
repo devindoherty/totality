@@ -20,13 +20,15 @@ end
 function WorldTurnState:input() end
 
 function WorldTurnState:update(dt)
-    
     G_gs:change("player_turn_state", {
         map = self.map,
         player = self.player
     })
 end
 
-function WorldTurnState:render() end
+function WorldTurnState:render()
+    self.map:render()
+    self.player:render()
+end
 function WorldTurnState:exit() end
 

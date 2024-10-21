@@ -44,7 +44,8 @@ end
 
 
 function MobTurnState:render()
-
+    self.map:render()
+    self.player:render()
 end
 
 function MobTurnState:exit()

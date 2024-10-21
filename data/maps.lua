@@ -62,6 +62,5 @@ G_area_one_map = {
 "T                                                                                                                             T", 
 "T                                                                                                                             T", 
 "T                                                                                                                             T", 
-"T                                                                                                                             T",
 "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
 }

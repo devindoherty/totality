@@ -1,26 +1,17 @@
-Player = Mob:new()
+Player = {}
 
-function Player:init()
-    self.x = 2
-    self.y = 2
-    self.current_dialog = "intro"
-    self.response = {
-        active = "",
-        entered = "intro",
-        answer = ""
-    }
-    self.end_turn = false
-    self.player_moved = false
-    self.nearby_interactible = {
-        ["creature"] = false,
-        ["item"] = false,
-        target = nil
-    }
+function Player:new()
+    local player = {}
+    setmetatable(player, self)
+    self.__index = self
+    self.x = 1
+    self.y = 1
     self.sprite = G_sprites[551]
+    return player
 end
 
 function Player:render()
-    love.graphics.draw(G_spritesheet, self.sprite, self.x, self.y, 0, 4)
+    love.graphics.draw(G_spritesheet, self.sprite, self.x * DRAW_FACTOR, self.y * DRAW_FACTOR, 0, SCALE_FACTOR)
 end
 
 -- Bresenham's line algorithm
@@ -210,9 +201,8 @@ local function select_quip(mob)
     end
 end
 
-function G_player_camera()
-    local player = G_entities["player"]
-    love.graphics.translate((-player.x * DRAW_FACTOR) + (SCREEN_WIDTH / 2) -32, (-player.y * DRAW_FACTOR) + (SCREEN_HEIGHT / 2) - 16)
+function Player:camera()
+    love.graphics.translate((-self.x * DRAW_FACTOR) + (SCREEN_WIDTH / 2) -32, (-self.y * DRAW_FACTOR) + (SCREEN_HEIGHT / 2) - 16)
 end
 
 function Player:draw_stats()

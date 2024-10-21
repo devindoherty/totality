@@ -39,11 +39,9 @@ function Map:empty_tile(x, y)
 end
 
 function Map:inbounds(x, y)
-    if y < 1 or x < 1 then
+    if y < 0 or x < 0 then
          return false
-    elseif y >= #self.tiles + 1 then
-        return false
-    elseif x > #self.tiles[y] then
+    elseif y > MAP_HEIGHT or x > MAP_WIDTH then
         return false
     else
         return true
