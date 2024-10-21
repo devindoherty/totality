@@ -4,10 +4,8 @@ function StartState:init()
     self.greeting = "Path of Totality"
     self.direction = "Press Enter to Continue"
     self.action = ""
-
-    self.params = {
-        tiles = G_area_one_map
-    }
+    self.player = Player:new()
+    self.map = Map:new({tiles = G_area_one_map})
     
 end
 
@@ -21,7 +19,10 @@ end
 
 function StartState:update(dt)
     if self.action == "return" then
-        G_gs:change("player_turn_state", self.params)
+        G_gs:change("world_turn_state", {
+            player = self.player,
+            map = self.map,
+        })
     end
 end
 

@@ -11,10 +11,14 @@ function PlayerTurnState:init(params)
 
     self.player = Player:new()
     self.player:init()
+    
 end
 
 function PlayerTurnState:enter(params)
-    self.map = Map:new(params)
+    self.player = params.player
+    self.map = params.map
+
+    self.action = ""
 end
 
 function PlayerTurnState:input(key)
@@ -59,7 +63,10 @@ function PlayerTurnState:update(dt)
         self.player.y = y
     end
 
-    -- G_gs:change("mob_turn_state")
+    G_gs:change("mob_turn_state", {
+        map = self.map,
+        player = self.player,
+    })
 end
 
 function PlayerTurnState:render()

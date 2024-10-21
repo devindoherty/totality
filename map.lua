@@ -13,7 +13,7 @@ function Map:new(params)
         table.insert(self.tiles, {})
         for x = 1, #params.tiles[y] do
             local type = G_tiles[string.sub(params.tiles[y], x, x)]
-            local tile = Tile:new(type.name, type.glyph, G_sprites[type.sprite], x, y)
+            local tile = Tile:new(type.name, type.glyph, G_sprites[type.sprite], x - 1, y - 1)
             table.insert(self.tiles[y], tile)
         end
     end
@@ -28,7 +28,8 @@ end
 function Map:render()
     for y = 1, #self.tiles do
         for x = 1, #self.tiles[y] do
-            love.graphics.draw(G_spritesheet, self.tiles[y][x].sprite, x * DRAW_FACTOR, y * DRAW_FACTOR, 0, SCALE_FACTOR)
+            local tile = self.tiles[y][x]
+            love.graphics.draw(G_spritesheet, tile.sprite, tile.x * DRAW_FACTOR, tile.y * DRAW_FACTOR, 0, SCALE_FACTOR)
         end
     end
 end
@@ -83,7 +84,7 @@ function Map:get_distance_between_two_points(point1, point2)
     return math.sqrt(((x2 - x1) ^ 2) + ((y2 - y1) ^ 2))
 end
 
-function G_draw_creatures()
+function Map:draw_creatures()
     for _i, entity in pairs(G_entities) do
         if entity.is_creature == true then
             love.graphics.draw(G_spritesheet, entity.sprite, entity.x * DRAW_FACTOR, entity.y * DRAW_FACTOR, 0, SCALE_FACTOR)
@@ -91,7 +92,7 @@ function G_draw_creatures()
     end
 end
 
-function G_draw_items()
+function Map:draw_items()
     for _i, entity in pairs(G_entities) do
         if entity.is_item == true then
             love.graphics.draw(G_spritesheet, entity.sprite, entity.x * DRAW_FACTOR, entity.y * DRAW_FACTOR, 0, SCALE_FACTOR)
