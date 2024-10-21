@@ -61,9 +61,9 @@ function PlayerTurnState:update(dt)
 end
 
 function PlayerTurnState:render()
+    self.player:camera()
     self.map:render()
     self.player:render()
-    self.player:camera()
 end
 
 function PlayerTurnState:exit()

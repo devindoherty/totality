@@ -44,6 +44,7 @@ end
 
 
 function MobTurnState:render()
+    self.player:camera()
     self.map:render()
     self.player:render()
 end
