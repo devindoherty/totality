@@ -29,7 +29,11 @@ function Map:render()
     for y = 1, #self.tiles do
         for x = 1, #self.tiles[y] do
             local tile = self.tiles[y][x]
-            love.graphics.draw(G_spritesheet, tile.sprite, tile.x * DRAW_FACTOR, tile.y * DRAW_FACTOR, 0, SCALE_FACTOR)
+            if tile.name == "empty" then
+                -- Pass
+            else
+                love.graphics.draw(G_spritesheet, tile.sprite, tile.x * DRAW_FACTOR, tile.y * DRAW_FACTOR, 0, SCALE_FACTOR)
+            end
         end
     end
 end
