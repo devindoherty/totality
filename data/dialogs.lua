@@ -1,6 +1,9 @@
     
 G_dialogs = {
-    ["intro"] = Dialog:new("You followed father's advice and took the starry pass into the midnight lands. \n\nBut in the darkness of the eternal eclipse, you stumbled and fell into darkness. You've awakened in an old farmhouse. \n\nPress ENTER to continue..."),
+    ["intro"] = {
+        line = "You followed father's advice and took the starry pass into the midnight lands. \n\nBut in the darkness of the eternal eclipse, you stumbled and fell into darkness. You've awakened in an old farmhouse. \n\nPress ENTER to continue...",
+        speaker = "narrator"
+    },
     ["intro2"] = "You're awake! Sit a while, if ya like. Took a nasty fall there. I'm Yarl, this is my farm.",
     ["yarl"] = "That's my name, don't wear it thin. Been living on this farm since sundown.",
     ["sundown"] = "How long's it been since the eclipse, going on a decade now?",
