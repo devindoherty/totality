@@ -13,7 +13,7 @@ function Map:new(params)
         table.insert(self.tiles, {})
         for x = 1, #params.tiles[y] do
             local type = G_tiles[string.sub(params.tiles[y], x, x)]
-            local tile = Tile:new(type.name, type.glyph, G_sprites[type.sprite], x - 1, y - 1)
+            local tile = Tile:new(type.name, type.glyph, G_sprites[type.sprite], type.solid, x - 1, y - 1)
             table.insert(self.tiles[y], tile)
         end
     end
@@ -38,8 +38,9 @@ function Map:render()
     end
 end
 
-function Map:empty_tile(x, y)
-    return self.tiles[y][x] == 0 or self.tiles[y][x] == 1 or self.tiles[y][x] == 2 or self.tiles[y][x] == 'O' or self.tiles[y][x] == 'W'
+function Map:solid(x, y)
+    print(self.tiles[y][x].solid)
+    return self.tiles[y][x].solid
 end
 
 function Map:inbounds(x, y)
