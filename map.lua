@@ -39,7 +39,8 @@ function Map:render()
 end
 
 function Map:solid(x, y)
-    print(self.tiles[y][x].solid)
+    local x = x + 1
+    local y = y + 1
     return self.tiles[y][x].solid
 end
 

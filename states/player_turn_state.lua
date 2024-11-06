@@ -56,6 +56,8 @@ function PlayerTurnState:update(dt)
             self.player.x = x
             self.player.y = y
             G_gs:change("mob_turn_state", {map = self.map, player = self.player})
+        else
+            self.action = nil
         end
     end
 end
