@@ -17,4 +17,10 @@ G_tiles = {
         sprite = 2,
         solid = true,
     },
+    ["D"] = {
+        name = "door",
+        glyph = "D",
+        sprite = 4,
+        solid = true,
+    },
 }
