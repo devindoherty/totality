@@ -18,9 +18,15 @@ G_tiles = {
         solid = true,
     },
     ["D"] = {
-        name = "door",
+        name = "white_door",
         glyph = "D",
-        sprite = 4,
+        sprite = 210,
         solid = true,
+    },
+    ["~"] = {
+        name = "water",
+        glyph = "W",
+        sprite = 199 - 18,
+        solid = false,
     },
 }

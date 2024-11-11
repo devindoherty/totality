@@ -10,6 +10,10 @@ function Tile:new(name, glyph, sprite, solid, x, y)
     tile.x = x
     tile.y = y
     tile.solid = solid
+    tile.openable = false
+    if tile.openable then
+        tile.on_open = function () end
+    end
 
     return tile
 end
