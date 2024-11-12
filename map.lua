@@ -13,7 +13,7 @@ function Map:new(params)
         table.insert(self.tiles, {})
         for x = 1, #params.tiles[y] do
             local type = G_tiles[string.sub(params.tiles[y], x, x)]
-            local tile = Tile:new(type.name, type.glyph, G_sprites[type.sprite], type.solid, x - 1, y - 1)
+            local tile = Tile:new(type, x-1, y-1)
             table.insert(self.tiles[y], tile)
         end
     end
@@ -41,6 +41,7 @@ end
 function Map:solid(x, y)
     local x = x + 1
     local y = y + 1
+    print(self.tiles[y][x].solid)
     return self.tiles[y][x].solid
 end
 
