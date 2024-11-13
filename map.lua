@@ -13,7 +13,7 @@ function Map:new(params)
         table.insert(self.tiles, {})
         for x = 1, #params.tiles[y] do
             local type = G_tiles[string.sub(params.tiles[y], x, x)]
-            local tile = Tile:new(type, x-1, y-1)
+            local tile = Tile:new(type, x, y)
             table.insert(self.tiles[y], tile)
         end
     end
@@ -32,20 +32,18 @@ function Map:render()
             if tile.name == "empty" then
                 -- Pass
             else
-                love.graphics.draw(G_spritesheet, tile.sprite, tile.x * DRAW_FACTOR, tile.y * DRAW_FACTOR, 0, SCALE_FACTOR)
+                love.graphics.draw(G_spritesheet, tile.sprite, (tile.x-1) * DRAW_FACTOR, (tile.y-1) * DRAW_FACTOR, 0, SCALE_FACTOR)
             end
         end
     end
 end
 
 function Map:solid(x, y)
-    local x = x + 1
-    local y = y + 1
     return self.tiles[y][x].solid
 end
 
 function Map:inbounds(x, y)
-    if y < 0 or x < 0 then
+    if y < 1 or x < 1 then
          return false
     elseif y > MAP_HEIGHT or x > MAP_WIDTH then
         return false
@@ -65,15 +63,10 @@ function Map:no_creature(x, y)
 end
 
 function Map:openable(x, y)
-    local x = x + 1
-    local y = y + 1
     return self.tiles[y][x].openable
 end
 
 function Map:change_tile(x, y, new_tile)
-    local x = x + 1
-    local y = y + 1
-
     self.tiles[y][x] = new_tile
 end
 
@@ -120,7 +113,7 @@ function Map:update_dead_creatures()
                 G_entities[entity.name] = nil
                 local bones = Entity:new("bones", G_sprites[16], entity.x, entity.y, false)
                 bones.is_item = true
-                G_entities[#G_entities+1] = bones
+                G_entities[#G_entities] = bones
             end
         end
     end
