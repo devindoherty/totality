@@ -41,7 +41,6 @@ end
 function Map:solid(x, y)
     local x = x + 1
     local y = y + 1
-    print(self.tiles[y][x].solid)
     return self.tiles[y][x].solid
 end
 
@@ -65,8 +64,17 @@ function Map:no_creature(x, y)
     return self.tiles[y][x]
 end
 
-function Map:openable_tile(x, y)
-    return self.tiles[y][x] == 'D'
+function Map:openable(x, y)
+    local x = x + 1
+    local y = y + 1
+    return self.tiles[y][x].openable
+end
+
+function Map:change_tile(x, y, new_tile)
+    local x = x + 1
+    local y = y + 1
+
+    self.tiles[y][x] = new_tile
 end
 
 function Map:get_creature_with_xy(x, y)

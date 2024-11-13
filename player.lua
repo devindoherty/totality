@@ -4,8 +4,8 @@ function Player:new()
     local player = {}
     setmetatable(player, self)
     self.__index = self
-    self.x = 1
-    self.y = 1
+    self.x = 5
+    self.y = 3
     self.sprite = G_sprites[551]
     return player
 end

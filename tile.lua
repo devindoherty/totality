@@ -11,7 +11,7 @@ function Tile:new(params, x, y)
     tile.glyph = params.glyph
     tile.sprite = G_sprites[params.sprite]
     tile.solid = params.solid or false
-
+    tile.openable = params.openable or false
 
     return tile
 end
