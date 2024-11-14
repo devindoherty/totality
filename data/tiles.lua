@@ -22,6 +22,14 @@ G_tiles = {
         glyph = "D",
         sprite = 210,
         solid = true,
+        openable = true,
+    },
+    ["O"] = {
+        name = "white_doorframe",
+        glyph = "O",
+        sprite = 187,
+        solid = false,
+        openable = false,
     },
     ["~"] = {
         name = "water",

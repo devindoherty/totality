@@ -4,14 +4,14 @@ function Player:new()
     local player = {}
     setmetatable(player, self)
     self.__index = self
-    self.x = 1
-    self.y = 1
+    self.x = 6
+    self.y = 4
     self.sprite = G_sprites[551]
     return player
 end
 
 function Player:render()
-    love.graphics.draw(G_spritesheet, self.sprite, self.x * DRAW_FACTOR, self.y * DRAW_FACTOR, 0, SCALE_FACTOR)
+    love.graphics.draw(G_spritesheet, self.sprite, (self.x-1) * DRAW_FACTOR, (self.y-1) * DRAW_FACTOR, 0, SCALE_FACTOR)
 end
 
 -- Bresenham's line algorithm
