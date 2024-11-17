@@ -5,7 +5,7 @@ function StartState:init()
     self.direction = "Press Enter to Continue"
     self.action = ""
     self.player = Player:new()
-    self.map = Map:new({tiles = G_area_one_map})
+    self.map = Map:new({tiles = G_area_one_map, mobs = G_mobs})
     
 end
 

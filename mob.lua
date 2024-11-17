@@ -1,9 +1,13 @@
 Mob = {}
 
-function Mob:new()
+function Mob:new(params, x, y)
     local mob = {}
     setmetatable(mob, self)
     self.__index = self
+    self.name = params.name
+    self.sprite = params.sprite
+    self.x = x
+    self.y = y
     return mob
 end
 
@@ -221,6 +225,9 @@ function Mob:set_attacking(defender)
     end
 end
 
+function Mob:render()
+    love.graphics.draw(G_spritesheet, self.sprite, (self.x-1) * DRAW_FACTOR, (self.y-1) * DRAW_FACTOR, 0, SCALE_FACTOR)
+end
 
 function Mob:draw_quip(topic)
     love.graphics.setColor(0, 0, 1, .75)
@@ -236,4 +243,8 @@ end
 
 function Mob:inflict_damage(damage)
     self.stats["health"] = self.stats["health"] - damage
+end
+
+function Mob:inflict_condition(condition)
+
 end

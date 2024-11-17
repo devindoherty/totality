@@ -6,9 +6,10 @@ function Map:new(params)
     self.__index = self
 
     self.tiles = {}
-    self.objects = {}
+    self.item = {}
     self.mobs = {}
     
+    -- Reading our map data strings to Tile objects
     for y = 1, #params.tiles do
         table.insert(self.tiles, {})
         for x = 1, #params.tiles[y] do
@@ -17,6 +18,12 @@ function Map:new(params)
             table.insert(self.tiles[y], tile)
         end
     end
+
+    local testmob = Mob:new({
+        name = "Yarl",
+        sprite = G_sprites[G_mobs["yarl"].sprite],
+    }, 6, 13)
+    table.insert(self.mobs, testmob)
 
     return map
 end
@@ -35,6 +42,10 @@ function Map:render()
                 love.graphics.draw(G_spritesheet, tile.sprite, (tile.x-1) * DRAW_FACTOR, (tile.y-1) * DRAW_FACTOR, 0, SCALE_FACTOR)
             end
         end
+    end
+
+    for _i, mob in pairs(self.mobs) do
+        mob:render()
     end
 end
 

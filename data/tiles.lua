@@ -8,7 +8,7 @@ G_tiles = {
     ["#"] = {
         name = "brick_wall",
         glyph = "#",
-        sprite = 146,
+        sprite = 303,
         solid = true,
     },
     ["T"] = {

@@ -16,13 +16,13 @@ end
 
 function MobTurnState:update(dt)
     for _i, mob in pairs(self.map.mobs) do
-        if not mob:line_of_sight(self.player) then
-            mob.last_seen.x = G_blocker.x -- TODO: Rework LOS to return x, y
-            mob.last_seen.y = G_blocker.y
-        else
-            mob.last_seen.x = nil
-            mob.last_seen.y = nil
-        end
+        -- if not mob:line_of_sight(self.player) then
+        --     mob.last_seen.x = G_blocker.x -- TODO: Rework LOS to return x, y
+        --     mob.last_seen.y = G_blocker.y
+        -- else
+        --     mob.last_seen.x = nil
+        --     mob.last_seen.y = nil
+        -- end
         if mob.behavior == "aggressive" then
             mob:move_toward_target(self.player)
         elseif mob.behavior == "loitering" then
