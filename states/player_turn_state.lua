@@ -52,7 +52,8 @@ function PlayerTurnState:update(dt)
             x = x + 1
         end
 
-        if self.map:inbounds(x, y) and not self.map:solid(x, y) then
+        if self.map:inbounds(x, y) and not self.map:solid(x, y) and 
+        not self.map:occupied(x, y) then
             self.player.x = x
             self.player.y = y
             G_gs:change("mob_turn_state", {map = self.map, player = self.player})

@@ -36,8 +36,6 @@ function love.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
     
     G_load_sprites()
-    -- G_init_entities()
-    -- G_init_map()
 
     G_gs = Gamestate:new({
         ["start_state"] = function() return StartState end,

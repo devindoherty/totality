@@ -8,6 +8,7 @@ function Mob:new(params, x, y)
     self.sprite = params.sprite
     self.x = x
     self.y = y
+    self.behavior = "do_nothing"
     return mob
 end
 
@@ -175,9 +176,6 @@ end
 function Mob:do_nothing()
     local x = self.x
     local y = self.y
-    if G_inbounds(x, y) then
-        
-    end
 end
 
 function Mob:check_movement()

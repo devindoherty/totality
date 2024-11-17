@@ -6,7 +6,7 @@ function Map:new(params)
     self.__index = self
 
     self.tiles = {}
-    self.item = {}
+    self.items = {}
     self.mobs = {}
     
     -- Reading our map data strings to Tile objects
@@ -25,6 +25,12 @@ function Map:new(params)
     }, 6, 13)
     table.insert(self.mobs, testmob)
 
+    local testitem = Item:new(6, 4, {
+        name = "wooden bed",
+        sprite = G_sprites[G_items["wooden_bed"].sprite]
+    })
+    table.insert(self.items, testitem)
+
     return map
 end
 
@@ -42,6 +48,10 @@ function Map:render()
                 love.graphics.draw(G_spritesheet, tile.sprite, (tile.x-1) * DRAW_FACTOR, (tile.y-1) * DRAW_FACTOR, 0, SCALE_FACTOR)
             end
         end
+    end
+
+    for _i, item in pairs(self.items) do
+        item:render()
     end
 
     for _i, mob in pairs(self.mobs) do
@@ -63,14 +73,12 @@ function Map:inbounds(x, y)
     end
 end
 
-function Map:no_creature(x, y)
-    for _i, mob in pairs(self.mob) do
-        if x == mob.x and y == mob.y and mob.is_creature == true then
-            return false
+function Map:occupied(x, y)
+    for _i, mob in pairs(self.mobs) do
+        if x == mob.x and y == mob.y then
+            return true
         end
     end
-
-    return self.tiles[y][x]
 end
 
 function Map:openable(x, y)

@@ -8,5 +8,7 @@ function G_load_sprites()
             table.insert(G_sprites, sprite)
         end
     end
+   
+    G_start_screen_splash = love.graphics.newImage("assets/start_screen_splash.png")
 end
 
