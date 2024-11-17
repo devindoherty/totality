@@ -30,3 +30,15 @@ cult of the moongod, a permanent eclipse which has blotted out the sun itself.
 # How does one run the application?
 
 # Link to public or unlisted video
+
+# About
+
+# Design
+
+# Organization
+
+# Setup
+
+# Getting Started
+
+# Video
