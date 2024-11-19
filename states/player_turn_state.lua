@@ -42,6 +42,11 @@ function PlayerTurnState:update(dt)
     local y = self.player.y
 
     if self.action then
+        if self.action == "player_interact" then
+            self.map:change_tile(x+1, y, Tile:new(G_tiles["D"], x, y))
+        end
+
+
         if self.action == "player_move_up" then
             y = y - 1
         elseif self.action == "player_move_down" then
@@ -53,7 +58,7 @@ function PlayerTurnState:update(dt)
         end
 
         if self.map:inbounds(x, y) and not self.map:solid(x, y) and 
-        not self.map:occupied(x, y) then
+          not self.map:occupied(x, y) then
             self.player.x = x
             self.player.y = y
             G_gs:change("mob_turn_state", {map = self.map, player = self.player})

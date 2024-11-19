@@ -1,5 +1,14 @@
 Interact = {}
 
+function Interact:new(name, interactible, effect)
+    local interact = {}
+    setmetatable(interact, self)
+    self.__index = self
+    self.name = name
+    self.interactible = interactible
+    self.effect = function () end
+end
+
 function Interact:open_item(x, y)
     if G_tilemap[y][x] == 'D' then 
         G_tilemap[y][x] = 'O'
@@ -11,7 +20,7 @@ function Interact:close_item(x, y)
     G_tilemap[y][x] = 'D'
 end
 
-function G_detect_interactible(interactor)
+function Interact:detect(interactor)
     for x = interactor.x - 1, interactor.x + 1 do
         for y = interactor.y -1, interactor.y + 1 do
             for _i, entity in pairs(G_entities) do
@@ -36,7 +45,7 @@ function G_detect_interactible(interactor)
     end
 end
 
-function G_draw_interactible_detection()
+function Interact:render_detection()
     love.graphics.setColor(0, 0, 0, .5)
     love.graphics.rectangle("fill", SCREEN_HEIGHT / 2, SCREEN_WIDTH / 2, 400, 200)
     love.graphics.setColor(1, 1, 0)
@@ -49,7 +58,7 @@ function G_draw_interactible_detection()
     end
 end
 
-function G_set_interacting(interactor, interactible)
+function Interact:set(interactor, interactible)
     if interactible.is_creature and interactible.is_friendly then
         interactor.is_conversing = true
         interactible.is_known = true
@@ -63,7 +72,7 @@ function G_set_interacting(interactor, interactible)
     end
 end
 
-function G_update_interact()
+function Interact:update()
     for key, value in pairs(G_gamestate.nearby_interactible.target.quips) do
         if G_gamestate.response.entered == key then
             G_gamestate.response.answer = value
@@ -72,7 +81,7 @@ function G_update_interact()
 
 end
 
-function G_draw_interact()
+function Interact:render()
     love.graphics.setColor(0, 0, 0)
     love.graphics.rectangle("fill", SCREEN_WIDTH / 10, SCREEN_HEIGHT / 6, 800, 400)
     love.graphics.setColor(1, 1, 0)

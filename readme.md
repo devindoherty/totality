@@ -30,3 +30,6 @@ cult of the moongod, a permanent eclipse which has blotted out the sun itself.
 # How does one run the application?
 
 # Link to public or unlisted video
+
+Attributions
+splash screen art: https://x.com/hydrogenpixel/status/1416896270120198146
