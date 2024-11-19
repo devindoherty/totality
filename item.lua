@@ -8,6 +8,7 @@ function Item:new(x, y, params)
     self.y = y
     self.name = params.name
     self.sprite = params.sprite
+    self.description = params.description
     return item
 end
 
