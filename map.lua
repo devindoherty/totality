@@ -85,6 +85,10 @@ function Map:openable(x, y)
     return self.tiles[y][x].openable
 end
 
+function Map:closable(x, y)
+    return self.tiles[y][x].closable
+end
+
 function Map:change_tile(x, y, new_tile)
     self.tiles[y][x] = new_tile
 end

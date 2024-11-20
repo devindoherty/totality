@@ -13,6 +13,7 @@ end
 function PlayerTurnState:enter(params)
     self.player = params.player
     self.map = params.map
+    self.interacting = params.interacting
 
     self.action = nil
     G_bug:bugprint("player x on enter: ", self.player.x)
@@ -20,6 +21,20 @@ function PlayerTurnState:enter(params)
 end
 
 function PlayerTurnState:input(key)
+
+    if self.interacting then
+        if key == "w" or key == "kp8" then
+            self.action = "player_interact_up"
+        elseif key == "a" or key == "kp4" then
+            self.action = "player_interact_left"
+        elseif key == "d" or key == "kp6" then
+            self.action = "player_interact_right"
+        elseif key == "s" or key == "kp2" then
+            self.action = "player_interact_down"
+        end
+        return
+    end
+
     if key == "w" or key == "kp8" then
         self.action = "player_move_up"
     elseif key == "a" or key == "kp4" then
@@ -32,8 +47,11 @@ function PlayerTurnState:input(key)
         self.action = "player_end_turn"
     elseif key == "e" then
         self.action = "player_interact"
+        G_gs:change("player_turn_state", {map = self.map, player = self.player, interacting = true})
     end
 end
+
+
 
 function PlayerTurnState:update(dt)
     self.mouse.x, self.mouse.y = math.floor(self.mouse.x / 64), math.floor(self.mouse.y / 64)
@@ -42,39 +60,70 @@ function PlayerTurnState:update(dt)
     local y = self.player.y
 
     if self.action then
-        if self.action == "player_interact" then
-            self.map:change_tile(x+1, y, Tile:new(G_tiles["D"], x, y))
-        end
-
-
-        if self.action == "player_move_up" then
-            y = y - 1
-        elseif self.action == "player_move_down" then
-            y = y + 1
-        elseif self.action == "player_move_left" then
-            x = x - 1
-        elseif self.action == "player_move_right" then
-            x = x + 1
-        end
-
-        if self.map:inbounds(x, y) and not self.map:solid(x, y) and 
-          not self.map:occupied(x, y) then
-            self.player.x = x
-            self.player.y = y
-            G_gs:change("mob_turn_state", {map = self.map, player = self.player})
-        elseif self.map:openable(x, y) then
-            self.map:change_tile(x, y, Tile:new(G_tiles["O"], x, y))
-            G_gs:change("mob_turn_state", {map = self.map, player = self.player})
+        if self.interacting then
+            PlayerTurnState:update_interacting(x, y)
         else
-            self.action = nil
+            PlayerTurnState:update_movement(x, y)
         end
     end
 end
 
+function PlayerTurnState:update_movement(x, y)
+    if self.action == "player_move_up" then
+        y = y - 1
+    elseif self.action == "player_move_down" then
+        y = y + 1
+    elseif self.action == "player_move_left" then
+        x = x - 1
+    elseif self.action == "player_move_right" then
+        x = x + 1
+    end
+
+    if self.map:inbounds(x, y) and not self.map:solid(x, y) and
+      not self.map:occupied(x, y) then
+        self.player.x = x
+        self.player.y = y
+        G_gs:change("mob_turn_state", {map = self.map, player = self.player})
+    elseif self.map:openable(x, y) then
+        local tile = self.map.tiles[y][x]
+        self.map:change_tile(x, y, Tile:new(G_tiles[tile.open_def], x, y))
+        G_gs:change("mob_turn_state", {map = self.map, player = self.player})
+    end
+end
+
+
+function PlayerTurnState:update_interacting(x, y)
+    if self.action == "player_interact_up" then
+        y = y - 1 
+    elseif self.action == "player_interact_down" then
+        y = y + 1
+    elseif self.action == "player_interact_left" then
+        x = x - 1
+    elseif self.action == "player_interact_right" then
+        x = x + 1
+    end
+
+    local tile = self.map.tiles[y][x]
+    
+    if self.map:closable(x, y) then
+        self.map:change_tile(x, y, Tile:new(G_tiles[tile.close_def], x, y))
+    elseif self.map:openable(x, y) then
+        self.map:change_tile(x, y, Tile:new(G_tiles[tile.open_def], x, y))
+    end
+    
+    G_gs:change("player_turn_state", {map = self.map, player = self.player, interacting = false})
+end
+
+
 function PlayerTurnState:render()
+    if self.interacting then
+        love.graphics.print("Interact in which direction? (WASD)", 0, 0)
+    end
     self.player:camera()
     self.map:render()
+
     self.player:render()
+
 end
 
 function PlayerTurnState:exit()

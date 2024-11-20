@@ -23,6 +23,7 @@ G_tiles = {
         sprite = 210,
         solid = true,
         openable = true,
+        open_def = "O"
     },
     ["O"] = {
         name = "white_doorframe",
@@ -30,6 +31,8 @@ G_tiles = {
         sprite = 187,
         solid = false,
         openable = false,
+        closable = true,
+        close_def = "D"
     },
     ["~"] = {
         name = "water",
