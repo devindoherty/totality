@@ -100,6 +100,7 @@ function Map:get_mob_with_xy(x, y)
             return mob
         end
     end
+    return false
 end
 
 function Map:get_distance_between_two_points(point1, point2)

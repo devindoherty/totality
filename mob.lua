@@ -7,6 +7,7 @@ function Mob:new(params, x, y, map)
     
     mob.name = params.name
     mob.sprite = G_sprites[params.sprite]
+    mob.description = params.description or "Unremarkable."
     
     mob.x = x
     mob.y = y
