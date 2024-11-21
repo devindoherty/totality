@@ -20,10 +20,10 @@ function Interact:close_item(x, y)
     G_tilemap[y][x] = 'D'
 end
 
-function Interact:detect(interactor)
+function Interact.detect(interactor, interactibles)
     for x = interactor.x - 1, interactor.x + 1 do
         for y = interactor.y -1, interactor.y + 1 do
-            for _i, entity in pairs(G_entities) do
+            for _i, entity in pairs(interactibles) do
                 if entity.x == x and entity.y == y and entity.name ~= "player" then
                     print(entity.name .. " is interactible!")
                     if entity.is_creature and entity.is_friendly then

@@ -1,6 +1,6 @@
 Item = {}
 
-function Item:new(params, x, y)
+function Item:new(params, x, y, map)
     local item = {}
     setmetatable(item, self)
     self.__index = self

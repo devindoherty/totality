@@ -5,7 +5,8 @@ G_mobs = {
     },
     ["rat"] = {
         name = "Rat",
-        sprite = 691
+        sprite = 691,
+        hostile = true,
     },
     ["boss_rat"] = {
         name = "Boss Rat",

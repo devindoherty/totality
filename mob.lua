@@ -1,14 +1,19 @@
 Mob = {}
 
-function Mob:new(params, x, y)
+function Mob:new(params, x, y, map)
     local mob = {}
     setmetatable(mob, self)
     self.__index = self
+    
     mob.name = params.name
     mob.sprite = G_sprites[params.sprite]
+    
     mob.x = x
     mob.y = y
+    mob.map = map
+
     mob.behavior = "do_nothing"
+    mob.hostile = params.hostile or false
     return mob
 end
 

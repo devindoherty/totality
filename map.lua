@@ -21,13 +21,13 @@ function Map:new(params)
 
     -- Getting the items defs from the maps data
     for _k, itemdef in pairs(params.items) do
-        local item = Item:new(itemdef[1], itemdef[2], itemdef[3])
+        local item = Item:new(itemdef[1], itemdef[2], itemdef[3], map)
         table.insert(self.items, item)
     end
 
     -- Getting the mob defs from the maps data
     for _i, mobdef in pairs(params.mobs) do
-        local mob = Mob:new(mobdef[1], mobdef[2], mobdef[3])
+        local mob = Mob:new(mobdef[1], mobdef[2], mobdef[3], map)
         table.insert(self.mobs, mob)
     end
 
@@ -94,12 +94,10 @@ function Map:change_tile(x, y, new_tile)
     self.tiles[y][x] = new_tile
 end
 
-function Map:get_creature_with_xy(x, y)
-    for _i, entity in pairs(G_entities) do
-        if entity.x == x and entity.y == y then
-            if entity.is_creature == true then
-                return entity
-            end
+function Map:get_mob_with_xy(x, y)
+    for _i, mob in pairs(self.mobs) do
+        if mob.x == x and mob.y == y then
+            return mob
         end
     end
 end

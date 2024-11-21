@@ -8,15 +8,18 @@ function PlayerTurnState:init(params)
         x = love.mouse.getX(),
         y = love.mouse.getY()
     }
+    self.interacting = false
+    self.looking = false
 end
 
 function PlayerTurnState:enter(params)
     self.player = params.player
     self.map = params.map
     self.interacting = params.interacting
+    self.looking = params.looking
 
     self.action = nil
-    
+
     G_bug:bugprint("player x on enter: ", self.player.x)
     G_bug:bugprint("player y on enter: ", self.player.y)
 end
@@ -52,8 +55,6 @@ function PlayerTurnState:input(key)
     end
 end
 
-
-
 function PlayerTurnState:update(dt)
     self.mouse.x, self.mouse.y = math.floor(self.mouse.x / 64), math.floor(self.mouse.y / 64)
 
@@ -84,12 +85,13 @@ function PlayerTurnState:update_movement(x, y)
       not self.map:occupied(x, y) then
         self.player.x = x
         self.player.y = y
-        G_gs:change("mob_turn_state", {map = self.map, player = self.player})
     elseif self.map:openable(x, y) then
         local tile = self.map.tiles[y][x]
         self.map:change_tile(x, y, Tile:new(G_tiles[tile.open_def], x, y))
-        G_gs:change("mob_turn_state", {map = self.map, player = self.player})
+    elseif self.map:occupied(x, y) and self.map:get_mob_with_xy(x, y).hostile then
+        print("HOSTILE!!!")
     end
+    G_gs:change("mob_turn_state", {map = self.map, player = self.player})
 end
 
 
