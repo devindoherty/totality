@@ -10,6 +10,7 @@ function PlayerTurnState:init(params)
     }
     self.interacting = false
     self.looking = false
+    
 end
 
 function PlayerTurnState:enter(params)
@@ -17,6 +18,7 @@ function PlayerTurnState:enter(params)
     self.map = params.map
     self.interacting = params.interacting
     self.looking = params.looking
+    self.selector = {x = self.player.x, y = self.player.y}
 
     self.action = nil
 
@@ -37,6 +39,10 @@ function PlayerTurnState:input(key)
             self.action = "player_interact_down"
         end
         return
+    elseif self.looking then
+        if key == "s" or key == "kp2" then
+            self.action = "selector_move_down"
+        end
     end
 
     if key == "w" or key == "kp8" then
@@ -52,6 +58,9 @@ function PlayerTurnState:input(key)
     elseif key == "e" then
         self.action = "player_interact"
         G_gs:change("player_turn_state", {map = self.map, player = self.player, interacting = true})
+    elseif key == "x" or key == "l" then
+        self.action = "player_look"
+        G_gs:change("player_turn_state", {map = self.map, player = self.player, looking = true})
     end
 end
 
@@ -64,6 +73,8 @@ function PlayerTurnState:update(dt)
     if self.action then
         if self.interacting then
             PlayerTurnState:update_interacting(x, y)
+        elseif self.looking then
+            PlayerTurnState:update_looking(x, y)
         else
             PlayerTurnState:update_movement(x, y)
         end
@@ -117,10 +128,21 @@ function PlayerTurnState:update_interacting(x, y)
     G_gs:change("player_turn_state", {map = self.map, player = self.player, interacting = false})
 end
 
+function PlayerTurnState:update_looking(x, y)
+    if self.action == "selector_move_down" then
+        self.selector.y = self.selector.y + 1
+    end
+end
 
 function PlayerTurnState:render()
     if self.interacting then
         love.graphics.print("Interact in which direction? (WASD)", 0, 0)
+    elseif self.looking then
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.setLineWidth(3)
+        love.graphics.rectangle("line", (self.selector.x - 1) * DRAW_FACTOR, (self.selector.y - 1) * DRAW_FACTOR, 32, 32)
+        love.graphics.setLineWidth(1)
+        love.graphics.setColor(1, 1, 1)
     end
     self.player:camera()
     self.map:render()
