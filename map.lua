@@ -19,17 +19,17 @@ function Map:new(params)
         end
     end
 
-    local testmob = Mob:new({
-        name = "Yarl",
-        sprite = G_sprites[G_mobs["yarl"].sprite],
-    }, 6, 13)
-    table.insert(self.mobs, testmob)
+    -- Getting the items defs from the maps data
+    for _k, itemdef in pairs(params.items) do
+        local item = Item:new(itemdef[1], itemdef[2], itemdef[3])
+        table.insert(self.items, item)
+    end
 
-    local testitem = Item:new(6, 4, {
-        name = "wooden bed",
-        sprite = G_sprites[G_items["wooden_bed"].sprite]
-    })
-    table.insert(self.items, testitem)
+    -- Getting the mob defs from the maps data
+    for _i, mobdef in pairs(params.mobs) do
+        local mob = Mob:new(mobdef[1], mobdef[2], mobdef[3])
+        table.insert(self.mobs, mob)
+    end
 
     return map
 end
@@ -45,7 +45,8 @@ function Map:render()
             if tile.name == "empty" then
                 -- Pass
             else
-                love.graphics.draw(G_spritesheet, tile.sprite, (tile.x-1) * DRAW_FACTOR, (tile.y-1) * DRAW_FACTOR, 0, SCALE_FACTOR)
+                -- love.graphics.draw(G_spritesheet, tile.sprite, (tile.x-1) * DRAW_FACTOR, (tile.y-1) * DRAW_FACTOR, 0, SCALE_FACTOR)
+                tile:render()
             end
         end
     end

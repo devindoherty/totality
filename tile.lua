@@ -3,7 +3,8 @@ Tile = {}
 function Tile:new(params, x, y)
     local tile = {}
     setmetatable(tile, self)
-    tile.__index = self
+    self.__index = self
+    
     tile.x = x
     tile.y = y
 
@@ -17,4 +18,8 @@ function Tile:new(params, x, y)
     tile.close_def = params.close_def or nil
 
     return tile
+end
+
+function Tile:render()
+    love.graphics.draw(G_spritesheet, self.sprite, (self.x-1) * DRAW_FACTOR, (self.y-1) * DRAW_FACTOR, 0, SCALE_FACTOR)
 end

@@ -1,14 +1,14 @@
 Item = {}
 
-function Item:new(x, y, params)
+function Item:new(params, x, y)
     local item = {}
     setmetatable(item, self)
     self.__index = self
-    self.x = x
-    self.y = y
-    self.name = params.name
-    self.sprite = params.sprite
-    self.description = params.description
+    item.x = x
+    item.y = y
+    item.name = params.name
+    item.sprite = G_sprites[params.sprite]
+    item.description = params.description
     return item
 end
 

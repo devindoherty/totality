@@ -16,6 +16,7 @@ function PlayerTurnState:enter(params)
     self.interacting = params.interacting
 
     self.action = nil
+    
     G_bug:bugprint("player x on enter: ", self.player.x)
     G_bug:bugprint("player y on enter: ", self.player.y)
 end

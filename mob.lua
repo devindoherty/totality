@@ -4,11 +4,11 @@ function Mob:new(params, x, y)
     local mob = {}
     setmetatable(mob, self)
     self.__index = self
-    self.name = params.name
-    self.sprite = params.sprite
-    self.x = x
-    self.y = y
-    self.behavior = "do_nothing"
+    mob.name = params.name
+    mob.sprite = G_sprites[params.sprite]
+    mob.x = x
+    mob.y = y
+    mob.behavior = "do_nothing"
     return mob
 end
 

@@ -2,9 +2,12 @@
 G_dialogs = {
     ["intro"] = {
         line = "You followed father's advice and took the starry pass into the midnight lands. \n\nBut in the darkness of the eternal eclipse, you stumbled and fell into darkness. You've awakened in an old farmhouse. \n\nPress ENTER to continue...",
-        speaker = "narrator"
+        speaker = "Narrator"
     },
-    ["yarl_root"] = "You're awake! Sit a while, if ya like. Took a nasty fall there. I'm Yarl, this is my farm.",
+    ["yarl_root"] = {
+        line = "You're awake! Sit a while, if ya like. Took a nasty fall there. I'm Yarl, this is my farm.",
+        speaker = "yarl"
+    },
     ["yarl_name"] = "That's my name, don't wear it thin. Been living on this farm since sundown.",
     ["yarl_sundown"] = "How long's it been since the eclipse, going on a decade now?",
     ["yarl_eclipse"] = "You must've really hit your head in that fall. The eclipse darkened the sun some ten years ago, and never ended. Some say the gods cursed us. What for, I couldn't tell ya.",
