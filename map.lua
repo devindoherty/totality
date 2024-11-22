@@ -103,6 +103,20 @@ function Map:get_mob_with_xy(x, y)
     return false
 end
 
+function Map:get_item_with_xy(x, y)
+    for _i, item in pairs(self.items) do
+        if item.x == x and item.y == y then
+            return item
+        end
+    end
+    return false
+end
+
+function Map:get_tile_with_xy(x, y)
+    return self.tiles[y][x]
+end
+
+
 function Map:get_distance_between_two_points(point1, point2)
     local x1 = point1.x
     local y1 = point1.y

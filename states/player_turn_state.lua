@@ -147,10 +147,23 @@ function PlayerTurnState:update_looking(x, y)
     elseif self.action == "selector_move_right" then
         self.selector.x = self.selector.x + 1
     elseif self.action == "selector_select" then
-        local target = self.map:get_mob_with_xy(self.selector.x, self.selector.y)
-        if target then
-            print(target.description)
+        local target_mob = self.map:get_mob_with_xy(self.selector.x, self.selector.y)
+        local target_item = self.map:get_item_with_xy(self.selector.x, self.selector.y)
+        local target_tile = self.map:get_tile_with_xy(self.selector.x, self.selector.y)
+        if target_mob then
+            print(target_mob.description)
         end
+        if target_item then
+            print(target_item.description)
+        end
+        if target_tile then
+            if target_tile.description == "Nothing but empty space." and target_item or target_mob then
+            
+            else
+                print(target_tile.description)
+            end
+        end
+        
         G_gs:change("player_turn_state", {map = self.map, player = self.player, looking = false})
     end
     self.action = nil
