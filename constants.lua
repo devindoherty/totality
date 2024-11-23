@@ -8,3 +8,4 @@ DEBUG = true
 
 MAP_HEIGHT = 64
 MAP_WIDTH = 128
+

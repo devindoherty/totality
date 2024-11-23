@@ -21,18 +21,18 @@ G_tiles = {
         description = "This tree flourishes despite the lack of sunlight."
     },
     ["D"] = {
-        name = "white_door",
+        name = "wooden_door",
         glyph = "D",
-        sprite = 210,
+        sprite = 98,
         solid = true,
         openable = true,
         open_def = "O",
         description =  "A simple swinging door. This one is closed."
     },
     ["O"] = {
-        name = "white_doorframe",
+        name = "wooden_doorframe",
         glyph = "O",
-        sprite = 187,
+        sprite = 142,
         description = "An open doorway beckons you.",
         solid = false,
         openable = false,

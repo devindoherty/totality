@@ -2,10 +2,10 @@ G_area_one_tiles = {
 "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
 "T                      TTT~TTTTTTTTTT   TTTTT      TTTT                                                                         T",
 "T   #################    T~ TTTTTT T      TTTT       TT                                                                         T",                
-"T   #   #        D  #     ~    TT         TT     TTTT T                                                                         T", 
-"T   #   #        #  #     ~     T         T       T                                                                             T", 
-"T   ##D##        #  #     ~                                                                                                     T", 
-"T   #   #        #  #     ~                                                                                                     T", 
+"T   #   #  D        #     ~    TT         TT     TTTT T                                                                         T", 
+"T   #   #  #        #     ~     T         T       T                                                                             T", 
+"T   ##D##  #        #     ~                                                                                                     T", 
+"T   #   #  #        #     ~                                                                                                     T", 
 "T   #   ######D######     ~                                                                                                     T", 
 "T   #   D           D     ~                                                                                                     T", 
 "T   #   ###D#####D###     ~                                                                                                     T", 
@@ -70,7 +70,7 @@ G_area_one_tiles = {
 
 G_area_one_mobs = {
     {G_mobs["yarl"], 6, 13},
-    {G_mobs["rat"], 17, 4},
+    {G_mobs["rat"], 13, 4},
 }
 
 G_area_one_items = {

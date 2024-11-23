@@ -25,6 +25,9 @@ function StartState:update(dt)
             player = self.player,
             map = self.map,
         })
+    elseif
+        self.action == "m" then
+            G_gs:change("map_editor_state")
     end
 end
 
