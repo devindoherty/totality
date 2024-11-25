@@ -7,7 +7,7 @@ G_tiles = {
         description = "Nothing but empty space."
     },
     ["#"] = {
-        name = "wooden_wall",
+        name = "wooden wall",
         glyph = "#",
         sprite = 303,
         solid = true,
@@ -21,7 +21,7 @@ G_tiles = {
         description = "This tree flourishes despite the lack of sunlight."
     },
     ["D"] = {
-        name = "wooden_door",
+        name = "wooden door",
         glyph = "D",
         sprite = 98,
         solid = true,
@@ -30,7 +30,7 @@ G_tiles = {
         description =  "A simple swinging door. This one is closed."
     },
     ["O"] = {
-        name = "wooden_doorframe",
+        name = "wooden doorframe",
         glyph = "O",
         sprite = 142,
         description = "An open doorway beckons you.",

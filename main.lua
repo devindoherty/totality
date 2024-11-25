@@ -36,8 +36,8 @@ function love.load()
     -- G_screen_canvas = love.graphics.newCanvas(SCREEN_WIDTH, SCREEN_HEIGHT)
     love.graphics.setDefaultFilter("nearest", "nearest")
     
-    G_load_sprites()
-
+    Spritesheet.load_sprites()
+    G_start_screen_splash = love.graphics.newImage("assets/start_screen_splash.png")
     G_gs = Gamestate:new({
         ["start_state"] = function() return StartState end,
         ["character_creation_state"] = function() return CharacterCreationState end,

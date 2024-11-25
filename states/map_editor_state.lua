@@ -16,10 +16,10 @@ function State:render()
         love.graphics.setColor(252/255, 15/255, 192/255)
         love.graphics.print(i, x, y)
         love.graphics.setColor(1, 1, 1)
-        y = y + 32
-        if y >= 704 then
-            x = x + 34
-            y = 0
+        x = x + 32
+        if x >= 1532 then
+            y = y + 34
+            x = 0
         end
     end
 

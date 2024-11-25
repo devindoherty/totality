@@ -74,5 +74,8 @@ G_area_one_mobs = {
 }
 
 G_area_one_items = {
-    {G_items["wooden_bed"], 6, 4}
+    {G_items["wooden_bed"], 6, 4},
+    {G_items["stool"], 6, 13},
+    {G_items["desk"], 7, 13},
+    {G_items["stool"], 8, 13},
 }

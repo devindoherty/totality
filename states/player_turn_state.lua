@@ -3,7 +3,7 @@ PlayerTurnState = State:new()
 function PlayerTurnState:init(params)
     self.turn = 0
     self.action = nil
-    self.log = {}
+    self.log = {"test", "test2", "test3"}
     self.mouse = {
         x = love.mouse.getX(),
         y = love.mouse.getY()
@@ -107,6 +107,7 @@ function PlayerTurnState:update_movement(x, y)
         self.player.y = y
     elseif self.map:openable(x, y) then
         local tile = self.map.tiles[y][x]
+        table.insert(self.log, "You open the " .. tile.name)
         self.map:change_tile(x, y, Tile:new(G_tiles[tile.open_def], x, y))
     elseif self.map:occupied(x, y) and self.map:get_mob_with_xy(x, y).hostile then
         print("HOSTILE!!!")
@@ -129,8 +130,10 @@ function PlayerTurnState:update_interacting(x, y)
     local tile = self.map.tiles[y][x]
     
     if self.map:closable(x, y) then
+        table.insert(self.log, "You close the door in the " .. tile.name)
         self.map:change_tile(x, y, Tile:new(G_tiles[tile.close_def], x, y))
     elseif self.map:openable(x, y) then
+        table.insert(self.log, "You open the " .. tile.name)
         self.map:change_tile(x, y, Tile:new(G_tiles[tile.open_def], x, y))
     end
     
@@ -150,29 +153,44 @@ function PlayerTurnState:update_looking(x, y)
         local target_mob = self.map:get_mob_with_xy(self.selector.x, self.selector.y)
         local target_item = self.map:get_item_with_xy(self.selector.x, self.selector.y)
         local target_tile = self.map:get_tile_with_xy(self.selector.x, self.selector.y)
+        local logline = "You see "
         if target_mob then
             print(target_mob.description)
+            logline = logline .. ", " .. target_mob.name .. " "
         end
         if target_item then
             print(target_item.description)
+            logline = logline .. ", " .. target_item.name .. " "
         end
         if target_tile then
             if target_tile.description == "Nothing but empty space." and target_item or target_mob then
             
             else
                 print(target_tile.description)
+                logline = logline .. " " .. target_tile.name .. " "
             end
         end
+        table.insert(self.log, logline)
         
         G_gs:change("player_turn_state", {map = self.map, player = self.player, looking = false})
     end
     self.action = nil
 end
 
-function PlayerTurnState:render()
-    if self.interacting then
-        love.graphics.print("Interact in which direction? (WASD)", 0, 0)
+function PlayerTurnState:render_log()
+    local x = 0
+    local y = SCREEN_HEIGHT - 12
+    love.graphics.setColor(0, 0, 0, .5)
+    love.graphics.rectangle("fill", 0, 0, SCREEN_WIDTH / 10, SCREEN_HEIGHT)
+    love.graphics.setColor(1, 1, 1)
+    for i = #self.log, 1, -1 do
+        love.graphics.print(self.log[i], x, y)
+        y = y - 12
     end
+end
+
+function PlayerTurnState:render()
+    love.graphics.push()
     
     self.player:camera()
 
@@ -187,6 +205,12 @@ function PlayerTurnState:render()
 
     self.player:render()
 
+    love.graphics.pop()
+
+    if self.interacting then
+        love.graphics.print("Interact in which direction? (WASD)", 0, 0)
+    end
+    PlayerTurnState:render_log()
 end
 
 function PlayerTurnState:exit()
