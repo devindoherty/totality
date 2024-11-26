@@ -1,9 +1,23 @@
 Mob = {}
 
-function Mob:new()
+function Mob:new(params, x, y, map, id)
     local mob = {}
     setmetatable(mob, self)
     self.__index = self
+    
+    mob.name = params.name
+    mob.sprite = G_sprites[params.sprite]
+    mob.description = params.description or "Unremarkable."
+    
+    mob.x = x
+    mob.y = y
+    mob.map = map
+    mob.id = id
+
+    mob.stats = params.stats
+
+    mob.behavior = "do_nothing"
+    mob.hostile = params.hostile or false
     return mob
 end
 
@@ -171,9 +185,6 @@ end
 function Mob:do_nothing()
     local x = self.x
     local y = self.y
-    if G_inbounds(x, y) then
-        
-    end
 end
 
 function Mob:check_movement()
@@ -221,6 +232,9 @@ function Mob:set_attacking(defender)
     end
 end
 
+function Mob:render()
+    love.graphics.draw(G_spritesheet, self.sprite, (self.x-1) * DRAW_FACTOR, (self.y-1) * DRAW_FACTOR, 0, SCALE_FACTOR)
+end
 
 function Mob:draw_quip(topic)
     love.graphics.setColor(0, 0, 1, .75)
@@ -236,4 +250,14 @@ end
 
 function Mob:inflict_damage(damage)
     self.stats["health"] = self.stats["health"] - damage
+end
+
+function Mob:inflict_condition(condition)
+
+end
+
+function Mob:die()
+    table.remove(self.map.mobs, self.id)
+    remains = Item:new(G_items["remains"], self.x, self.y, self.map)
+    table.insert(self.map.items, remains)
 end

@@ -1,69 +1,29 @@
-function G_update_attacks(dt)
-    -- for i, _j in pairs(G_gamestate.attack_queue) do
-    --     G_gamestate.attack_queue[i] = nil
-    -- end
-    
-    for _i, entity in pairs(G_entities) do
-        if entity.is_creature then
-            if entity.is_attacking then
-                local defender = entity.target
-                defender:inflict_damage(5)
-                print(entity.name .. " is attacking " .. defender.name)
-                print(defender.name, defender.stats["health"] .. " health")
-                G_log_text = entity.name .. " attacked " .. defender.name
-                local drawn_attack_x = defender.x
-                local drawn_attack_y = defender.y
-                local slash = Entity:new("slash", G_sprites[540], drawn_attack_x, drawn_attack_y, false)
-                slash.is_effect = true
-                slash.animation_frame = 1
-                table.insert(G_gamestate.attack_queue, slash)
+Interact = {}
 
-                entity.is_attacking = false
-                entity.target = nil
-            end
-        end
-    end
+function Interact:new(name, interactible, effect)
+    local interact = {}
+    setmetatable(interact, self)
+    self.__index = self
+    self.name = name
+    self.interactible = interactible
+    self.effect = function () end
 end
 
-function G_update_attack_draws(dt)
-    for i, attack in pairs(G_gamestate.attack_queue) do
-        print("Updating Attack " .. attack.name, attack.animation_frame)
-        print("Number of attacks " .. #G_gamestate.attack_queue)
-        attack.animation_frame = attack.animation_frame + 10 * dt
-        if attack.animation_frame >= 4 then
-            G_gamestate.attack_queue[i] = nil
-        end
-    end
-end
-
-function G_draw_attacks()
-    for _i, attack in pairs(G_gamestate.attack_queue) do
-        print("Drawing: " .. attack.name, attack.animation_frame)
-        love.graphics.draw(G_spritesheet, attack.sprite, attack.x * DRAW_FACTOR, attack.y * DRAW_FACTOR, 0, attack.animation_frame)
-    end
-end
-
-function G_draw_attacks_log(dt)
-    if G_log_text then
-        love.graphics.print(G_log_text, SCREEN_HEIGHT / 2, SCREEN_WIDTH / 2, 0, 2)
-    end
-end
-
-function G_open_item(x, y)
+function Interact:open_item(x, y)
     if G_tilemap[y][x] == 'D' then 
         G_tilemap[y][x] = 'O'
     end
 end
 
 -- TODO
-function G_close_item(x, y)
+function Interact:close_item(x, y)
     G_tilemap[y][x] = 'D'
 end
 
-function G_detect_interactible(interactor)
+function Interact.detect(interactor, interactibles)
     for x = interactor.x - 1, interactor.x + 1 do
         for y = interactor.y -1, interactor.y + 1 do
-            for _i, entity in pairs(G_entities) do
+            for _i, entity in pairs(interactibles) do
                 if entity.x == x and entity.y == y and entity.name ~= "player" then
                     print(entity.name .. " is interactible!")
                     if entity.is_creature and entity.is_friendly then
@@ -85,7 +45,7 @@ function G_detect_interactible(interactor)
     end
 end
 
-function G_draw_interactible_detection()
+function Interact:render_detection()
     love.graphics.setColor(0, 0, 0, .5)
     love.graphics.rectangle("fill", SCREEN_HEIGHT / 2, SCREEN_WIDTH / 2, 400, 200)
     love.graphics.setColor(1, 1, 0)
@@ -98,7 +58,7 @@ function G_draw_interactible_detection()
     end
 end
 
-function G_set_interacting(interactor, interactible)
+function Interact:set(interactor, interactible)
     if interactible.is_creature and interactible.is_friendly then
         interactor.is_conversing = true
         interactible.is_known = true
@@ -112,7 +72,7 @@ function G_set_interacting(interactor, interactible)
     end
 end
 
-function G_update_interact()
+function Interact:update()
     for key, value in pairs(G_gamestate.nearby_interactible.target.quips) do
         if G_gamestate.response.entered == key then
             G_gamestate.response.answer = value
@@ -121,7 +81,7 @@ function G_update_interact()
 
 end
 
-function G_draw_interact()
+function Interact:render()
     love.graphics.setColor(0, 0, 0)
     love.graphics.rectangle("fill", SCREEN_WIDTH / 10, SCREEN_HEIGHT / 6, 800, 400)
     love.graphics.setColor(1, 1, 0)

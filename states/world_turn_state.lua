@@ -4,7 +4,6 @@ function WorldTurnState:new()
     local state = {}
     setmetatable(state, self)
     self.__index = self
-    self.map = Map:new(G_area_one_map)
     return state
 end
 

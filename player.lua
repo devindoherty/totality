@@ -4,9 +4,10 @@ function Player:new()
     local player = {}
     setmetatable(player, self)
     self.__index = self
-    self.x = 6
-    self.y = 4
-    self.sprite = G_sprites[551]
+    player.name = "Player"
+    player.x = 6
+    player.y = 4
+    player.sprite = G_sprites[26]
     return player
 end
 

@@ -4,37 +4,45 @@ G_tiles = {
         glyph = " ",
         sprite = 1,
         solid = false,
+        description = "Nothing but empty space."
     },
     ["#"] = {
-        name = "brick_wall",
+        name = "wooden wall",
         glyph = "#",
-        sprite = 146,
+        sprite = 782,
         solid = true,
+        description = "A timber oaken wall."
     },
     ["T"] = {
         name = "tree",
         glyph = "T",
-        sprite = 2,
+        sprite = 49,
         solid = true,
+        description = "This tree flourishes despite the lack of sunlight."
     },
     ["D"] = {
-        name = "white_door",
+        name = "wooden door",
         glyph = "D",
-        sprite = 210,
+        sprite = 441,
         solid = true,
         openable = true,
+        open_def = "O",
+        description =  "A simple swinging door. This one is closed."
     },
     ["O"] = {
-        name = "white_doorframe",
+        name = "wooden doorframe",
         glyph = "O",
-        sprite = 187,
+        sprite = 442,
+        description = "An open doorway beckons you.",
         solid = false,
         openable = false,
+        closable = true,
+        close_def = "D"
     },
     ["~"] = {
         name = "water",
-        glyph = "W",
-        sprite = 199 - 18,
+        glyph = "~",
+        sprite = 249,
         solid = false,
     },
 }
