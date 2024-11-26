@@ -12,12 +12,12 @@ cult of the moongod, a permanent eclipse which has blotted out the sun itself.
 - Monster movement
 - Basic collision
 - Basic combat
-
-
-### Next
 - Map rewrite
 - More interesting interactions
+
+### Next
 - Talking to NPCs
+- Mob AI rewrite
 
 # What did I do?
 
