@@ -82,6 +82,16 @@ function Map:occupied(x, y)
     end
 end
 
+function Map:blocked(x, y)
+    for _i, item in pairs(self.items) do
+        if x == item.x and y == item.y then
+            if item.blocker then
+                return true
+            end
+        end
+    end
+end
+
 function Map:openable(x, y)
     return self.tiles[y][x].openable
 end

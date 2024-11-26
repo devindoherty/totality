@@ -78,4 +78,5 @@ G_area_one_items = {
     {G_items["stool"], 6, 13},
     {G_items["desk"], 7, 13},
     {G_items["stool"], 8, 13},
+    {G_items["bookcase"], 8, 4}
 }

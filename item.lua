@@ -9,6 +9,7 @@ function Item:new(params, x, y, map)
     item.name = params.name
     item.sprite = G_sprites[params.sprite]
     item.description = params.description
+    item.blocker = params.blocker
     return item
 end
 

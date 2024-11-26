@@ -15,12 +15,20 @@ G_items = {
         name = "desk",
         glyph = "K",
         sprite = 387,
-        description = "A wooden desk."
+        description = "A wooden desk.",
+        blocker = true,
     },
     ["remains"] = {
         name = "remains",
         glyph = "x",
         sprite = 721,
         description = "The remains of a creature."
+    },
+    ["bookcase"] = {
+        name = "bookcase",
+        glyph = "b",
+        sprite = 294,
+        description = "An old wooden bookcase.",
+        blocker = true,
     } 
 }

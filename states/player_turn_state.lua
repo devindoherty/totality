@@ -123,7 +123,7 @@ function PlayerTurnState:update_movement_or_bump(x, y)
     end
 
     if self.map:inbounds(x, y) and not self.map:solid(x, y) and
-      not self.map:occupied(x, y) then
+      not self.map:occupied(x, y) and not self.map:blocked(x, y) then
         self.player.x = x
         self.player.y = y
     elseif self.map:openable(x, y) then
