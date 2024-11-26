@@ -1,44 +1,40 @@
 Attack = {}
 
-function Attack:new(name, attacker, defender, params)
+function Attack:new(name, x, y, attacker, defender, params)
     local attack = {}
     setmetatable(attack, self)
     self.__index = self
-    self.name = name
-    self.attacker = attacker
-    self.target = defender
-    self.sprite = params.sprite or nil
-    self.frames = params.frames or nil
+    attack.name = name
+    attack.x = x
+    attack.y = y
+    attack.attacker = attacker
+    attack.defender = defender
+    attack.description = params.description or ""
+    attack.sprite = G_sprites[params.sprite] or nil
+    attack.frame = params.frame or nil
+    attack.damage = params.damage or 0
+    attack.condition = params.condition or nil
     return attack
 end
 
 function Attack:update(dt)
-
-    self.defender:inflict_damage(5)
+    if self.frame == 0 then 
+        self.defender:inflict_damage(self.damage)
+    end
     print(self.attacker.name .. " is attacking " .. self.defender.name)
     print(self.defender.name, self.defender.stats["health"] .. " health")
+    self:update_frames(dt)
 end
 
-function Attack:update_draws(dt)
-    for i, attack in pairs(G_gamestate.attack_queue) do
-        print("Updating Attack " .. attack.name, attack.animation_frame)
-        print("Number of attacks " .. #G_gamestate.attack_queue)
-        attack.animation_frame = attack.animation_frame + 10 * dt
-        if attack.animation_frame >= 4 then
-            G_gamestate.attack_queue[i] = nil
-        end
-    end
+function Attack:update_frames(dt)
+    self.frame = self.frame + 10 * dt
 end
 
 function Attack:draw()
-    for _i, attack in pairs(G_gamestate.attack_queue) do
-        print("Drawing: " .. attack.name, attack.animation_frame)
-        love.graphics.draw(G_spritesheet, attack.sprite, (attack.x - 1) * DRAW_FACTOR, (attack.y - 1) * DRAW_FACTOR, 0, attack.animation_frame)
-    end
+    love.graphics.draw(G_spritesheet, self.sprite, (self.x - 1) * DRAW_FACTOR, (self.y - 1) * DRAW_FACTOR, 0, self.frame)
 end
 
-function Attack:log(dt)
-    if G_log_text then
-        love.graphics.print(G_log_text, SCREEN_HEIGHT / 2, SCREEN_WIDTH / 2, 0, 2)
-    end
+function Attack:log(log)
+    local logline = self.attacker.name .. " " .. self.description.name .. " " .. self.defender.name .. " for " .. self.damage .. " damage."
+    table.insert(log, logline)
 end

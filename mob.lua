@@ -1,6 +1,6 @@
 Mob = {}
 
-function Mob:new(params, x, y, map)
+function Mob:new(params, x, y, map, id)
     local mob = {}
     setmetatable(mob, self)
     self.__index = self
@@ -12,6 +12,9 @@ function Mob:new(params, x, y, map)
     mob.x = x
     mob.y = y
     mob.map = map
+    mob.id = id
+
+    mob.stats = params.stats
 
     mob.behavior = "do_nothing"
     mob.hostile = params.hostile or false
@@ -251,4 +254,10 @@ end
 
 function Mob:inflict_condition(condition)
 
+end
+
+function Mob:die()
+    table.remove(self.map.mobs, self.id)
+    remains = Item:new(G_items["remains"], self.x, self.y, self.map)
+    table.insert(self.map.items, remains)
 end

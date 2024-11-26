@@ -26,8 +26,8 @@ function Map:new(params)
     end
 
     -- Getting the mob defs from the maps data
-    for _i, mobdef in pairs(params.mobs) do
-        local mob = Mob:new(mobdef[1], mobdef[2], mobdef[3], map)
+    for i, mobdef in pairs(params.mobs) do
+        local mob = Mob:new(mobdef[1], mobdef[2], mobdef[3], map, i)
         table.insert(self.mobs, mob)
     end
 
@@ -154,4 +154,8 @@ function Map:update_dead_creatures()
             end
         end
     end
+end
+
+function Map:create_item(item)
+    table.insert(self.items, item)
 end

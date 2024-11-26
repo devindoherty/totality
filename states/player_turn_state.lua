@@ -3,13 +3,14 @@ PlayerTurnState = State:new()
 function PlayerTurnState:init(params)
     self.turn = 0
     self.action = nil
-    self.log = {"test", "test2", "test3"}
+    self.log = {"123456789012345678901234567890"}
     self.mouse = {
         x = love.mouse.getX(),
         y = love.mouse.getY()
     }
     self.interacting = false
     self.looking = false
+    self.attacking = false
     
 end
 
@@ -17,9 +18,12 @@ function PlayerTurnState:enter(params)
     self.player = params.player
     self.map = params.map
     self.interacting = params.interacting
+    
     self.looking = params.looking
     self.selector = {x = self.player.x, y = self.player.y}
 
+    self.attacking = params.attacking
+    
     self.action = nil
 
     G_bug:bugprint("player x on enter: ", self.player.x)
@@ -52,6 +56,10 @@ function PlayerTurnState:input(key)
             self.action = "selector_select"
         end
         return
+    elseif self.attacking then
+        self.action = "player_attack"
+        print(self.attacking.frame)
+        return
     end
 
     if key == "w" or key == "kp8" then
@@ -66,6 +74,7 @@ function PlayerTurnState:input(key)
         self.action = "player_end_turn"
     elseif key == "e" then
         self.action = "player_interact"
+        table.insert(self.log, "Interact in which direction? (WASD)")
         G_gs:change("player_turn_state", {map = self.map, player = self.player, interacting = true})
     elseif key == "x" or key == "l" then
         self.action = "player_look"
@@ -84,13 +93,25 @@ function PlayerTurnState:update(dt)
             PlayerTurnState:update_interacting(x, y)
         elseif self.looking then
             PlayerTurnState:update_looking(x, y)
+        elseif self.attacking then
+            self.attacking:update(dt)
+            if self.attacking.frame > 2.5 then
+                self.attacking = nil
+                G_gs:change("mob_turn_state", {map = self.map, player = self.player})
+            end
         else
-            PlayerTurnState:update_movement(x, y)
+            PlayerTurnState:update_movement_or_bump(x, y)
         end
     end
+
+    for _i, mob in pairs(self.map.mobs) do
+        if mob.stats["health"] <= 0 then
+            mob:die()
+        end
+    end 
 end
 
-function PlayerTurnState:update_movement(x, y)
+function PlayerTurnState:update_movement_or_bump(x, y)
     if self.action == "player_move_up" then
         y = y - 1
     elseif self.action == "player_move_down" then
@@ -109,9 +130,21 @@ function PlayerTurnState:update_movement(x, y)
         local tile = self.map.tiles[y][x]
         table.insert(self.log, "You open the " .. tile.name)
         self.map:change_tile(x, y, Tile:new(G_tiles[tile.open_def], x, y))
-    elseif self.map:occupied(x, y) and self.map:get_mob_with_xy(x, y).hostile then
-        print("HOSTILE!!!")
+    elseif self.map:occupied(x, y) then
+        local occupier = self.map:get_mob_with_xy(x, y)
+        if occupier.hostile then
+            print(occupier.name)
+            self.attacking = Attack:new("basic attack", x, y, self.player, occupier, {
+                description = "hit",
+                sprite = 553,
+                frame = 0,
+                damage = 5,
+                condition = "none"
+            })
+            return
+        end
     end
+
     G_gs:change("mob_turn_state", {map = self.map, player = self.player})
 end
 
@@ -170,8 +203,8 @@ function PlayerTurnState:update_looking(x, y)
                 logline = logline .. " " .. target_tile.name .. " "
             end
         end
-        table.insert(self.log, logline)
         
+        table.insert(self.log, logline)
         G_gs:change("player_turn_state", {map = self.map, player = self.player, looking = false})
     end
     self.action = nil
@@ -181,11 +214,15 @@ function PlayerTurnState:render_log()
     local x = 0
     local y = SCREEN_HEIGHT - 12
     love.graphics.setColor(0, 0, 0, .5)
-    love.graphics.rectangle("fill", 0, 0, SCREEN_WIDTH / 10, SCREEN_HEIGHT)
+    love.graphics.rectangle("fill", 0, 0, SCREEN_WIDTH / 4, SCREEN_HEIGHT)
     love.graphics.setColor(1, 1, 1)
     for i = #self.log, 1, -1 do
-        love.graphics.print(self.log[i], x, y)
-        y = y - 12
+        love.graphics.printf(self.log[i], x, y, SCREEN_WIDTH / 4)
+        if #self.log[i] > 30 then
+            y = y - 24
+        else
+            y = y - 12
+        end
     end
 end
 
@@ -205,11 +242,12 @@ function PlayerTurnState:render()
 
     self.player:render()
 
+    if self.attacking then
+        self.attacking:draw()
+    end
+
     love.graphics.pop()
 
-    if self.interacting then
-        love.graphics.print("Interact in which direction? (WASD)", 0, 0)
-    end
     PlayerTurnState:render_log()
 end
 
