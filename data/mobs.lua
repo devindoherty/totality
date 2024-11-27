@@ -3,6 +3,7 @@ G_mobs = {
         name = "Yarl",
         sprite = 128,
         description = "A tired old farmer whose friendly face still bears the bronzed blessing of the long-gone sun.",
+        behavior = "friendly", 
         stats = {
             ["health"] = 100,
         }
@@ -12,6 +13,8 @@ G_mobs = {
         sprite = 416,
         hostile = true,
         description = "An enormous, black furred rat with uncannily intelligent pink eyes.",
+        
+        behavior = "aggressive",
         stats = {
             ["health"] = 15,
         }

@@ -31,6 +31,8 @@ function MobTurnState:update(dt)
             mob:move_along_walls()
         elseif mob.behavior == "neutral" then
             mob:do_nothing()
+        elseif mob.behavior == "friendly" then
+            mob:do_nothing()
         else
             print(mob.name .. " does not have behavior.")
         end

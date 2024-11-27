@@ -16,8 +16,13 @@ function Mob:new(params, x, y, map, id)
 
     mob.stats = params.stats
 
-    mob.behavior = "do_nothing"
+    mob.behavior = params.behavior
     mob.hostile = params.hostile or false
+    mob.sightline = {
+        x = nil,
+        y = nil,
+    }
+
     return mob
 end
 
@@ -29,8 +34,9 @@ function Mob:line_of_sight(target)
     local x1 = target.x
     local y1 = target.y
 
-    -- G_blocker.x = target.x
-    -- G_blocker.y = target.y
+    -- self.sightline.x = target.x
+    -- self.sightline.y = target.y
+
     local function line_of_sight_low(x0, y0, x1, y1)
         local dx = x1 - x0
         local dy = y1 - y0
@@ -42,9 +48,9 @@ function Mob:line_of_sight(target)
         local D = (2 * dy) - dx
         local y = y0
         for x = x0, x1 do
-            if not G_empty_tile(x, y) then
-                G_blocker.x = x
-                G_blocker.y = y
+            if self.map:solid(x, y) then
+                self.sightline.x = x
+                self.sightline.y = y
                 return false
             end
             if D > 0 then
@@ -54,7 +60,6 @@ function Mob:line_of_sight(target)
                 D = D + 2 * dy
             end
         end
-    
         return true
     end
 
@@ -70,10 +75,9 @@ function Mob:line_of_sight(target)
         local x = x0
         for y = y0, y1 do
             
-            if not G_empty_tile(x, y) then
-                local closest_blocker -- Test to see if global blocker abs is bigger, if not then return false
-                G_blocker.x = x
-                G_blocker.y = y
+            if self.map:solid(x, y) then
+                self.sightline.x = x
+                self.sightline.y = y
                 return false
             end
             if D > 0 then
@@ -101,50 +105,54 @@ function Mob:line_of_sight(target)
     end
 end
 
-function Mob:draw_line_of_sight(observer, target)
-    if observer.last_seen.x or observer.last_seen.y then
+function Mob:draw_line_of_sight(target)
+    if self.sightline.x or self.sightline.y then
         love.graphics.setColor(1, 0, 0)
-        love.graphics.line((observer.x + .5) * DRAW_FACTOR, (observer.y + .5) * DRAW_FACTOR, (observer.last_seen.x + .5) * DRAW_FACTOR, (observer.last_seen.y + .5) * DRAW_FACTOR)
+        love.graphics.line((self.x - .5) * DRAW_FACTOR, (self.y - .5) * DRAW_FACTOR, (self.sightline.x - .5) * DRAW_FACTOR, (self.sightline.y - .5) * DRAW_FACTOR)
     else
         love.graphics.setColor(0, 1, 0)
-        love.graphics.line((observer.x + .5) * DRAW_FACTOR, (observer.y + .5) * DRAW_FACTOR, (target.x + .5) * DRAW_FACTOR, (target.y + .5) * DRAW_FACTOR)
+        love.graphics.line((self.x - .5) * DRAW_FACTOR, (self.y - .5) * DRAW_FACTOR, (target.x - .5) * DRAW_FACTOR, (target.y - .5) * DRAW_FACTOR)
     end
     love.graphics.setColor(255, 255, 255)
 end
 
 function Mob:move_toward_target(target)
-    local player = G_entities["player"]
 
     local x = self.x
     local y = self.y
 
-    if x ~= player.x or y ~= player.y then
-        if math.abs(player.x - x) > math.abs(player.y - y) then
-            if x <= player.x then
+    if x ~= target.x or y ~= target.y then
+        if math.abs(target.x - x) > math.abs(target.y - y) then
+            if x <= target.x then
                 x = x + 1
             else
                 x = x - 1
             end
         else
-            if y <= player.y then
+            if y <= target.y then
                 y = y + 1
             else
                 y = y - 1
             end
         end
         
-        if G_empty_tile(x, y) and G_inbounds(x, y) and G_no_creature(x, y) and G_line_of_sight(mob, target) then
+        if self.map:inbounds(x, y) and not self.map:solid(x, y) and 
+          not self.map:occupied(x, y) and self:line_of_sight(target) then
             self.x = x
             self.y = y
-        elseif not G_no_creature(x, y) then
-            local defender = self.map:get_creature_with_xy(x, y)
-            self:set_attacking(defender)
+          elseif self.map:occupied(x, y) and self.map:get_creature_with_xy(x, y) == target then
+            Attack:new("basic attack", x, y, self, target, {
+                description = "hit",
+                sprite = 553,
+                frame = 0,
+                damage = 5,
+                condition = "none"
+            })
         end
     end
 end
 
 function Mob:move_idly()
-    local player = G_entities["player"]
 
     local x = self.x
     local y = self.y
@@ -208,16 +216,6 @@ function Mob:select_quip()
     if self.quips then
         local quip_idx = love.math.random(1, #self.quips)
         print(self.quips[quip_idx])
-    end
-end
-
-
-function G_draw_all_lines_of_sight()
-    local player = G_entities["player"]
-    for i, entity in pairs(G_entities) do
-        if entity.is_creature and entity.name ~= "player" then
-            G_draw_line_of_sight(entity, player)
-        end
     end
 end
 

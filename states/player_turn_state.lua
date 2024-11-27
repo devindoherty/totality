@@ -246,6 +246,13 @@ function PlayerTurnState:render()
         self.attacking:draw()
     end
 
+    if DEBUG then
+        for _i, mob in pairs(self.map.mobs) do
+            mob:draw_line_of_sight(self.player)
+        end
+    end
+
+
     love.graphics.pop()
 
     PlayerTurnState:render_log()
