@@ -12,8 +12,7 @@ G_mobs = {
         name = "Rat",
         sprite = 416,
         hostile = true,
-        description = "An enormous, black furred rat with uncannily intelligent pink eyes.",
-        
+        description = "An enormous, black furred rat with uncannily intelligent pink eyes.",   
         behavior = "aggressive",
         stats = {
             ["health"] = 15,

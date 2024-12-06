@@ -25,6 +25,10 @@ function Tile:new(params, x, y)
     return tile
 end
 
+function Tile:change_name(desc)
+    self.name = desc
+end
+
 function Tile:render()
     love.graphics.draw(G_spritesheet, self.sprite, (self.x-1) * DRAW_FACTOR, (self.y-1) * DRAW_FACTOR, 0, SCALE_FACTOR)
 end

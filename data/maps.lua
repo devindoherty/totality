@@ -71,6 +71,7 @@ G_area_one_tiles = {
 G_area_one_mobs = {
     {G_mobs["yarl"], 6, 13},
     {G_mobs["rat"], 13, 4},
+    {G_mobs["rat"], 44, 9},
 }
 
 G_area_one_items = {

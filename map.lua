@@ -8,6 +8,8 @@ function Map:new(params)
     self.tiles = {}
     self.items = {}
     self.mobs = {}
+
+    self.player = nil
     
     -- Reading our map data strings to Tile objects
     for y = 1, #params.tiles do
@@ -75,6 +77,9 @@ function Map:inbounds(x, y)
 end
 
 function Map:occupied(x, y)
+    if x == self.player.x and y == self.player.y then
+        return true
+    end
     for _i, mob in pairs(self.mobs) do
         if x == mob.x and y == mob.y then
             return true

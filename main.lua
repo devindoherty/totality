@@ -20,6 +20,7 @@ require("states/player_conversation_state")
 require("states/map_editor_state")
 require("states/mob_turn_state")
 require("states/world_turn_state")
+require("states/game_over_state")
 
 require("data/dialogs")
 require("data/mobs")
@@ -37,6 +38,7 @@ function love.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
     
     Spritesheet.load_sprites()
+    Spritesheet.load_portraits()
     G_start_screen_splash = love.graphics.newImage("assets/start_screen_splash.png")
     G_gs = Gamestate:new({
         ["start_state"] = function() return StartState end,
@@ -46,6 +48,7 @@ function love.load()
         ["map_editor_state"] = function () return MapEditorState end,
         ["mob_turn_state"] = function() return MobTurnState end,
         ["world_turn_state"] = function() return WorldTurnState end,
+        ["game_over_state"] = function() return GameOverState end,
     })
     G_gs:change("start_state")
 

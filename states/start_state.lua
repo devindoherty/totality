@@ -7,8 +7,7 @@ function StartState:init()
     self.direction = "Press Enter to Continue"
     self.action = ""
     self.player = Player:new()
-    self.map = Map:new({tiles = G_area_one_tiles, mobs = G_area_one_mobs, items = G_area_one_items})
-    
+    self.map = Map:new({tiles = G_area_one_tiles, mobs = G_area_one_mobs, items = G_area_one_items}) 
 end
 
 function StartState:enter(params)
@@ -37,7 +36,6 @@ function StartState:render()
     love.graphics.print(self.greeting, (SCREEN_WIDTH / 2) - 175, SCREEN_HEIGHT / 2, 0)
     love.graphics.setFont(self.old_font)
     love.graphics.print(self.direction, (SCREEN_WIDTH / 2) - 175, SCREEN_HEIGHT / 2 + 50, 0)
-    
 end
 
 function StartState:exit() end

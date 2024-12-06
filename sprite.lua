@@ -16,9 +16,9 @@ function Spritesheet.load_portraits()
     G_portraitsheet = love.graphics.newImage("assets/portraits.png")
     G_portraits = {}
 
-    for y = 0, G_portraitsheet:getHeight() - 32, 32 do
-        for x = 0, G_portraitsheet:getWidth() - 32, 32 do
-            local portrait = love.graphics(x, y, 32, 32, G_portraitsheet)
+    for y = 6, G_portraitsheet:getHeight() - 32, 32 do
+        for x = 7, G_portraitsheet:getWidth() - 32, 32 do
+            local portrait = love.graphics.newQuad(x, y, 32, 32, G_portraitsheet)
             table.insert(G_portraits, portrait)
         end
     end 

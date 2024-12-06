@@ -4,11 +4,12 @@ function WorldTurnState:new()
     local state = {}
     setmetatable(state, self)
     self.__index = self
+    
     return state
 end
 
 function WorldTurnState:init()
-
+    self.turn = 0
 end
 
 function WorldTurnState:enter(params)
@@ -30,5 +31,8 @@ function WorldTurnState:render()
     self.map:render()
     self.player:render()
 end
-function WorldTurnState:exit() end
+
+function WorldTurnState:exit()
+    self.turn = self.turn + 1
+end
 

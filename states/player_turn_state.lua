@@ -1,7 +1,6 @@
 PlayerTurnState = State:new()
 
 function PlayerTurnState:init(params)
-    self.turn = 0
     self.action = nil
     self.log = {"123456789012345678901234567890"}
     self.mouse = {
@@ -17,6 +16,7 @@ end
 function PlayerTurnState:enter(params)
     self.player = params.player
     self.map = params.map
+    self.map.player = self.player
     self.interacting = params.interacting
     
     self.looking = params.looking
@@ -31,6 +31,7 @@ function PlayerTurnState:enter(params)
 end
 
 function PlayerTurnState:input(key)
+    self.mouse.x, self.mouse.y = math.floor(self.mouse.x / 64), math.floor(self.mouse.y / 64)
 
     if self.interacting then
         if key == "w" or key == "kp8" then
@@ -83,13 +84,18 @@ function PlayerTurnState:input(key)
 end
 
 function PlayerTurnState:update(dt)
-    self.mouse.x, self.mouse.y = math.floor(self.mouse.x / 64), math.floor(self.mouse.y / 64)
-
     local x = self.player.x
     local y = self.player.y
 
+    
+    if self.player:die() then
+        G_gs:change("game_over_state")
+    end
+    
     if self.action then
-        if self.interacting then
+        if self.action == "player_end_turn" then
+            G_gs:change("mob_turn_state", {map = self.map, player = self.player})
+        elseif self.interacting then
             PlayerTurnState:update_interacting(x, y)
         elseif self.looking then
             PlayerTurnState:update_looking(x, y)
@@ -165,9 +171,15 @@ function PlayerTurnState:update_interacting(x, y)
     if self.map:closable(x, y) then
         table.insert(self.log, "You close the door in the " .. tile.name)
         self.map:change_tile(x, y, Tile:new(G_tiles[tile.close_def], x, y))
+        self.interacting = false
+        G_gs:change("mob_turn_state", {map = self.map, player = self.player})
+        return
     elseif self.map:openable(x, y) then
         table.insert(self.log, "You open the " .. tile.name)
         self.map:change_tile(x, y, Tile:new(G_tiles[tile.open_def], x, y))
+        self.interacting = false
+        G_gs:change("mob_turn_state", {map = self.map, player = self.player})
+        return
     end
     
     G_gs:change("player_turn_state", {map = self.map, player = self.player, interacting = false})
@@ -212,7 +224,7 @@ end
 
 function PlayerTurnState:render_log()
     local x = 0
-    local y = SCREEN_HEIGHT - 12
+    local y = SCREEN_HEIGHT - 64 - 12
     love.graphics.setColor(0, 0, 0, .5)
     love.graphics.rectangle("fill", 0, 0, SCREEN_WIDTH / 4, SCREEN_HEIGHT)
     love.graphics.setColor(1, 1, 1)
@@ -243,7 +255,7 @@ function PlayerTurnState:render()
     self.player:render()
 
     if self.attacking then
-        self.attacking:draw()
+        self.attacking:render()
     end
 
     if DEBUG then
@@ -256,8 +268,11 @@ function PlayerTurnState:render()
     love.graphics.pop()
 
     PlayerTurnState:render_log()
+    love.graphics.draw(G_portraitsheet, G_portraits[1], 0, SCREEN_HEIGHT - 64, 0, 2)
+    love.graphics.print("Health: " .. self.player.stats["health"], 66, SCREEN_HEIGHT - 64)
+    love.graphics.print("Magic: " .. self.player.stats["magic"], 66, SCREEN_HEIGHT - 52)
+
 end
 
 function PlayerTurnState:exit()
-    self.turn = self.turn + 1
 end

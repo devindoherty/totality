@@ -14,14 +14,20 @@ function Mob:new(params, x, y, map, id)
     mob.map = map
     mob.id = id
 
-    mob.stats = params.stats
+    mob.stats = {
+        health = params.stats.health or 10,
+        defense = params.stats.defense or 10,
+        might = params.stats.might or 10,
+        grace = params.stats.grace or 10,
+        mind = params.stats.mind or 10,
+        soul = params.stats.soul or 10,
+    }
 
     mob.behavior = params.behavior
     mob.hostile = params.hostile or false
-    mob.sightline = {
-        x = nil,
-        y = nil,
-    }
+    mob.sightline = {x = mob.x, y = mob.y}
+
+    mob.attack = nil
 
     return mob
 end
@@ -33,9 +39,6 @@ function Mob:line_of_sight(target)
 
     local x1 = target.x
     local y1 = target.y
-
-    -- self.sightline.x = target.x
-    -- self.sightline.y = target.y
 
     local function line_of_sight_low(x0, y0, x1, y1)
         local dx = x1 - x0
@@ -59,6 +62,8 @@ function Mob:line_of_sight(target)
             else
                 D = D + 2 * dy
             end
+            self.sightline.x = target.x
+            self.sightline.y = target.y
         end
         return true
     end
@@ -74,7 +79,6 @@ function Mob:line_of_sight(target)
         local D = (2 * dx) - dy
         local x = x0
         for y = y0, y1 do
-            
             if self.map:solid(x, y) then
                 self.sightline.x = x
                 self.sightline.y = y
@@ -86,6 +90,8 @@ function Mob:line_of_sight(target)
             else
                 D = D + 2 * dx
             end
+            self.sightline.x = target.x
+            self.sightline.y = target.y
         end
         return true
     end
@@ -106,12 +112,12 @@ function Mob:line_of_sight(target)
 end
 
 function Mob:draw_line_of_sight(target)
-    if self.sightline.x or self.sightline.y then
-        love.graphics.setColor(1, 0, 0)
-        love.graphics.line((self.x - .5) * DRAW_FACTOR, (self.y - .5) * DRAW_FACTOR, (self.sightline.x - .5) * DRAW_FACTOR, (self.sightline.y - .5) * DRAW_FACTOR)
-    else
+    if self.sightline.x == target.x and self.sightline.y == target.y then
         love.graphics.setColor(0, 1, 0)
         love.graphics.line((self.x - .5) * DRAW_FACTOR, (self.y - .5) * DRAW_FACTOR, (target.x - .5) * DRAW_FACTOR, (target.y - .5) * DRAW_FACTOR)
+    else 
+        love.graphics.setColor(1, 0, 0)
+        love.graphics.line((self.x - .5) * DRAW_FACTOR, (self.y - .5) * DRAW_FACTOR, (self.sightline.x - .5) * DRAW_FACTOR, (self.sightline.y - .5) * DRAW_FACTOR)
     end
     love.graphics.setColor(255, 255, 255)
 end
@@ -123,7 +129,7 @@ function Mob:move_toward_target(target)
 
     if x ~= target.x or y ~= target.y then
         if math.abs(target.x - x) > math.abs(target.y - y) then
-            if x <= target.x then
+            if x < target.x then
                 x = x + 1
             else
                 x = x - 1
@@ -137,11 +143,12 @@ function Mob:move_toward_target(target)
         end
         
         if self.map:inbounds(x, y) and not self.map:solid(x, y) and 
-          not self.map:occupied(x, y) and self:line_of_sight(target) then
+        not self.map:occupied(x, y) then
             self.x = x
             self.y = y
-          elseif self.map:occupied(x, y) and self.map:get_creature_with_xy(x, y) == target then
-            Attack:new("basic attack", x, y, self, target, {
+        elseif x == target.x and y == target.y then
+            print("test")
+            self.attack = Attack:new("basic attack", x, y, self, target, {
                 description = "hit",
                 sprite = 553,
                 frame = 0,
@@ -190,9 +197,11 @@ end
 function Mob:move_aquatically()
 end
 
-function Mob:do_nothing()
-    local x = self.x
-    local y = self.y
+function Mob:do_nothing(target)
+    if self:line_of_sight(target) then
+        local x = self.x
+        local y = self.y
+    end
 end
 
 function Mob:check_movement()
@@ -232,6 +241,9 @@ end
 
 function Mob:render()
     love.graphics.draw(G_spritesheet, self.sprite, (self.x-1) * DRAW_FACTOR, (self.y-1) * DRAW_FACTOR, 0, SCALE_FACTOR)
+    if self.attack then
+        self.attack:render()
+    end
 end
 
 function Mob:draw_quip(topic)
@@ -247,7 +259,7 @@ function Mob:set_stat(stat, value)
 end
 
 function Mob:inflict_damage(damage)
-    self.stats["health"] = self.stats["health"] - damage
+    self.stats.health = self.stats.health - damage
 end
 
 function Mob:inflict_condition(condition)
@@ -255,7 +267,12 @@ function Mob:inflict_condition(condition)
 end
 
 function Mob:die()
-    table.remove(self.map.mobs, self.id)
+    for i, mob in pairs(self.map.mobs) do
+        if self.id == mob.id then
+            idx = i
+        end
+    end
+    table.remove(self.map.mobs, idx)
     remains = Item:new(G_items["remains"], self.x, self.y, self.map)
     table.insert(self.map.items, remains)
 end

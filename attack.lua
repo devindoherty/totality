@@ -30,7 +30,7 @@ function Attack:update_frames(dt)
     self.frame = self.frame + 10 * dt
 end
 
-function Attack:draw()
+function Attack:render()
     love.graphics.draw(G_spritesheet, self.sprite, (self.x - 1) * DRAW_FACTOR, (self.y - 1) * DRAW_FACTOR, 0, self.frame)
 end
 
