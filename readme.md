@@ -13,9 +13,33 @@ itself.
 - Monster movement
 - Basic collision
 - Basic combat
-
-
-### Next
 - Map rewrite
 - More interesting interactions
+
+### Next
 - Talking to NPCs
+- Mob AI rewrite
+
+# What did I do?
+
+# Why did I design that way?
+
+# What is contained in each file?
+
+# What setup is required?
+
+# How does one run the application?
+
+# Link to public or unlisted video
+
+# About
+
+# Design
+
+# Organization
+
+# Setup
+
+# Getting Started
+
+# Video

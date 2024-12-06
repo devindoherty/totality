@@ -1,140 +1,168 @@
+Mob = {}
+
+function Mob:new(params, x, y, map, id)
+    local mob = {}
+    setmetatable(mob, self)
+    self.__index = self
+    
+    mob.name = params.name
+    mob.sprite = G_sprites[params.sprite]
+    mob.description = params.description or "Unremarkable."
+    
+    mob.x = x
+    mob.y = y
+    mob.map = map
+    mob.id = id
+
+    mob.stats = {
+        health = params.stats.health or 10,
+        defense = params.stats.defense or 10,
+        might = params.stats.might or 10,
+        grace = params.stats.grace or 10,
+        mind = params.stats.mind or 10,
+        soul = params.stats.soul or 10,
+    }
+
+    mob.behavior = params.behavior
+    mob.hostile = params.hostile or false
+    mob.sightline = {x = mob.x, y = mob.y}
+
+    mob.attack = nil
+
+    return mob
+end
+
 -- Bresenham's line algorithm
-function G_line_of_sight(observer, target)
-    local x0 = observer.x
-    local y0 = observer.y
+function Mob:line_of_sight(target)
+    local x0 = self.x
+    local y0 = self.y
 
     local x1 = target.x
     local y1 = target.y
 
-    -- G_blocker.x = target.x
-    -- G_blocker.y = target.y
+    local function line_of_sight_low(x0, y0, x1, y1)
+        local dx = x1 - x0
+        local dy = y1 - y0
+        local yi = 1
+        if dy < 0 then
+            yi = -1
+            dy = -dy
+        end
+        local D = (2 * dy) - dx
+        local y = y0
+        for x = x0, x1 do
+            if self.map:solid(x, y) then
+                self.sightline.x = x
+                self.sightline.y = y
+                return false
+            end
+            if D > 0 then
+                y = y + yi
+                D = D + (2 * (dy - dx))
+            else
+                D = D + 2 * dy
+            end
+            self.sightline.x = target.x
+            self.sightline.y = target.y
+        end
+        return true
+    end
+
+    local function line_of_sight_high(x0, y0, x1, y1)
+        local dx = x1 - x0
+        local dy = y1 - y0
+        local xi = 1
+        if dx < 0 then
+            xi = -1
+            dx = -dx
+        end
+        local D = (2 * dx) - dy
+        local x = x0
+        for y = y0, y1 do
+            if self.map:solid(x, y) then
+                self.sightline.x = x
+                self.sightline.y = y
+                return false
+            end
+            if D > 0 then
+                x = x + xi
+                D = D + (2 * (dx - dy))
+            else
+                D = D + 2 * dx
+            end
+            self.sightline.x = target.x
+            self.sightline.y = target.y
+        end
+        return true
+    end
 
     if math.abs(y1 - y0) < math.abs(x1 - x0) then
         if x0 > x1 then
-            return G_line_of_sight_low(x1, y1, x0, y0)
+            return line_of_sight_low(x1, y1, x0, y0)
         else
-            return G_line_of_sight_low(x0, y0, x1, y1)
+            return line_of_sight_low(x0, y0, x1, y1)
         end
     else
         if y0 > y1 then
-            return G_line_of_sight_high(x1, y1, x0, y0)
+            return line_of_sight_high(x1, y1, x0, y0)
         else
-            return G_line_of_sight_high(x0, y0, x1, y1)
+            return line_of_sight_high(x0, y0, x1, y1)
         end
     end
 end
 
-function G_line_of_sight_low(x0, y0, x1, y1)
-    local dx = x1 - x0
-    local dy = y1 - y0
-    local yi = 1
-    if dy < 0 then
-        yi = -1
-        dy = -dy
-    end
-    local D = (2 * dy) - dx
-    local y = y0
-    for x = x0, x1 do
-        if not G_empty_tile(x, y) then
-            G_blocker.x = x
-            G_blocker.y = y
-            return false
-        end
-        if D > 0 then
-            y = y + yi
-            D = D + (2 * (dy - dx))
-        else
-            D = D + 2 * dy
-        end
-    end
-
-    return true
-end
-
-function G_line_of_sight_high(x0, y0, x1, y1)
-    local dx = x1 - x0
-    local dy = y1 - y0
-    local xi = 1
-    if dx < 0 then
-        xi = -1
-        dx = -dx
-    end
-    local D = (2 * dx) - dy
-    local x = x0
-    for y = y0, y1 do
-        
-        if not G_empty_tile(x, y) then
-            local closest_blocker -- Test to see if global blocker abs is bigger, if not then return false
-            G_blocker.x = x
-            G_blocker.y = y
-            return false
-        end
-        if D > 0 then
-            x = x + xi
-            D = D + (2 * (dx - dy))
-        else
-            D = D + 2 * dx
-        end
-    end
-    return true
-end
-
-function G_draw_line_of_sight(observer, target)
-    if observer.last_seen.x or observer.last_seen.y then
-        love.graphics.setColor(1, 0, 0)
-        love.graphics.line((observer.x + .5) * DRAW_FACTOR, (observer.y + .5) * DRAW_FACTOR, (observer.last_seen.x + .5) * DRAW_FACTOR, (observer.last_seen.y + .5) * DRAW_FACTOR)
-    else
+function Mob:draw_line_of_sight(target)
+    if self.sightline.x == target.x and self.sightline.y == target.y then
         love.graphics.setColor(0, 1, 0)
-        love.graphics.line((observer.x + .5) * DRAW_FACTOR, (observer.y + .5) * DRAW_FACTOR, (target.x + .5) * DRAW_FACTOR, (target.y + .5) * DRAW_FACTOR)
+        love.graphics.line((self.x - .5) * DRAW_FACTOR, (self.y - .5) * DRAW_FACTOR, (target.x - .5) * DRAW_FACTOR, (target.y - .5) * DRAW_FACTOR)
+    else 
+        love.graphics.setColor(1, 0, 0)
+        love.graphics.line((self.x - .5) * DRAW_FACTOR, (self.y - .5) * DRAW_FACTOR, (self.sightline.x - .5) * DRAW_FACTOR, (self.sightline.y - .5) * DRAW_FACTOR)
     end
     love.graphics.setColor(255, 255, 255)
 end
 
-function G_draw_all_lines_of_sight()
-    local player = G_entities["player"]
-    for i, entity in pairs(G_entities) do
-        if entity.is_creature and entity.name ~= "player" then
-            G_draw_line_of_sight(entity, player)
-        end
-    end
-end
+function Mob:move_toward_target(target)
 
-local function move_toward_target(mob, target)
-    local player = G_entities["player"]
+    local x = self.x
+    local y = self.y
 
-    local x = mob.x
-    local y = mob.y
-
-    if x ~= player.x or y ~= player.y then
-        if math.abs(player.x - x) > math.abs(player.y - y) then
-            if x <= player.x then
+    if x ~= target.x or y ~= target.y then
+        if math.abs(target.x - x) > math.abs(target.y - y) then
+            if x < target.x then
                 x = x + 1
             else
                 x = x - 1
             end
         else
-            if y <= player.y then
+            if y <= target.y then
                 y = y + 1
             else
                 y = y - 1
             end
         end
         
-        if G_empty_tile(x, y) and G_inbounds(x, y) and G_no_creature(x, y) and G_line_of_sight(mob, target) then
-            mob.x = x
-            mob.y = y
-        elseif not G_no_creature(x, y) then
-            local defender = G_get_creature_with_xy(x, y)
-            G_set_attacking(mob, defender)
+        if self.map:inbounds(x, y) and not self.map:solid(x, y) and 
+        not self.map:occupied(x, y) then
+            self.x = x
+            self.y = y
+        elseif x == target.x and y == target.y then
+            print("test")
+            self.attack = Attack:new("basic attack", x, y, self, target, {
+                description = "hit",
+                sprite = 553,
+                frame = 0,
+                damage = 5,
+                condition = "none"
+            })
         end
     end
 end
 
-local function move_idly(mob)
-    local player = G_entities["player"]
+function Mob:move_idly()
 
-    local x = mob.x
-    local y = mob.y
+    local x = self.x
+    local y = self.y
 
     local prob_move = love.math.random()
     local prob_x_y = love.math.random()
@@ -157,57 +185,94 @@ local function move_idly(mob)
             end
         end
         if G_empty_tile(x, y) and G_no_creature(x, y) and G_inbounds(x, y) then
-            mob.x = x
-            mob.y = y
+            self.x = x
+            self.y = y
         end
     end
 end
 
-local function move_along_walls(mob)
+function Mob:move_along_walls()
 end
 
-local function move_aquatically()
+function Mob:move_aquatically()
 end
 
-local function do_nothing(mob)
-    local x = mob.x
-    local y = mob.y
-    if G_inbounds(x, y) then
-        
+function Mob:do_nothing(target)
+    if self:line_of_sight(target) then
+        local x = self.x
+        local y = self.y
     end
 end
 
-
-local function select_quip(mob)
-    if mob.quips then
-        local quip_idx = love.math.random(1, #mob.quips)
-        print(mob.quips[quip_idx])
-    end
-end
-
-function G_mob_turn()
-    local player = G_entities["player"]
-    print("MOB TURN")
-    for _i, entity in pairs(G_entities) do
-        if entity.is_creature and entity.name ~= "player" then
-            if not G_line_of_sight(entity, player) then
-                entity.last_seen.x = G_blocker.x
-                entity.last_seen.y = G_blocker.y
-            else
-                entity.last_seen.x = nil
-                entity.last_seen.y = nil
-            end
-            if entity.behavior == "aggressive" then
-                move_toward_target(entity, player)
-            elseif entity.behavior == "loitering" then
-                move_idly(entity)
-            elseif entity.behavior == "skittish" then
-                move_along_walls(entity)
-            elseif entity.behavior == "neutral" then
-                do_nothing(entity)
-            else
-                print(entity.name .. " does not have behavior.")
-            end
+function Mob:check_movement()
+    self.action = ""
+    if not self.map:inbounds(x, y) then
+        return false
+    elseif self.map:empty_tile(x, y) and G_no_creature(x, y) and G_inbounds(x, y) then
+        return
+    elseif not G_no_creature(x, y) then
+        local defender = self.map:get_creature_with_xy(x, y)
+        self:set_attacking(player, defender)
+    elseif not G_empty_tile(x, y) then
+        if G_openable_tile_adjacent(x, y) then
+            G_open_item(x, y)
         end
     end
+end
+
+
+function Mob:select_quip()
+    if self.quips then
+        local quip_idx = love.math.random(1, #self.quips)
+        print(self.quips[quip_idx])
+    end
+end
+
+function Mob:set_attacking(defender)
+    if self == defender then
+        return
+    elseif defender.is_friendly then
+        return
+    else
+        self.is_attacking = true
+        self.target = defender
+    end
+end
+
+function Mob:render()
+    love.graphics.draw(G_spritesheet, self.sprite, (self.x-1) * DRAW_FACTOR, (self.y-1) * DRAW_FACTOR, 0, SCALE_FACTOR)
+    if self.attack then
+        self.attack:render()
+    end
+end
+
+function Mob:draw_quip(topic)
+    love.graphics.setColor(0, 0, 1, .75)
+    love.graphics.rectangle("fill", self.x * DRAW_FACTOR + 25, self.y * DRAW_FACTOR - 35, 225, 36, 15, 15)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.printf(self.quips[topic], self.x * DRAW_FACTOR + 25, self.y * DRAW_FACTOR - 35, 225)
+    love.graphics.setColor(255, 255, 255)
+end
+
+function Mob:set_stat(stat, value)
+    self.stats[stat] = value
+end
+
+function Mob:inflict_damage(damage)
+    self.stats.health = self.stats.health - damage
+end
+
+function Mob:inflict_condition(condition)
+
+end
+
+function Mob:die()
+    for i, mob in pairs(self.map.mobs) do
+        if self.id == mob.id then
+            idx = i
+        end
+    end
+    table.remove(self.map.mobs, idx)
+    remains = Item:new(G_items["remains"], self.x, self.y, self.map)
+    table.insert(self.map.items, remains)
 end
