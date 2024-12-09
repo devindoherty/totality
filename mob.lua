@@ -123,7 +123,6 @@ function Mob:draw_line_of_sight(target)
 end
 
 function Mob:move_toward_target(target)
-
     local x = self.x
     local y = self.y
 
@@ -144,10 +143,13 @@ function Mob:move_toward_target(target)
         
         if self.map:inbounds(x, y) and not self.map:solid(x, y) and 
         not self.map:occupied(x, y) then
+            print("rat move")
             self.x = x
             self.y = y
         elseif x == target.x and y == target.y then
-            print("test")
+            print("ATTACK")
+            print(target.x)
+            print(target.y)
             self.attack = Attack:new("basic attack", x, y, self, target, {
                 description = "hit",
                 sprite = 553,

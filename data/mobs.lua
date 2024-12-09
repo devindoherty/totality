@@ -15,7 +15,7 @@ G_mobs = {
         description = "An enormous, black furred rat with uncannily intelligent pink eyes.",   
         behavior = "aggressive",
         stats = {
-            ["health"] = 15,
+            ["health"] = 50,
         }
     },
     ["boss_rat"] = {

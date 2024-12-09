@@ -142,35 +142,6 @@ function Map:get_distance_between_two_points(point1, point2)
     return math.sqrt(((x2 - x1) ^ 2) + ((y2 - y1) ^ 2))
 end
 
-function Map:draw_creatures()
-    for _i, entity in pairs(G_entities) do
-        if entity.is_creature == true then
-            love.graphics.draw(G_spritesheet, entity.sprite, entity.x * DRAW_FACTOR, entity.y * DRAW_FACTOR, 0, SCALE_FACTOR)
-        end
-    end
-end
-
-function Map:draw_items()
-    for _i, entity in pairs(G_entities) do
-        if entity.is_item == true then
-            love.graphics.draw(G_spritesheet, entity.sprite, entity.x * DRAW_FACTOR, entity.y * DRAW_FACTOR, 0, SCALE_FACTOR)
-        end
-    end
-end
-
-function Map:update_dead_creatures()
-    for _i, entity in pairs(G_entities) do
-        if entity.is_creature then
-            if entity.stats["health"] <= 0 then
-                G_entities[entity.name] = nil
-                local bones = Entity:new("bones", G_sprites[16], entity.x, entity.y, false)
-                bones.is_item = true
-                G_entities[#G_entities] = bones
-            end
-        end
-    end
-end
-
 function Map:create_item(item)
     table.insert(self.items, item)
 end

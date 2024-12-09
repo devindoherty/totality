@@ -275,4 +275,6 @@ function PlayerTurnState:render()
 end
 
 function PlayerTurnState:exit()
+    G_bug:bugprint("player x on exit: ", self.player.x)
+    G_bug:bugprint("player y on exit: ", self.player.y)
 end

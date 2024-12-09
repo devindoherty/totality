@@ -6,11 +6,11 @@ require("gamestate")
 require("interact")
 require("item")
 require("map")
+require("menu")
 require("mob")
 require("player")
 require("sprite")
 require("tile")
-
 
 require("states/state")
 require("states/start_state")
@@ -76,80 +76,19 @@ end
     --    print("Left mouse button pressed at ", math.floor(x / 64) , math.floor(y / 64) )
     end
  end
---------------------------------Update--------------------------------
+
+ --------------------------------Update--------------------------------
 function love.update(dt)
     G_gs:update(dt)
-    -- local player = G_entities["player"]
-    -- G_update_mouse_position()
-
-    -- -- Check for dead
-    -- G_update_dead_creatures()
-
-    -- ---------Turn Update----------
-    -- if G_gamestate.player_moved or G_gamestate.end_turn or player.is_attacking then
-    --     G_gamestate:start_round()
-
-    --     G_detect_interactible(player)
-    --     -- Mobs act on even turns (For now)
-    --     if G_gamestate.turn % 2 == 0 then
-    --         G_mob_turn()
-    --     end
-        
-    --     -- Attacks
-    --     G_update_attacks()
-
-    --     if DEBUG then G_print_debug() end
-
-    --     G_gamestate:end_round()
-    -- end
-    -- ---------End Turn Update----------
-
-    -- -- Animation Updates
-    -- G_update_attack_draws(dt)
-
-    -- if player.is_conversing then
-    --     G_update_interact()
-    -- end
 end
 
 --------------------------------Draw--------------------------------
 function love.draw()
     G_gs:render()
-
-    -- local player = G_entities["player"]
-    -- love.graphics.setCanvas(G_screen_canvas)
-    -- love.graphics.clear()
-
-    -- love.graphics.push()
-    --     G_player_camera()
-    --     G_draw_map()
-    --     G_draw_items()
-    --     G_draw_creatures()
-    --     G_draw_attacks()
-    --     if DEBUG then G_draw_all_lines_of_sight() end --TODO: player y < observer and player x < observer glitching
-
-    --     -- if G_get_distance_between_two_points(player, G_entities["yarl"]) < 4 and G_gamestate.current_mode == "player_turn" then
-    --     --     G_entities["yarl"]:draw_quip("intro")
-    --     -- end
-    -- love.graphics.pop()
-    
-    -- love.graphics.setCanvas()
-    -- love.graphics.draw(G_screen_canvas)
-
-    -- if G_gamestate.current_mode == "dialoging" then
-    --     G_dialogs[G_gamestate.current_dialog]:draw()
-    -- end
-    -- if G_gamestate.current_mode == "player_turn" then
-    --     G_draw_tile_cursor()
-    --     G_draw_interactible_detection()
-    --     G_draw_attacks_log()
-    --     player:draw_stats()
-    -- end
-    -- if G_gamestate.current_mode == "conversing" then
-    --     G_draw_interact()
-    -- end
 end
 
+
+-------------------------------Exit---------------------------------
 function love.quit()
     print("Thanks for playing! Come back soon!")
 end
