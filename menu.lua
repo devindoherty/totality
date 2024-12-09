@@ -1,28 +1,28 @@
 Menu = {}
 
-function Menu:new(x, y, items)
+function Menu:new(x, y, selections)
     local menu = {}
     setmetatable(menu, self)
     self.__index = self
     menu.x = X
     menu.y = y
     
-    menu.items = items
-    menu.selection = 0
+    menu.selections = selections
+    menu.selected = 0
     return menu
 end
 
 function Menu:update(action)
     if action == "menu_up" then
-        if self.selection ~= 0 then
-            self.selection = self.selection - 1
+        if self.selected ~= 0 then
+            self.selected = self.selected - 1
         end
     elseif action == "menu_down" then
-        if self.selection ~= #self.items then
-            self.selection = self.selection + 1
+        if self.selected ~= #self.items then
+            self.selected = self.selected + 1
         end
     elseif action == "menu_enter" or "menu_click" then
-        self.menu.items[self.selection].on_select()
+        self.menu.selections[self.selected].on_select()
     end
 end
 
@@ -32,17 +32,17 @@ function Menu:render()
 end
 
 
-Item = {}
+Selection = {}
 
-function Item:new(text, on_select)
-    local item = {}
-    setmetatable(item, self)
+function Selection:new(text, on_select)
+    local selection = {}
+    setmetatable(selection, self)
     self.__index = self
-    item.x = X
-    item.y = y
+    selection.x = X
+    selection.y = y
     
-    item.text = text
-    item.on_select = on_select
-    return item
+    selection.text = text
+    selection.on_select = on_select
+    return selection
 end
 
