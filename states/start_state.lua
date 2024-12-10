@@ -4,7 +4,7 @@ function StartState:init()
     self.old_font = love.graphics.getFont()
     self.font = love.graphics.newFont(42)
     self.title = "Path of Totality"
-    self.action = "begin"
+    self.action = ""
     self.player = Player:new()
     self.map = Map:new({tiles = G_area_one_tiles, mobs = G_area_one_mobs, items = G_area_one_items})
 end
@@ -27,29 +27,23 @@ function StartState:enter(params)
 end
 
 function StartState:input(key)
-    -- self.action = key
+    print("KEY: " .. key)
     if key == "w" or key == "kp8" then
         self.action = "menu_up"
     elseif key == "s" or key == "kp2" then
         self.action = "menu_down"
-    elseif key == "enter" or "return" then
+    elseif key == "enter" or key == "return" then
         self.action = "menu_enter"
+    elseif key == "m" then
+        self.action = "map"
+        G_gs:change("map_editor_state")
+    else
+        self.action = ""
     end
 end
 
 function StartState:update(dt)
-    -- if self.action == "return" then
-    --     G_gs:change("world_turn_state", {
-    --         player = self.player,
-    --         map = self.map,
-    --     })
-    print(self.action)
     self.menu:update(self.action)
-    
-    if self.action == "m" then
-        G_gs:change("map_editor_state")
-    end
-
     self.action = ""
 end
 
@@ -62,5 +56,7 @@ function StartState:render()
     self.menu:render()
 end
 
-function StartState:exit() end
+function StartState:exit()
+    
+end
 

@@ -59,7 +59,6 @@ function PlayerTurnState:input(key)
         return
     elseif self.attacking then
         self.action = "player_attack"
-        print(self.attacking.frame)
         return
     end
 
