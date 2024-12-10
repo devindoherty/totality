@@ -51,10 +51,6 @@ function love.load()
         ["game_over_state"] = function() return GameOverState end,
     })
     G_gs:change("start_state")
-
-    G_blocker = {}
-    G_blocker.x = 0
-    G_blocker.y = 0
 end
 
 --------------------------------Input--------------------------------
@@ -92,4 +88,3 @@ end
 function love.quit()
     print("Thanks for playing! Come back soon!")
 end
-
