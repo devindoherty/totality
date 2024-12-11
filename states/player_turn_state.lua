@@ -62,13 +62,13 @@ function PlayerTurnState:input(key)
         return
     end
 
-    if key == "w" or key == "kp8" then
+    if key == "up" or key == "w" or key == "kp8" then
         self.action = "player_move_up"
-    elseif key == "a" or key == "kp4" then
+    elseif key == "left" or key == "a" or key == "kp4" then
         self.action = "player_move_left"
-    elseif key == "d" or key == "kp6" then
+    elseif key == "right" or key == "d" or key == "kp6" then
         self.action = "player_move_right"
-    elseif key == "s" or key == "kp2" then
+    elseif key == "down" or key == "s" or key == "kp2" then
         self.action = "player_move_down"
     elseif key == "space" then
         self.action = "player_end_turn"
@@ -181,10 +181,8 @@ function PlayerTurnState:update_interacting(x, y)
         return
     elseif self.map:occupied(x, y) then
         local dialoger = self.map:get_mob_with_xy(x, y)
-        print(dialoger.name)
         self.interacting = false
-        G_gs:change("player_dialog_state", {map = self.map, player = self.player, dialoger = dialoger})
-        return
+        return G_gs:change("player_dialog_state", {map = self.map, player = self.player, dialoger = dialoger})
     end
     
     G_gs:change("player_turn_state", {map = self.map, player = self.player, interacting = false})
