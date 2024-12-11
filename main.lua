@@ -16,7 +16,7 @@ require("states/state")
 require("states/start_state")
 require("states/character_creation_state")
 require("states/player_turn_state")
-require("states/player_conversation_state")
+require("states/player_dialog_state")
 require("states/map_editor_state")
 require("states/mob_turn_state")
 require("states/world_turn_state")
@@ -44,7 +44,7 @@ function love.load()
         ["start_state"] = function() return StartState end,
         ["character_creation_state"] = function() return CharacterCreationState end,
         ["player_turn_state"] = function() return PlayerTurnState end,
-        ["player_conversation_state"] = function () return PlayerConversationState end,
+        ["player_dialog_state"] = function () return PlayerDialogState end,
         ["map_editor_state"] = function () return MapEditorState end,
         ["mob_turn_state"] = function() return MobTurnState end,
         ["world_turn_state"] = function() return WorldTurnState end,
@@ -73,7 +73,7 @@ end
     end
  end
 
- --------------------------------Update--------------------------------
+ --------------------------------Update-----------------------------
 function love.update(dt)
     G_gs:update(dt)
 end
@@ -82,7 +82,6 @@ end
 function love.draw()
     G_gs:render()
 end
-
 
 -------------------------------Exit---------------------------------
 function love.quit()

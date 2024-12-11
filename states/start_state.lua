@@ -27,10 +27,9 @@ function StartState:enter(params)
 end
 
 function StartState:input(key)
-    print("KEY: " .. key)
-    if key == "w" or key == "kp8" then
+    if key == "w" or key == "up" or key == "kp8" then
         self.action = "menu_up"
-    elseif key == "s" or key == "kp2" then
+    elseif key == "s" or key == "down" or key == "kp2" then
         self.action = "menu_down"
     elseif key == "enter" or key == "return" then
         self.action = "menu_enter"

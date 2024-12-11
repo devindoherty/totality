@@ -6,7 +6,8 @@ G_mobs = {
         behavior = "friendly", 
         stats = {
             ["health"] = 100,
-        }
+        },
+        dialog = Dialog:new("yarl_")
     },
     ["rat"] = {
         name = "Rat",
@@ -24,7 +25,8 @@ G_mobs = {
         description = "This man sized rat smokes a cigar inbetween bites of expensive imported cheese.",
         stats = {
             ["health"] = 25,
-        }
+        },
+        dialog = Dialog:new("boss_rat_")
     },
     ["croc"] = {
         name = "Croc",

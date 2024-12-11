@@ -23,6 +23,8 @@ function Mob:new(params, x, y, map, id)
         soul = params.stats.soul or 10,
     }
 
+    mob.dialog = params.dialog
+
     mob.behavior = params.behavior
     mob.hostile = params.hostile or false
     mob.sightline = {x = mob.x, y = mob.y}

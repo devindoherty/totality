@@ -13,7 +13,6 @@ function Menu:new(x, y, width, length, selections, params)
 end
 
 function Menu:update(action)
-    print("menu action: " .. action)
     if action == "menu_up" then
         if self.selected ~= 1 then
             self.selected = self.selected - 1
