@@ -43,3 +43,8 @@ itself.
 # Getting Started
 
 # Video
+
+## Attributions
+- Start Screen Art: https://x.com/hydrogenpixel
+- Sprites: https://kenney.nl/assets/1-bit-pack
+- Portraits: https://opengameart.org/content/32x32-fantasy-portrait-set
