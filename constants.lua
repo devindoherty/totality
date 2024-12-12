@@ -10,3 +10,8 @@ MAP_HEIGHT = 64
 MAP_WIDTH = 128
 
 AWARENESS = 8
+
+RED = {1, 0, 0}
+GREEN = {0, 1, 0}
+BLUE = {0, 0, 1}
+WHITE = {1, 1, 1}

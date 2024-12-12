@@ -8,25 +8,38 @@ function PlayerDialogState:enter(params)
     self.map = params.map
     self.player = params.player
     self.dialoger = params.dialoger
+    self.word = ""
     self.action = ""
 end
 
 function PlayerDialogState:input(key)
-    if key == "up" or key == "w" or key == "kp8" then
-        self.action = "menu_up"
-    elseif key == "down" or key == "s" or key == "kp2" then
-        self.action = "menu_down"
-    elseif key == "left" or key == "a" or key == "kp4" then
-        self.action = "menu_left"
-    elseif key == "right" or key == "d" or key == "kp6" then
-        self.action = "menu_right"
-    elseif key == "return" or key == "enter" then
-        self.action = "menu_select"
+    if key == "return" or key == "enter" then
+        self.action = "submit_word"
+        return
+    elseif key == "space" then
+        self.word = self.word .. " "
+        return
     end
+
+    self.word = self.word .. key
 end
 
 function PlayerDialogState:update(dt)
-    self.dialoger.dialog:update(self.action)
+    self.dialoger.dialog:update(self.action, self.player)
+
+    local idx = self.dialoger.dialog.prefix .. self.word
+    if self.action == "submit_word" then
+        if G_dialogs[idx] then
+            self.dialoger.dialog.current = G_dialogs[idx]
+            if self.dialoger.dialog.current.on_current then 
+                self.dialoger.dialog.current.on_current(self.map, self.player)
+                self.dialoger.dialog.current.on_current = nil
+            end
+            self.word = ""
+        else
+            self.word = ""
+        end
+    end
 
     self.action = ""
 end
@@ -47,10 +60,6 @@ function PlayerDialogState:render()
 
     self.player:render()
 
-    if self.attacking then
-        self.attacking:render()
-    end
-
     if DEBUG then
         for _i, mob in pairs(self.map.mobs) do
             mob:draw_line_of_sight(self.player)
@@ -59,7 +68,7 @@ function PlayerDialogState:render()
 
     love.graphics.pop()
 
-    self.dialoger.dialog:render()
+    self.dialoger.dialog:render(self.word)
 end
 
 function PlayerDialogState:exit()

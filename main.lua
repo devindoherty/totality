@@ -63,9 +63,6 @@ function love.keypressed(key, scancode, isrepeat)
     -- G_player_input(key)
 end
 
-function love.textinput(t)
-    G_gs:update(dt, t)
-end
 
 function love.keyreleased(key)
     -- Pass for now

@@ -14,6 +14,9 @@ function Player:new()
         ["magic"] = 100,
         ["defense"] = 10,
     }
+    player.inventory = {
+        ["lunes"] = 0,
+    }
     return player
 end
 
@@ -48,4 +51,8 @@ function Player:die()
     if self.stats["health"] <= 0 then
         return true
     end
+end
+
+function Player:give_coins(number)
+    self.inventory["lunes"] = self.inventory["lunes"] + number
 end

@@ -17,24 +17,20 @@ function Dialog:new(prefix)
     return dialog
 end
 
-function Dialog:update(action)
+function Dialog:update(action, player)
     if action == "menu_select" then
         self.current = G_dialogs
     end
 end
 
-function Dialog:render()
+function Dialog:render(response)
     love.graphics.setColor(0,0,0)
-    love.graphics.rectangle("fill", SCREEN_HEIGHT / 2 + 64, SCREEN_WIDTH / 4, 300, #self.current.line / 2 + 15)
+    love.graphics.rectangle("fill", SCREEN_HEIGHT / 2 + 64, SCREEN_WIDTH / 4, 500, 300)
     love.graphics.setColor(1, 1, 0)
-    love.graphics.rectangle("line", SCREEN_HEIGHT / 2 + 64, SCREEN_WIDTH / 4, 300, #self.current.line / 2 + 15)
+    love.graphics.rectangle("line", SCREEN_HEIGHT / 2 + 64, SCREEN_WIDTH / 4, 500, 300)
     love.graphics.setColor(1, 1, 1)
 
-    love.graphics.printf(self.current.line, SCREEN_HEIGHT / 2 + 64, SCREEN_WIDTH / 4, 300, "left", 0, 1, 1)
-    local y = 30
+    love.graphics.printf(self.current.line, SCREEN_HEIGHT / 2 + 64, SCREEN_WIDTH / 4, 500, "left", 0, 1, 1)
 
-    for i = 1, #self.current.choices do
-        love.graphics.printf(self.current.choices[i].line, SCREEN_HEIGHT / 2 + 64 , SCREEN_WIDTH / 4 + y, 300, "left", 0, 1, 1)
-        y = y + 12
-    end
+    love.graphics.printf(response, SCREEN_HEIGHT / 2 + 64 , SCREEN_WIDTH / 4 + 30, 500, "left", 0, 1, 1)
 end
