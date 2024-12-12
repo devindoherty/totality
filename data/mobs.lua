@@ -16,7 +16,7 @@ G_mobs = {
         description = "An enormous, black furred rat with uncannily intelligent pink eyes.",   
         behavior = "aggressive",
         stats = {
-            ["health"] = 50,
+            ["health"] = 10,
         }
     },
     ["boss_rat"] = {
@@ -26,7 +26,7 @@ G_mobs = {
         stats = {
             ["health"] = 25,
         },
-        dialog = Dialog:new("boss_rat_")
+        dialog = Dialog:new("boss_rat_"),
     },
     ["croc"] = {
         name = "Croc",

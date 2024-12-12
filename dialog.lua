@@ -12,9 +12,7 @@ function Dialog:new(prefix)
         SCREEN_WIDTH / 4 + 30,
         100,
         400,
-        {
-
-        }
+        {}
     )
     return dialog
 end
@@ -36,7 +34,7 @@ function Dialog:render()
     local y = 30
 
     for i = 1, #self.current.choices do
-        love.graphics.printf(self.current.choices[i][1], SCREEN_HEIGHT / 2 + 64 , SCREEN_WIDTH / 4 + y, 300, "left", 0, 1, 1)
+        love.graphics.printf(self.current.choices[i].line, SCREEN_HEIGHT / 2 + 64 , SCREEN_WIDTH / 4 + y, 300, "left", 0, 1, 1)
         y = y + 12
     end
 end

@@ -10,7 +10,7 @@ G_dialogs = {
     ["yarl_root"] = {
         line = "You're awake! Sit a while, if ya like. Took a nasty fall there. I'm Yarl, this is my farm.",
         choices = {
-            {"...yarl?", "yarl_name"}
+            {line="...yarl?", target="yarl_name"}
         }
     },
     ["yarl_name"] = "That's my name, don't wear it thin. Been living on this farm since sundown.",

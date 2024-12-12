@@ -63,8 +63,12 @@ function love.keypressed(key, scancode, isrepeat)
     -- G_player_input(key)
 end
 
-function love.keyreleased(key)
+function love.textinput(t)
+    G_gs:update(dt, t)
+end
 
+function love.keyreleased(key)
+    -- Pass for now
 end
 
  function love.mousereleased(x, y, button, istouch)
