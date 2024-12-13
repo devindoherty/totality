@@ -10,6 +10,7 @@ function PlayerTurnState:init(params)
     self.interacting = false
     self.looking = false
     self.attacking = false
+    self.menu = nil
     
 end
 
@@ -32,6 +33,23 @@ end
 
 function PlayerTurnState:input(key)
     self.mouse.x, self.mouse.y = math.floor(self.mouse.x / 64), math.floor(self.mouse.y / 64)
+
+    if key == "escape" and not self.menu then
+        self.menu = Menu:new(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 100, 400, {
+            Selection:new("Continue", function() end),
+            Selection:new("Help", function() end),
+            Selection:new("Quit", function() end),
+        })
+        return
+    elseif self.menu then
+        if key == "w" or key == "up" or key == "kp8" then
+            self.action = "menu_up"
+        elseif key == "s" or key == "down" or key == "kp2" then
+            self.action = "menu_down"
+        elseif key == "enter" or key == "return" then
+            self.action = "menu_enter"
+        end
+    end
 
     if self.interacting then
         if key == "w" or key == "up" or key == "kp8" then
@@ -89,6 +107,12 @@ function PlayerTurnState:update(dt)
     
     if self.player:die() then
         G_gs:change("game_over_state")
+    end
+
+    if self.menu then
+        self.menu:update(self.action)
+        self.action = ""
+        return
     end
     
     if self.action then
@@ -274,6 +298,10 @@ function PlayerTurnState:render()
     love.graphics.draw(G_portraitsheet, G_portraits[1], 0, SCREEN_HEIGHT - 64, 0, 2)
     love.graphics.print("Health: " .. self.player.stats["health"], 66, SCREEN_HEIGHT - 64)
     love.graphics.print("Magic: " .. self.player.stats["magic"], 66, SCREEN_HEIGHT - 52)
+
+    if self.menu then
+        self.menu:render()
+    end
 
 end
 

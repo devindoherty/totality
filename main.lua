@@ -55,7 +55,7 @@ end
 
 --------------------------------Input--------------------------------
 function love.keypressed(key, scancode, isrepeat)
-    if key == "q" or key == "escape" then
+    if key == "q" then
         love.event.quit(0)
     end
 
