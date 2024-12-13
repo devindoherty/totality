@@ -1,4 +1,4 @@
-# Accursed: Shadow of Totality
+# Path of Totality
 Just a working title. Mainly playing around with LOVE and Lua.
 
 ## Premise
@@ -21,28 +21,24 @@ itself.
 - Mob AI rewrite
 
 # What did I do?
+Made a retro fantasy RPG.
 
 # Why did I design that way?
+Used the StateMachine paradigm because it seemed the most logical way to organize the different states
+that an RPG goes through.
 
 # What is contained in each file?
+Every state is organized under the State folder. All art and music is in assets. And data that could be serialized is in
+the data folder. Everything else is a main or class file.
 
 # What setup is required?
+Love 11.5.
 
 # How does one run the application?
-
-# Link to public or unlisted video
-
-# About
-
-# Design
-
-# Organization
-
-# Setup
-
-# Getting Started
+Run using the love.exe. I set it up to run from the command line.
 
 # Video
+Link: https://youtu.be/flFr1QbvG5c
 
 ## Attributions
 - Start Screen Art: https://x.com/hydrogenpixel
