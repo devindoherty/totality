@@ -15,9 +15,10 @@ itself.
 - Basic combat
 - Map rewrite
 - More interesting interactions
+- Talking to NPCs
 
 ### Next
-- Talking to NPCs
+
 - Mob AI rewrite
 
 # What did I do?

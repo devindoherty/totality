@@ -1,7 +1,7 @@
 PlayerDialogState = State:new()
 
 function PlayerDialogState:init()
-    
+
 end
 
 function PlayerDialogState:enter(params)
@@ -28,6 +28,7 @@ function PlayerDialogState:update(dt)
     self.dialoger.dialog:update(self.action, self.player)
 
     local idx = self.dialoger.dialog.prefix .. self.word
+    
     if self.action == "submit_word" then
         if G_dialogs[idx] then
             self.dialoger.dialog.current = G_dialogs[idx]
@@ -69,9 +70,11 @@ function PlayerDialogState:render()
     love.graphics.pop()
 
     self.dialoger.dialog:render(self.word)
+    love.graphics.draw(G_spritesheet, self.dialoger.portrait, SCREEN_WIDTH / 4 + 200, SCREEN_HEIGHT / 4, 0, 4)
+    love.graphics.draw(G_portraitsheet, G_portraits[1], (SCREEN_WIDTH / 4) + 4, (SCREEN_HEIGHT / 4) + 230, 0, 2)
 end
 
 function PlayerDialogState:exit()
-    
+
 end
 

@@ -7,7 +7,8 @@ G_mobs = {
         stats = {
             ["health"] = 100,
         },
-        dialog = Dialog:new("yarl_")
+        dialog = Dialog:new("yarl_"),
+        portrait = 508,
     },
     ["rat"] = {
         name = "Rat",
