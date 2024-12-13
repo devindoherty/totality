@@ -2,7 +2,7 @@ PlayerTurnState = State:new()
 
 function PlayerTurnState:init(params)
     self.action = nil
-    self.log = {"123456789012345678901234567890"}
+    self.log = {"You awaken in a small farmhouse..."}
     self.mouse = {
         x = love.mouse.getX(),
         y = love.mouse.getY()
@@ -11,7 +11,7 @@ function PlayerTurnState:init(params)
     self.looking = false
     self.attacking = false
     self.menu = nil
-    
+    self.demo_win = false
 end
 
 function PlayerTurnState:enter(params)
@@ -26,20 +26,22 @@ function PlayerTurnState:enter(params)
     self.attacking = params.attacking
     
     self.action = nil
-
-    G_bug:bugprint("player x on enter: ", self.player.x)
-    G_bug:bugprint("player y on enter: ", self.player.y)
+    self.menu = nil
 end
 
 function PlayerTurnState:input(key)
     self.mouse.x, self.mouse.y = math.floor(self.mouse.x / 64), math.floor(self.mouse.y / 64)
 
     if key == "escape" and not self.menu then
-        self.menu = Menu:new(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 100, 400, {
-            Selection:new("Continue", function() end),
+        self.menu = Menu:new(SCREEN_WIDTH/2 - 32, SCREEN_HEIGHT/2, 75, 50, {
+            Selection:new("Continue", function() G_gs:change("world_turn_state", {map = self.map, player = self.player}) return end),
             Selection:new("Help", function() end),
-            Selection:new("Quit", function() end),
-        })
+            Selection:new("Quit", function() love.event.quit(0) end),
+            },
+            {background=true})
+        return
+    elseif key == "escape" and self.menu then
+        G_gs:change("world_turn_state", {map = self.map, player = self.player})
         return
     elseif self.menu then
         if key == "w" or key == "up" or key == "kp8" then
@@ -49,6 +51,7 @@ function PlayerTurnState:input(key)
         elseif key == "enter" or key == "return" then
             self.action = "menu_enter"
         end
+        return
     end
 
     if self.interacting then
@@ -107,6 +110,10 @@ function PlayerTurnState:update(dt)
     
     if self.player:die() then
         G_gs:change("game_over_state")
+    end
+
+    if self.demo_win == false then
+        self:check_for_demo_win(self.map.mobs)
     end
 
     if self.menu then
@@ -225,14 +232,14 @@ function PlayerTurnState:update_looking(x, y)
         local target_mob = self.map:get_mob_with_xy(self.selector.x, self.selector.y)
         local target_item = self.map:get_item_with_xy(self.selector.x, self.selector.y)
         local target_tile = self.map:get_tile_with_xy(self.selector.x, self.selector.y)
-        local logline = "You see "
+        local logline = "You see: "
         if target_mob then
             print(target_mob.description)
-            logline = logline .. ", " .. target_mob.name .. " "
+            logline = logline .. " " .. target_mob.name .. " "
         end
         if target_item then
             print(target_item.description)
-            logline = logline .. ", " .. target_item.name .. " "
+            logline = logline .. " " .. target_item.name .. " "
         end
         if target_tile then
             if target_tile.description == "Nothing but empty space." and target_item or target_mob then
@@ -249,9 +256,23 @@ function PlayerTurnState:update_looking(x, y)
     self.action = nil
 end
 
+function PlayerTurnState:check_for_demo_win(mobs)
+    local rat_count = 0
+    for _i, mob in pairs(mobs) do
+        if mob.name == "Rat" then
+            rat_count = rat_count + 1
+        end
+    end
+    if rat_count == 0 then
+        table.insert(self.log, "You have defeated all the rats! Feel free to play on and explore.")
+        self.demo_win = true
+    end
+end
+
+
 function PlayerTurnState:render_log()
     local x = 0
-    local y = SCREEN_HEIGHT - 64 - 12
+    local y = SCREEN_HEIGHT - 64 - 24
     love.graphics.setColor(0, 0, 0, .5)
     love.graphics.rectangle("fill", 0, 0, SCREEN_WIDTH / 4, SCREEN_HEIGHT)
     love.graphics.setColor(1, 1, 1)
@@ -306,6 +327,5 @@ function PlayerTurnState:render()
 end
 
 function PlayerTurnState:exit()
-    G_bug:bugprint("player x on exit: ", self.player.x)
-    G_bug:bugprint("player y on exit: ", self.player.y)
+
 end

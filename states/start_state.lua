@@ -22,7 +22,7 @@ function StartState:enter(params)
             Selection:new("Help", function() end),
             Selection:new("Exit", function() love.event.quit(0) end),
         },
-        {}
+        {background = false}
     )
 end
 

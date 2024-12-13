@@ -8,9 +8,6 @@ function MobTurnState:enter(params)
     self.map = params.map
     self.player = params.player
     self.map.player = self.player
-
-    G_bug:bugprint("player x on mobstate enter: ", self.player.x)
-    G_bug:bugprint("player y on mobstate enter: ", self.player.y)
 end
 
 function MobTurnState:input(key)

@@ -1,5 +1,4 @@
 require("attack")
-require("bug")
 require("constants")
 require("dialog")
 require("gamestate")

@@ -38,7 +38,7 @@ end
 function Gamestate:change(state, params)
     self.current:exit()
     self.current = self.states[state]()
-    G_bug:bugprint("entering state ", state)
+    print("entering state: " .. state)
     self.current:enter(params)
 end
 

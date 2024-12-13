@@ -19,6 +19,8 @@ function PlayerDialogState:input(key)
     elseif key == "space" then
         self.word = self.word .. " "
         return
+    elseif key == "escape" then
+        G_gs:change("player_turn_state", {map=self.map, player=self.player})
     end
 
     self.word = self.word .. key

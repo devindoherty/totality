@@ -6,6 +6,9 @@ function Menu:new(x, y, width, length, selections, params)
     self.__index = self
     menu.x = x
     menu.y = y
+    menu.width = width
+    menu.length = length
+    menu.background = params.background or false
     
     menu.selections = selections
     menu.selected = 1
@@ -29,6 +32,14 @@ end
 function Menu:render()
     local x = self.x
     local y = self.y
+    
+    if self.background then
+        love.graphics.setColor(0,0,0)
+        love.graphics.rectangle("fill", self.x - 12, self.y-6, self.width, self.length)
+        love.graphics.setColor(1, 1, 0)
+        love.graphics.rectangle("line", self.x - 12, self.y-6, self.width, self.length)
+        love.graphics.setColor(1, 1, 1)
+    end
 
     for i = 1, #self.selections do
         if self.selected == i then
