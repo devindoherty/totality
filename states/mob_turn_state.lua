@@ -46,6 +46,7 @@ function MobTurnState:update(dt)
     end
 
     G_gs:change("world_turn_state", {map = self.map, player = self.player})
+    return
 end
 
 

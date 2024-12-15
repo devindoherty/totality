@@ -25,12 +25,10 @@ itself.
 Made a retro fantasy RPG.
 
 # Why did I design that way?
-Used the StateMachine paradigm because it seemed the most logical way to organize the different states
-that an RPG goes through.
+Used the StateMachine pattern because it seemed the most logical way to organize the code. The basis of the game world is the tile, the item, and the mob, with the player being its own distinct mob-like entity. Tiles are immobile terrain pieces like walls and trees and such. Items are interactible objects in the world like furniture and pickups. Mobs are mobile entities representing creatures and other beings like that.
 
 # What is contained in each file?
-Every state is organized under the State folder. All art and music is in assets. And data that could be serialized is in
-the data folder. Everything else is a main or class file.
+Every state is organized under the State folder. All art and music is in assets. And data that could be serialized  is in the data folder. Everything else is a main or class file. The main gamestate is contained in main.
 
 # What setup is required?
 Love 11.5.
