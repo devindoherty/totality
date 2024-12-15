@@ -10,8 +10,8 @@ function Menu:new(x, y, width, length, selections, params)
     menu.length = length
     menu.background = params.background or false
     
-    menu.font = params.font
-    menu.spacing = params.spacing
+    menu.spacing = params.spacing or 0
+    menu.font = love.graphics.newFont(params.font)
 
     menu.selections = selections
     menu.selected = 1
@@ -35,7 +35,11 @@ end
 function Menu:render()
     local x = self.x
     local y = self.y
-    
+    local old_font = love.graphics.getFont()
+
+    love.graphics.setFont(self.font)
+
+
     if self.background then
         love.graphics.setColor(0,0,0)
         love.graphics.rectangle("fill", self.x - 12, self.y-6, self.width, self.length)
@@ -52,8 +56,9 @@ function Menu:render()
             self.selections[i]:render(x, y)
         end
         i = i + 1
-        y = y + 12
+        y = y + 12 + self.spacing
     end
+    love.graphics.setFont(old_font)
 end
 
 

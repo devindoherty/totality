@@ -62,10 +62,12 @@ function Map:render()
     end
 end
 
+-- Is a tile passable
 function Map:solid(x, y)
     return self.tiles[y][x].solid
 end
 
+-- Inbounds of map area
 function Map:inbounds(x, y)
     if y < 1 or x < 1 then
          return false
@@ -76,6 +78,7 @@ function Map:inbounds(x, y)
     end
 end
 
+-- Is the tile stood on by a mob
 function Map:occupied(x, y)
     if x == self.player.x and y == self.player.y then
         return true
@@ -87,6 +90,7 @@ function Map:occupied(x, y)
     end
 end
 
+-- Checks if there's solid items like furnishings
 function Map:blocked(x, y)
     for _i, item in pairs(self.items) do
         if x == item.x and y == item.y then
@@ -97,18 +101,22 @@ function Map:blocked(x, y)
     end
 end
 
+-- Checks for doorways
 function Map:openable(x, y)
     return self.tiles[y][x].openable
 end
 
+-- Checks for open doorways to close
 function Map:closable(x, y)
     return self.tiles[y][x].closable
 end
 
+-- Updating tiles
 function Map:change_tile(x, y, new_tile)
     self.tiles[y][x] = new_tile
 end
 
+-- Gets a mob's location via x y coords
 function Map:get_mob_with_xy(x, y)
     for _i, mob in pairs(self.mobs) do
         if mob.x == x and mob.y == y then
@@ -118,6 +126,7 @@ function Map:get_mob_with_xy(x, y)
     return false
 end
 
+-- Gets items with x y coords
 function Map:get_item_with_xy(x, y)
     for _i, item in pairs(self.items) do
         if item.x == x and item.y == y then
@@ -127,11 +136,12 @@ function Map:get_item_with_xy(x, y)
     return false
 end
 
+-- Gets tile with x y coords
 function Map:get_tile_with_xy(x, y)
     return self.tiles[y][x]
 end
 
-
+-- Not used at present
 function Map:get_distance_between_two_points(point1, point2)
     local x1 = point1.x
     local y1 = point1.y
@@ -142,6 +152,7 @@ function Map:get_distance_between_two_points(point1, point2)
     return math.sqrt(((x2 - x1) ^ 2) + ((y2 - y1) ^ 2))
 end
 
+-- Creates and item and inserts into map table
 function Map:create_item(item)
     table.insert(self.items, item)
 end

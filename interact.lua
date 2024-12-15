@@ -1,3 +1,5 @@
+-- Interact action looks for an interactible on call near the caller based on direction input
+
 Interact = {}
 
 function Interact:new(name, interactible, effect)
@@ -25,7 +27,9 @@ function Interact.detect(interactor, interactibles)
         for y = interactor.y -1, interactor.y + 1 do
             for _i, entity in pairs(interactibles) do
                 if entity.x == x and entity.y == y and entity.name ~= "player" then
-                    print(entity.name .. " is interactible!")
+                    if DEBUG then
+                        print(entity.name .. " is interactible!")
+                    end
                     if entity.is_creature and entity.is_friendly then
                         G_gamestate.nearby_interactible["creature"] = true
                         G_gamestate.nearby_interactible.target = entity
@@ -63,7 +67,9 @@ function Interact:set(interactor, interactible)
         interactor.is_conversing = true
         interactible.is_known = true
         interactor.target = interactible
-        print(interactor.name .. " is conversing with " .. interactible.name)
+        if DEBUG then
+            print(interactor.name .. " is conversing with " .. interactible.name)
+        end
         G_gamestate.current_mode = "conversing"
         G_gamestate.nearby_interactible.target = interactible
     elseif interactible.is_item then

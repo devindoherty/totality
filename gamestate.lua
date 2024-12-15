@@ -1,3 +1,5 @@
+-- State Machine class
+
 Gamestate = {}
 
 function Gamestate:new(states)

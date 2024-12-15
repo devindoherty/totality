@@ -49,6 +49,7 @@ function love.load()
         ["mob_turn_state"] = function() return MobTurnState end,
         ["world_turn_state"] = function() return WorldTurnState end,
         ["game_over_state"] = function() return GameOverState end,
+        ["help_state"] = function() return HelpState end,
     })
     G_gs:change("start_state")
 end

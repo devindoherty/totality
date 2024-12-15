@@ -1,3 +1,5 @@
+-- Mob defs
+
 G_mobs = {
     ["yarl"] = {
         name = "Yarl",
@@ -18,7 +20,9 @@ G_mobs = {
         behavior = "aggressive",
         stats = {
             ["health"] = 10,
-        }
+        },
+        dialog = Dialog:new("rat_"),
+        portrait = 1,
     },
     ["boss_rat"] = {
         name = "Boss Rat",

@@ -1,3 +1,5 @@
+-- Tile class that reads tiles defs
+
 Tile = {}
 
 function Tile:new(params, x, y)

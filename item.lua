@@ -1,3 +1,5 @@
+-- Items are currently things like furniture, can expand to inventory items, etc
+
 Item = {}
 
 function Item:new(params, x, y, map)

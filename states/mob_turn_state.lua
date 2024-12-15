@@ -1,3 +1,5 @@
+-- Goes through all mobs and decides what they're going to do
+
 MobTurnState = State:new()
 
 function MobTurnState:init(params)
@@ -15,6 +17,7 @@ function MobTurnState:input(key)
     -- pass
 end
 
+-- Loops through mobs according to behaviour and then decides on basic AI pathfinding or attacking
 function MobTurnState:update(dt)
     for _i, mob in pairs(self.map.mobs) do
         if mob.attack then
@@ -73,7 +76,7 @@ function MobTurnState:render()
         self.player:render()
     love.graphics.pop()
     self:render_log()
-    love.graphics.draw(G_portraitsheet, G_portraits[1], 0, SCREEN_HEIGHT - 64, 0, 2)
+    love.graphics.draw(G_portraitsheet, self.player.portrait, 0, SCREEN_HEIGHT - 64, 0, 2)
     love.graphics.print("Health: " .. self.player.stats["health"], 66, SCREEN_HEIGHT - 64)
     love.graphics.print("Magic: " .. self.player.stats["magic"], 66, SCREEN_HEIGHT - 52)
 

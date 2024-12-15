@@ -1,3 +1,5 @@
+-- Tile defs
+
 G_tiles = {
     [" "] = {
         name = "empty",

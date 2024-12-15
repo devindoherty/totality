@@ -1,3 +1,5 @@
+-- Item defs for map placement
+
 G_items = {
     ["wooden_bed"] = {
         name = "wooden bed",

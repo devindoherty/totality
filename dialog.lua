@@ -1,3 +1,5 @@
+-- Dialog class, sets a prefix for the def to look at when looking for keyword matches
+
 Dialog = {}
 
 function Dialog:new(prefix)

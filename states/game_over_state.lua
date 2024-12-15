@@ -1,3 +1,5 @@
+-- Result if player health <= 0
+
 GameOverState = State:new()
 
 function GameOverState:init()

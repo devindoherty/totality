@@ -1,3 +1,5 @@
+-- Everything else that happens in the game world other than player and mob actions
+-- Not much presently
 WorldTurnState = State:new()
 
 function WorldTurnState:new()
@@ -50,7 +52,7 @@ function WorldTurnState:render()
         self.player:render()
     love.graphics.pop()
     self:render_log()
-    love.graphics.draw(G_portraitsheet, G_portraits[1], 0, SCREEN_HEIGHT - 64, 0, 2)
+    love.graphics.draw(G_portraitsheet, self.player.portrait, 0, SCREEN_HEIGHT - 64, 0, 2)
     love.graphics.print("Health: " .. self.player.stats["health"], 66, SCREEN_HEIGHT - 64)
     love.graphics.print("Magic: " .. self.player.stats["magic"], 66, SCREEN_HEIGHT - 52)
 end

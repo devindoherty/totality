@@ -1,3 +1,5 @@
+-- Used to see idx of spritesheet
+
 MapEditorState = State:new()
 
 function State:init() end

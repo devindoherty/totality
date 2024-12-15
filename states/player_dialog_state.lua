@@ -1,3 +1,5 @@
+-- Fires after player interacts with conversant
+
 PlayerDialogState = State:new()
 
 function PlayerDialogState:init()
@@ -26,6 +28,7 @@ function PlayerDialogState:input(key)
     self.word = self.word .. key
 end
 
+-- Looks for matching input keywords in dialog def
 function PlayerDialogState:update(dt)
     self.dialoger.dialog:update(self.action, self.player)
 
@@ -73,7 +76,7 @@ function PlayerDialogState:render()
 
     self.dialoger.dialog:render(self.word)
     love.graphics.draw(G_spritesheet, self.dialoger.portrait, SCREEN_WIDTH / 4 + 200, SCREEN_HEIGHT / 4, 0, 4)
-    love.graphics.draw(G_portraitsheet, G_portraits[1], (SCREEN_WIDTH / 4) + 4, (SCREEN_HEIGHT / 4) + 230, 0, 2)
+    love.graphics.draw(G_portraitsheet, self.player.portrait, (SCREEN_WIDTH / 4) + 4, (SCREEN_HEIGHT / 4) + 230, 0, 2)
 end
 
 function PlayerDialogState:exit()

@@ -4,12 +4,14 @@ SCREEN_HEIGHT = 540
 DRAW_FACTOR = 32
 SCALE_FACTOR = 2
 TILE_SIZE = 16
-DEBUG = true
+DEBUG = false
 
 MAP_HEIGHT = 64
 MAP_WIDTH = 128
 
 AWARENESS = 8
+
+ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
 
 RED = {1, 0, 0}
 GREEN = {0, 1, 0}

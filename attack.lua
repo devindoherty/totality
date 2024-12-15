@@ -1,3 +1,5 @@
+-- Attack class
+
 Attack = {}
 
 function Attack:new(name, x, y, attacker, defender, params)
@@ -17,6 +19,7 @@ function Attack:new(name, x, y, attacker, defender, params)
     return attack
 end
 
+-- Loops through frames for the attack animation
 function Attack:update(dt)
     if self.frame == 0 then 
         self.defender:inflict_damage(self.damage)
@@ -28,6 +31,7 @@ function Attack:update(dt)
     self:update_frames(dt)
 end
 
+-- Looping frames
 function Attack:update_frames(dt)
     self.frame = self.frame + 10 * dt
 end

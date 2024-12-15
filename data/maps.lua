@@ -1,3 +1,5 @@
+-- Gameworld map def as well as using mob, item, and tile defs
+
 G_area_one_tiles = {
 "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
 "T                      TTT~TTTTTTTTTT   TTTTT      TTTT                                                                         T",

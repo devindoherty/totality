@@ -1,3 +1,5 @@
+-- Base state class
+
 State = {}
 
 function State:new(params)

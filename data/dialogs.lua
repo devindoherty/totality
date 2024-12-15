@@ -1,3 +1,5 @@
+-- Dialog lines for conversation interacts, keyword links by key
+
 G_dialogs = { 
     -- NARRATOR
     ["narrator_root"] = {
@@ -55,6 +57,9 @@ G_dialogs = {
         prerequisite = "rats_dead" or "rats_moved",
         line = "I don't care how you did it, but those rats are gone. Good work. Here's 100 lunes.",
         on_current = function(map, player) player:give_coins(100) end
+    },
+    ["rat_root"] = {
+        line={"SQUEEEK!"}
     },
 
     -- BOSS RAT

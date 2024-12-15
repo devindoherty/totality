@@ -1,3 +1,5 @@
+-- Loads our graphics into tables, both sprites and portraits
+
 Spritesheet = {}
 
 function Spritesheet.load_sprites()

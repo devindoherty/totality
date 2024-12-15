@@ -1,3 +1,4 @@
+-- Mob class
 Mob = {}
 
 function Mob:new(params, x, y, map, id)
@@ -36,6 +37,7 @@ function Mob:new(params, x, y, map, id)
 end
 
 -- Bresenham's line algorithm
+-- Used for determining line of sight
 function Mob:line_of_sight(target)
     local x0 = self.x
     local y0 = self.y
@@ -114,6 +116,7 @@ function Mob:line_of_sight(target)
     end
 end
 
+-- Draws a green line for unobstructed LOS and red for obstructed
 function Mob:draw_line_of_sight(target)
     if self.sightline.x == target.x and self.sightline.y == target.y then
         love.graphics.setColor(0, 1, 0)
@@ -125,6 +128,7 @@ function Mob:draw_line_of_sight(target)
     love.graphics.setColor(255, 255, 255)
 end
 
+-- Aggressive movement toward a target
 function Mob:move_toward_target(target)
     local x = self.x
     local y = self.y
@@ -146,13 +150,9 @@ function Mob:move_toward_target(target)
         
         if self.map:inbounds(x, y) and not self.map:solid(x, y) and 
         not self.map:occupied(x, y) then
-            print("rat move")
             self.x = x
             self.y = y
         elseif x == target.x and y == target.y then
-            print("ATTACK")
-            print(target.x)
-            print(target.y)
             self.attack = Attack:new("basic attack", x, y, self, target, {
                 description = "hit",
                 sprite = 553,
@@ -164,6 +164,7 @@ function Mob:move_toward_target(target)
     end
 end
 
+-- Random movement
 function Mob:move_idly()
 
     local x = self.x
@@ -202,6 +203,7 @@ end
 function Mob:move_aquatically()
 end
 
+-- Literally does nothing
 function Mob:do_nothing(target)
     if self:line_of_sight(target) then
         local x = self.x
@@ -209,6 +211,7 @@ function Mob:do_nothing(target)
     end
 end
 
+-- Not used at the moment
 function Mob:check_movement()
     self.action = ""
     if not self.map:inbounds(x, y) then
@@ -225,7 +228,7 @@ function Mob:check_movement()
     end
 end
 
-
+-- Not used
 function Mob:select_quip()
     if self.quips then
         local quip_idx = love.math.random(1, #self.quips)
@@ -233,6 +236,7 @@ function Mob:select_quip()
     end
 end
 
+-- Determines if a mob 
 function Mob:set_attacking(defender)
     if self == defender then
         return
@@ -244,6 +248,7 @@ function Mob:set_attacking(defender)
     end
 end
 
+-- Draw for mobs
 function Mob:render()
     love.graphics.draw(G_spritesheet, self.sprite, (self.x-1) * DRAW_FACTOR, (self.y-1) * DRAW_FACTOR, 0, SCALE_FACTOR)
     if self.attack then
@@ -251,6 +256,7 @@ function Mob:render()
     end
 end
 
+-- Not used
 function Mob:draw_quip(topic)
     love.graphics.setColor(0, 0, 1, .75)
     love.graphics.rectangle("fill", self.x * DRAW_FACTOR + 25, self.y * DRAW_FACTOR - 35, 225, 36, 15, 15)
@@ -259,14 +265,17 @@ function Mob:draw_quip(topic)
     love.graphics.setColor(255, 255, 255)
 end
 
+-- Sets a stat to a value
 function Mob:set_stat(stat, value)
     self.stats[stat] = value
 end
 
+-- Damages health
 function Mob:inflict_damage(damage)
     self.stats.health = self.stats.health - damage
 end
 
+-- Not used
 function Mob:inflict_condition(condition)
 
 end

@@ -8,6 +8,8 @@ function Player:new()
     player.x = 6
     player.y = 4
     player.sprite = G_sprites[26]
+    player.portrait_idx = 1
+    player.portrait = G_portraits[player.portrait_idx]
     player.hostile = true
     player.stats = {
         ["health"] = 100,
@@ -26,6 +28,10 @@ end
 
 function Player:render()
     love.graphics.draw(G_spritesheet, self.sprite, (self.x-1) * DRAW_FACTOR, (self.y-1) * DRAW_FACTOR, 0, SCALE_FACTOR)
+end
+
+function Player:update_portrait()
+    self.portrait = G_portraits[self.portrait_idx]
 end
 
 function Player:camera()

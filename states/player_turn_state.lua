@@ -35,10 +35,13 @@ function PlayerTurnState:input(key)
     if key == "escape" and not self.menu then
         self.menu = Menu:new(SCREEN_WIDTH/2 - 32, SCREEN_HEIGHT/2, 75, 50, {
             Selection:new("Continue", function() G_gs:change("world_turn_state", {map = self.map, player = self.player, log=self.log}) return end),
-            Selection:new("Help", function() end),
+            Selection:new("Help", function() G_gs:change("help_state", {origin="player_turn_state", player=self.player,map=self.map}) end),
             Selection:new("Quit", function() love.event.quit(0) end),
             },
-            {background=true})
+            {
+                background=true,
+                font=12,
+            })
         return
     elseif key == "escape" and self.menu then
         G_gs:change("world_turn_state", {map = self.map, player = self.player, log=self.log})
@@ -169,7 +172,6 @@ function PlayerTurnState:update_movement_or_bump(x, y)
     elseif self.map:occupied(x, y) then
         local occupier = self.map:get_mob_with_xy(x, y)
         if occupier.hostile then
-            print(occupier.name)
             self.attacking = Attack:new("basic attack", x, y, self.player, occupier, {
                 description = "hit",
                 sprite = 553,
@@ -317,7 +319,7 @@ function PlayerTurnState:render()
     love.graphics.pop()
 
     PlayerTurnState:render_log()
-    love.graphics.draw(G_portraitsheet, G_portraits[1], 0, SCREEN_HEIGHT - 64, 0, 2)
+    love.graphics.draw(G_portraitsheet, self.player.portrait, 0, SCREEN_HEIGHT - 64, 0, 2)
     love.graphics.print("Health: " .. self.player.stats["health"], 66, SCREEN_HEIGHT - 64)
     love.graphics.print("Magic: " .. self.player.stats["magic"], 66, SCREEN_HEIGHT - 52)
 
