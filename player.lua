@@ -13,6 +13,10 @@ function Player:new()
         ["health"] = 100,
         ["magic"] = 100,
         ["defense"] = 10,
+        ["might"] = 10,
+        ["grace"] = 10,
+        ["mind"] = 10,
+        ["soul"] = 10,
     }
     player.inventory = {
         ["lunes"] = 0,

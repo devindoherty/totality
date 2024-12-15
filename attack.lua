@@ -21,8 +21,10 @@ function Attack:update(dt)
     if self.frame == 0 then 
         self.defender:inflict_damage(self.damage)
     end
-    print(self.attacker.name .. " is attacking " .. self.defender.name .. " on x " .. self.x .. " and y " .. self.y)
-    print(self.defender.name, self.defender.stats["health"] .. " health")
+    if DEBUG then
+        print(self.attacker.name .. " is attacking " .. self.defender.name .. " on x " .. self.x .. " and y " .. self.y)
+        print(self.defender.name, self.defender.stats["health"] .. " health")
+    end
     self:update_frames(dt)
 end
 

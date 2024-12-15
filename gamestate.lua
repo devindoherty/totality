@@ -38,7 +38,9 @@ end
 function Gamestate:change(state, params)
     self.current:exit()
     self.current = self.states[state]()
-    print("entering state: " .. state)
+    if DEBUG then
+        print("entering state: " .. state)
+    end
     self.current:enter(params)
 end
 

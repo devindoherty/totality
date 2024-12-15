@@ -34,14 +34,14 @@ function PlayerTurnState:input(key)
 
     if key == "escape" and not self.menu then
         self.menu = Menu:new(SCREEN_WIDTH/2 - 32, SCREEN_HEIGHT/2, 75, 50, {
-            Selection:new("Continue", function() G_gs:change("world_turn_state", {map = self.map, player = self.player}) return end),
+            Selection:new("Continue", function() G_gs:change("world_turn_state", {map = self.map, player = self.player, log=self.log}) return end),
             Selection:new("Help", function() end),
             Selection:new("Quit", function() love.event.quit(0) end),
             },
             {background=true})
         return
     elseif key == "escape" and self.menu then
-        G_gs:change("world_turn_state", {map = self.map, player = self.player})
+        G_gs:change("world_turn_state", {map = self.map, player = self.player, log=self.log})
         return
     elseif self.menu then
         if key == "w" or key == "up" or key == "kp8" then
@@ -124,7 +124,7 @@ function PlayerTurnState:update(dt)
     
     if self.action then
         if self.action == "player_end_turn" then
-            G_gs:change("mob_turn_state", {map = self.map, player = self.player})
+            G_gs:change("mob_turn_state", {map = self.map, player = self.player, log=self.log})
         elseif self.interacting then
             PlayerTurnState:update_interacting(x, y)
         elseif self.looking then
@@ -133,7 +133,7 @@ function PlayerTurnState:update(dt)
             self.attacking:update(dt)
             if self.attacking.frame > 2.5 then
                 self.attacking = nil
-                G_gs:change("mob_turn_state", {map = self.map, player = self.player})
+                G_gs:change("mob_turn_state", {map = self.map, player = self.player, log=self.log})
             end
         else
             PlayerTurnState:update_movement_or_bump(x, y)
@@ -177,11 +177,12 @@ function PlayerTurnState:update_movement_or_bump(x, y)
                 damage = 5,
                 condition = "none"
             })
+            table.insert(self.log, "You attack the " .. self.attacking.defender.name .. " for " .. self.attacking.damage .. " damage.")
             return
         end
     end
 
-    G_gs:change("mob_turn_state", {map = self.map, player = self.player})
+    G_gs:change("mob_turn_state", {map = self.map, player = self.player, log=self.log})
 end
 
 
@@ -202,13 +203,13 @@ function PlayerTurnState:update_interacting(x, y)
         table.insert(self.log, "You close the door in the " .. tile.name)
         self.map:change_tile(x, y, Tile:new(G_tiles[tile.close_def], x, y))
         self.interacting = false
-        G_gs:change("mob_turn_state", {map = self.map, player = self.player})
+        G_gs:change("mob_turn_state", {map = self.map, player = self.player, log=self.log})
         return
     elseif self.map:openable(x, y) then
         table.insert(self.log, "You open the " .. tile.name)
         self.map:change_tile(x, y, Tile:new(G_tiles[tile.open_def], x, y))
         self.interacting = false
-        G_gs:change("mob_turn_state", {map = self.map, player = self.player})
+        G_gs:change("mob_turn_state", {map = self.map, player = self.player, log=self.log})
         return
     elseif self.map:occupied(x, y) then
         local dialoger = self.map:get_mob_with_xy(x, y)
@@ -272,7 +273,7 @@ end
 
 function PlayerTurnState:render_log()
     local x = 0
-    local y = SCREEN_HEIGHT - 64 - 24
+    local y = SCREEN_HEIGHT - 100
     love.graphics.setColor(0, 0, 0, .5)
     love.graphics.rectangle("fill", 0, 0, SCREEN_WIDTH / 4, SCREEN_HEIGHT)
     love.graphics.setColor(1, 1, 1)
@@ -323,7 +324,6 @@ function PlayerTurnState:render()
     if self.menu then
         self.menu:render()
     end
-
 end
 
 function PlayerTurnState:exit()
