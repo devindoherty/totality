@@ -10,6 +10,9 @@ function Menu:new(x, y, width, length, selections, params)
     menu.length = length
     menu.background = params.background or false
     
+    menu.font = params.font
+    menu.spacing = params.spacing
+
     menu.selections = selections
     menu.selected = 1
     return menu

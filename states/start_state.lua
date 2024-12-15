@@ -16,7 +16,7 @@ function StartState:enter(params)
         400,
         600,
         {
-            Selection:new("New", function() G_gs:change("character_creation_state") end),
+            Selection:new("New", function() G_gs:change("character_creation_state", {player=self.player, map=self.map}) end),
             Selection:new("Continue", function() G_gs:change("world_turn_state", {player = self.player, map = self.map}) end),
             Selection:new("Load", function(self) self.text="NOT YET" end),
             Selection:new("Help", function() end),
