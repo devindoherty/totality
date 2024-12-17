@@ -69,11 +69,7 @@ Link: https://youtu.be/flFr1QbvG5c
 ## How would you rate your own design? Place an X in one of the set of brackets below. (Your answer will not have an impact on how the staff scores your design)
 
 [ ] 1 - Poor. Work demonstrates poor understanding of week's concepts and problem set. Substantial improvements needed.
-
 [ ] 2 - Fair. Work demonstrates fair understanding of week's concepts and problem set. Significant improvements needed.
-
 [ ] 3 - Good. Work demonstrates good understanding of week's concepts and problem set. Some improvements needed, but at the benchmark of success for this point in the course.
-
 [X] 4 - Better. Work demonstrates better than "good" understanding of week's concepts and problem set. Few improvements needed. Beyond the benchmark of success for this point in the course.
-
 [ ] 5 - Best. Exceptional. No room for improvement. No modifications could improve efficiency.
