@@ -25,12 +25,7 @@ function PlayerDialogState:input(key)
         G_gs:change("player_turn_state", {map=self.map, player=self.player})
     end
 
-    for i=1, #ALPHABET do
-        print(ALPHABET[i])
-        if key == ALPHABET[i] then
-            self.word = self.word .. key
-        end
-    end
+    self.word = self.word .. key
 end
 
 -- Looks for matching input keywords in dialog def
