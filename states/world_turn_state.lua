@@ -18,6 +18,7 @@ end
 function WorldTurnState:enter(params)
     self.map = params.map
     self.player = params.player
+    self.log = params.log
 end
 
 function WorldTurnState:input() end
