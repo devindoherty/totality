@@ -68,28 +68,30 @@ function CharacterCreationState:update(dt)
         return
     end
 
-    if self.points > 0 and self.points <= 50 then
-        if self.action == "increment" then
-            if self.menu.selected == 1 then
-                self.player.stats["might"] = self.player.stats.might + 1
-            elseif self.menu.selected == 2 then
-                self.player.stats["grace"] = self.player.stats.grace + 1
-            elseif self.menu.selected == 3 then
-                self.player.stats["mind"] = self.player.stats.mind + 1
-            elseif self.menu.selected == 4 then
-                self.player.stats["soul"] = self.player.stats.soul + 1
-            end
-            self.points = self.points - 1
-        elseif self.action == "decrement" then
-            if self.menu.selected == 1 then
-                self.player.stats["might"] = self.player.stats.might - 1
-            elseif self.menu.selected == 2 then
-                self.player.stats["grace"] = self.player.stats.grace - 1
-            elseif self.menu.selected == 3 then
-                self.player.stats["mind"] = self.player.stats.mind - 1
-            elseif self.menu.selected == 4 then
-                self.player.stats["soul"] = self.player.stats.soul - 1
-            end
+    
+    if self.action == "increment" and self.points > 0 then
+        if self.menu.selected == 1 then
+            self.player.stats["might"] = self.player.stats.might + 1
+        elseif self.menu.selected == 2 then
+            self.player.stats["grace"] = self.player.stats.grace + 1
+        elseif self.menu.selected == 3 then
+            self.player.stats["mind"] = self.player.stats.mind + 1
+        elseif self.menu.selected == 4 then
+            self.player.stats["soul"] = self.player.stats.soul + 1
+        end
+        self.points = self.points - 1
+    elseif self.action == "decrement" then
+        if self.menu.selected == 1 then
+            if self.player.stats["might"] > 0 then self.player.stats["might"] = self.player.stats.might - 1 end
+            self.points = self.points + 1
+        elseif self.menu.selected == 2 then
+            if self.player.stats["grace"] > 0 then self.player.stats["grace"] = self.player.stats.grace - 1 end
+            self.points = self.points + 1
+        elseif self.menu.selected == 3 then
+            if self.player.stats["mind"] > 0 then self.player.stats["mind"] = self.player.stats.mind - 1 end
+            self.points = self.points + 1
+        elseif self.menu.selected == 4 then
+            if self.player.stats["soul"] > 0 then self.player.stats["soul"] = self.player.stats.soul - 1 end
             self.points = self.points + 1
         end
     end

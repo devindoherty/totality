@@ -20,7 +20,7 @@ function StartState:enter(params)
         600,
         {
             Selection:new("New", function() G_gs:change("character_creation_state", {player=self.player, map=self.map}) end),
-            Selection:new("Quick Start", function() G_gs:change("world_turn_state", {player = self.player, map = self.map}) end),
+            Selection:new("Quick Start", function() G_gs:change("world_turn_state", {player = self.player, map = self.map, log={""}}) end),
             -- Selection:new("Load", function(self) self.text="NOT YET" end),
             Selection:new("Help", function() G_gs:change("help_state", {origin="start_state"}) end),
             Selection:new("Exit", function() love.event.quit(0) end),
