@@ -15,7 +15,7 @@ function Spritesheet.load_sprites()
 end
 
 function Spritesheet.load_portraits()
-    G_portraitsheet = love.graphics.newImage("assets/portraits.png")
+    G_portraitsheet = love.graphics.newImage("assets/portraits_transparent.png")
     G_portraits = {}
 
     for y = 6, G_portraitsheet:getHeight() - 32, 32 do
