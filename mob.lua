@@ -132,7 +132,8 @@ end
 function Mob:move_toward_target(target)
     local x = self.x
     local y = self.y
-
+    print(x, y)
+    print("target: " .. target.x, target.y)
     if x ~= target.x or y ~= target.y then
         if math.abs(target.x - x) > math.abs(target.y - y) then
             if x < target.x then

@@ -11,6 +11,7 @@ function MobTurnState:enter(params)
     self.player = params.player
     self.map.player = self.player
     self.log = params.log
+    print("position of player on mob turn start: " .. self.player.x .. " " .. self.player.y)
 end
 
 function MobTurnState:input(key)
@@ -23,11 +24,10 @@ function MobTurnState:update(dt)
         if mob.attack then
             if mob.attack.frame > 2.5 then
                 mob.attack = nil
-                return
             else
                 mob.attack:update(dt)
-                return
             end
+            return
         end
         
         if math.abs(self.player.x - mob.x) <= 16 and math.abs(self.player.y - mob.y) <= 8 then
@@ -43,14 +43,13 @@ function MobTurnState:update(dt)
                 elseif mob.behavior == "friendly" then
                     mob:do_nothing(self.player)
                 else
-                    print(mob.name .. " does not have behavior.")
+                    if DEBUG then print(mob.name .. " does not have behavior.") end
                 end
             end
         end
     end
 
     G_gs:change("world_turn_state", {map = self.map, player = self.player, log=self.log})
-    return
 end
 
 function MobTurnState:render_log()
