@@ -26,7 +26,6 @@ function Attack:update(dt)
     end
     if DEBUG then
         print(self.attacker.name .. " is attacking " .. self.defender.name .. " on x " .. self.x .. " and y " .. self.y)
-        print(self.defender.name, self.defender.stats["health"] .. " health")
     end
     self:update_frames(dt)
 end
