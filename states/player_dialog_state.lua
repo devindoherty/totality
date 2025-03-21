@@ -26,8 +26,7 @@ function PlayerDialogState:input(key)
     end
 
     for i=1, #ALPHABET do
-        print(ALPHABET[i])
-        if key == ALPHABET[i] then
+        if key == string.sub(ALPHABET, i, i) then
             self.word = self.word .. key
         end
     end
