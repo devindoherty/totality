@@ -18,15 +18,13 @@ end
 function WorldTurnState:enter(params)
     self.map = params.map
     self.player = params.player
+    self.log = params.log
 end
 
 function WorldTurnState:input() end
 
 function WorldTurnState:update(dt)
-    G_gs:change("player_turn_state", {
-        map = self.map,
-        player = self.player
-    })
+    G_gs:change("player_turn_state", {map = self.map, player = self.player, log = self.log})
 end
 
 function WorldTurnState:render_log()

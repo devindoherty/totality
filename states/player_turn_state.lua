@@ -202,7 +202,8 @@ function PlayerTurnState:update_interacting(x, y)
     local tile = self.map.tiles[y][x]
     
     if self.map:closable(x, y) then
-        table.insert(self.log, "You close the door in the " .. tile.name)
+        table.insert(self.log, "You close the door in the " .. tile.name .. ".")
+        table.insert(self.log, "")
         self.map:change_tile(x, y, Tile:new(G_tiles[tile.close_def], x, y))
         self.interacting = false
         G_gs:change("mob_turn_state", {map = self.map, player = self.player, log=self.log})
