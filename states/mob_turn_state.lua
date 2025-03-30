@@ -20,6 +20,8 @@ end
 
 -- Loops through mobs according to behaviour and then decides on basic AI pathfinding or attacking
 function MobTurnState:update(dt)
+    local all_attacks_done = true
+
     for _i, mob in pairs(self.map.mobs) do
         if math.abs(self.player.x - mob.x) <= 16 and math.abs(self.player.y - mob.y) <= 8 then
             if mob:line_of_sight(self.player) and mob.attack == nil then
@@ -39,16 +41,18 @@ function MobTurnState:update(dt)
             end
         end
         if mob.attack then
+            mob.attack:update(dt)
             if mob.attack.frame > 2.5 then
                 mob.attack = nil
             else
-                mob.attack:update(dt)
-                return
+                all_attacks_done = false
             end
         end
     end
 
-    G_gs:change("world_turn_state", {map = self.map, player = self.player, log=self.log})
+    if all_attacks_done then
+        G_gs:change("world_turn_state", {map = self.map, player = self.player, log=self.log})
+    end
 end
 
 function MobTurnState:render_log()
@@ -77,7 +81,6 @@ function MobTurnState:render()
     love.graphics.draw(G_portraitsheet, self.player.portrait, 0, SCREEN_HEIGHT - 64, 0, 2)
     love.graphics.print("Health: " .. self.player.stats["health"], 66, SCREEN_HEIGHT - 64)
     love.graphics.print("Magic: " .. self.player.stats["magic"], 66, SCREEN_HEIGHT - 52)
-
 end
 
 function MobTurnState:exit()
