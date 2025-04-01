@@ -75,6 +75,7 @@ G_area_one_mobs = {
     {G_mobs["rat"], 13, 4},
     {G_mobs["rat"], 44, 9},
     {G_mobs["rat"], 44, 10},
+    {G_mobs["boss_rat"], 10, 7},
 }
 
 G_area_one_items = {

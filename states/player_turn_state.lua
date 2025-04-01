@@ -115,16 +115,16 @@ function PlayerTurnState:update(dt)
         G_gs:change("game_over_state")
     end
 
-    if self.demo_win == false then
-        self:check_for_demo_win(self.map.mobs)
-    end
+    -- if self.demo_win == false then
+    --     self:check_for_demo_win(self.map.mobs)
+    -- end
 
     if self.menu then
         self.menu:update(self.action)
         self.action = ""
         return
     end
-    
+
     if self.action then
         if self.action == "player_end_turn" then
             G_gs:change("mob_turn_state", {map = self.map, player = self.player, log=self.log})
@@ -260,19 +260,23 @@ function PlayerTurnState:update_looking(x, y)
     self.action = nil
 end
 
-function PlayerTurnState:check_for_demo_win(mobs)
-    local rat_count = 0
-    for _i, mob in pairs(mobs) do
-        if mob.name == "Rat" then
-            rat_count = rat_count + 1
-        end
-    end
-    if rat_count == 0 then
-        table.insert(self.log, "You have defeated all the rats! Feel free to play on and explore.")
-        self.demo_win = true
-    end
-end
+-- Commenting out for non demo dev
+-- function PlayerTurnState:check_for_demo_win(mobs)
+--     local rat_count = 0
+--     for _i, mob in pairs(mobs) do
+--         if mob.name == "Rat" then
+--             rat_count = rat_count + 1
+--         end
+--     end
+--     if rat_count == 0 then
+--         table.insert(self.log, "You have defeated all the rats! Feel free to play on and explore.")
+--         self.demo_win = true
+--     end
+-- end
 
+function PlayerTurnState:update_pov()
+
+end
 
 function PlayerTurnState:render_log()
     local x = 0
