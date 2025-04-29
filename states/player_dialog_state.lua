@@ -79,7 +79,7 @@ function PlayerDialogState:render()
     love.graphics.pop()
 
     self.dialoger.dialog:render(self.word)
-    love.graphics.draw(G_spritesheet, self.dialoger.portrait, SCREEN_WIDTH / 4 + 200, SCREEN_HEIGHT / 4, 0, 4)
+    if self.dialoger.portrait then love.graphics.draw(G_spritesheet, self.dialoger.portrait, SCREEN_WIDTH / 4 + 200, SCREEN_HEIGHT / 4, 0, 4) end
     love.graphics.draw(G_portraitsheet, self.player.portrait, (SCREEN_WIDTH / 4) + 4, (SCREEN_HEIGHT / 4) + 230, 0, 2)
 end
 

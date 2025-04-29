@@ -32,6 +32,7 @@ G_mobs = {
             ["health"] = 25,
         },
         dialog = Dialog:new("boss_rat_"),
+        portrait = 416,
     },
     ["croc"] = {
         name = "Croc",
