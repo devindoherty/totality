@@ -54,7 +54,11 @@ function Map:render()
     end
 
     for _i, item in pairs(self.items) do
-        item:render()
+        if item.x == self.player.x and item.y == self.player.y then
+           -- pass, do not render under player 
+        else 
+            item:render()
+        end
     end
 
     for _i, mob in pairs(self.mobs) do

@@ -3,7 +3,7 @@
 MobTurnState = State:new()
 
 function MobTurnState:init(params)
-
+    self.attacks = nil
 end
 
 function MobTurnState:enter(params)
@@ -11,6 +11,7 @@ function MobTurnState:enter(params)
     self.player = params.player
     self.map.player = params.player
     self.log = params.log
+    self.attacks = params.log
     print("position of player on mob turn start: " .. self.player.x .. " " .. self.player.y)
 end
 
@@ -21,31 +22,34 @@ end
 -- Loops through mobs according to behaviour and then decides on basic AI pathfinding or attacking
 function MobTurnState:update(dt)
     local all_attacks_done = true
+    if self.attack then
 
-    for _i, mob in pairs(self.map.mobs) do
-        if math.abs(self.player.x - mob.x) <= 16 and math.abs(self.player.y - mob.y) <= 8 then
-            if mob:line_of_sight(self.player) and mob.attack == nil then
-                if mob.behavior == "aggressive" then
-                    mob:move_toward_target(self.player)
-                elseif mob.behavior == "loitering" then
-                    mob:move_idly(self.player)
-                elseif mob.behavior == "skittish" then
-                    mob:move_along_walls(self.player)
-                elseif mob.behavior == "neutral" then
-                    mob:do_nothing(self.player)
-                elseif mob.behavior == "friendly" then
-                    mob:do_nothing(self.player)
-                else
-                    if DEBUG then print(mob.name .. " does not have behavior.") end
+    else
+        for _i, mob in pairs(self.map.mobs) do
+            if math.abs(self.player.x - mob.x) <= 16 and math.abs(self.player.y - mob.y) <= 8 then
+                if mob:line_of_sight(self.player) and mob.attack == nil then
+                    if mob.behavior == "aggressive" then
+                        mob:move_toward_target(self.player, self.attacks)
+                    elseif mob.behavior == "loitering" then
+                        mob:move_idly(self.player)
+                    elseif mob.behavior == "skittish" then
+                        mob:move_along_walls(self.player)
+                    elseif mob.behavior == "neutral" then
+                        mob:do_nothing(self.player)
+                    elseif mob.behavior == "friendly" then
+                        mob:do_nothing(self.player)
+                    else
+                        if DEBUG then print(mob.name .. " does not have behavior.") end
+                    end
                 end
             end
-        end
-        if mob.attack then
-            mob.attack:update(dt)
-            if mob.attack.frame > 2.5 then
-                mob.attack = nil
-            else
-                all_attacks_done = false
+            if mob.attack then
+                mob.attack:update(dt)
+                if mob.attack.frame > 2.5 then
+                    mob.attack = nil
+                else
+                    all_attacks_done = false
+                end
             end
         end
     end
