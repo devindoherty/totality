@@ -9,7 +9,7 @@ function Map:new(params)
     self.items = {}
     self.mobs = {}
 
-    self.player = nil
+    self.player = params.player
     
     -- Reading our map data strings to Tile objects
     for y = 1, #params.tiles do
@@ -54,7 +54,7 @@ function Map:render()
     end
 
     for _i, item in pairs(self.items) do
-        if item.x == self.player.x and item.y == self.player.y then
+        if item.x == self.player.x and item.y == self.player.y and item.obscurable then
            -- pass, do not render under player 
         else 
             item:render()

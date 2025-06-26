@@ -12,6 +12,7 @@ function Item:new(params, x, y, map)
     item.sprite = G_sprites[params.sprite]
     item.description = params.description
     item.blocker = params.blocker
+    item.obscurable = params.obscurable or false
     return item
 end
 

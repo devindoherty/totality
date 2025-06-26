@@ -130,7 +130,7 @@ function Mob:draw_line_of_sight(target)
 end
 
 -- Aggressive movement toward a target
-function Mob:move_toward_target(target, attacks)
+function Mob:move_toward_target(target)
     local x = self.x
     local y = self.y
     if DEBUG then
@@ -163,7 +163,6 @@ function Mob:move_toward_target(target, attacks)
                 damage = 5,
                 condition = "none"
             })
-            table.insert(attacks, self.attack)
         end
     end
 end

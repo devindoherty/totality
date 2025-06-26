@@ -11,7 +11,6 @@ function MobTurnState:enter(params)
     self.player = params.player
     self.map.player = params.player
     self.log = params.log
-    self.attacks = params.log
     print("position of player on mob turn start: " .. self.player.x .. " " .. self.player.y)
 end
 
@@ -21,40 +20,51 @@ end
 
 -- Loops through mobs according to behaviour and then decides on basic AI pathfinding or attacking
 function MobTurnState:update(dt)
-    local all_attacks_done = true
-    if self.attack then
-
-    else
-        for _i, mob in pairs(self.map.mobs) do
-            if math.abs(self.player.x - mob.x) <= 16 and math.abs(self.player.y - mob.y) <= 8 then
-                if mob:line_of_sight(self.player) and mob.attack == nil then
-                    if mob.behavior == "aggressive" then
-                        mob:move_toward_target(self.player, self.attacks)
-                    elseif mob.behavior == "loitering" then
-                        mob:move_idly(self.player)
-                    elseif mob.behavior == "skittish" then
-                        mob:move_along_walls(self.player)
-                    elseif mob.behavior == "neutral" then
-                        mob:do_nothing(self.player)
-                    elseif mob.behavior == "friendly" then
-                        mob:do_nothing(self.player)
-                    else
-                        if DEBUG then print(mob.name .. " does not have behavior.") end
-                    end
+    local mob_turn_complete = false
+    
+    for _i, mob in pairs(self.map.mobs) do
+        if math.abs(self.player.x - mob.x) <= 16 and math.abs(self.player.y - mob.y) <= 8 then
+            if mob:line_of_sight(self.player) and mob.acted == false then
+                if mob.behavior == "aggressive" and mob.attack == nil then
+                    mob:move_toward_target(self.player)
+                elseif mob.behavior == "loitering" then
+                    mob:move_idly(self.player)
+                elseif mob.behavior == "skittish" then
+                    mob:move_along_walls(self.player)
+                elseif mob.behavior == "neutral" then
+                    mob:do_nothing(self.player)
+                elseif mob.behavior == "friendly" then
+                    mob:do_nothing(self.player)
+                else
+                    if DEBUG then print(mob.name .. " does not have behavior.") end
                 end
             end
-            if mob.attack then
-                mob.attack:update(dt)
-                if mob.attack.frame > 2.5 then
-                    mob.attack = nil
-                else
-                    all_attacks_done = false
-                end
+            mob.acted = true
+        else
+            mob.acted = true
+        end
+        if mob.attack then
+            mob.acted = false
+            mob.attack:update(dt)
+            if mob.attack.frame > 2.5 then
+                mob.attack = nil
+                mob.acted = true
             end
         end
     end
 
-    if all_attacks_done then
+    for _i, mob in pairs(self.map.mobs) do
+        if mob.acted == false then
+            mob_turn_complete = false
+            break
+        else
+            mob_turn_complete = true
+        end
+    end
+
+    print(mob_turn_complete)
+
+    if mob_turn_complete == true then
         G_gs:change("world_turn_state", {map = self.map, player = self.player, log=self.log})
     end
 end
@@ -88,5 +98,7 @@ function MobTurnState:render()
 end
 
 function MobTurnState:exit()
-
+    for _i, mob in pairs(self.map.mobs) do
+        mob.acted = false
+    end
 end

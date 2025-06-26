@@ -24,7 +24,8 @@ G_items = {
         name = "remains",
         glyph = "x",
         sprite = 721,
-        description = "The remains of a creature."
+        description = "The remains of a creature.",
+        obscurable = true
     },
     ["bookcase"] = {
         name = "bookcase",

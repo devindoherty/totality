@@ -8,7 +8,7 @@ function StartState:init()
     self.title = "Path of Totality"
     self.action = ""
     self.player = Player:new()
-    self.map = Map:new({tiles = G_area_one_tiles, mobs = G_area_one_mobs, items = G_area_one_items})
+    self.map = Map:new({tiles = G_area_one_tiles, mobs = G_area_one_mobs, items = G_area_one_items, player = self.player})
 end
 
 function StartState:enter(params)
