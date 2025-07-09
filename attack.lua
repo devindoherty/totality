@@ -14,6 +14,7 @@ function Attack:new(name, x, y, attacker, defender, params)
     attack.description = params.description or ""
     attack.sprite = G_sprites[params.sprite] or nil
     attack.frame = params.frame or nil
+    attack.max_frame = 2.5
     attack.damage = params.damage or 0
     attack.condition = params.condition or nil
     return attack

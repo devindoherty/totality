@@ -46,7 +46,7 @@ function MobTurnState:update(dt)
         if mob.attack then
             mob.acted = false
             mob.attack:update(dt)
-            if mob.attack.frame > 2.5 then
+            if mob.attack.frame > mob.attack.max_frame then
                 mob.attack = nil
                 mob.acted = true
             end

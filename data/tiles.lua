@@ -47,4 +47,11 @@ G_tiles = {
         sprite = 249,
         solid = false,
     },
+    ["r"] = {
+        name = "rock wall",
+        glyph = "r",
+        sprite = 18,
+        solid = true,
+        description = "An earthen rock wall."
+    }
 }

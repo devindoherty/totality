@@ -64,6 +64,6 @@ G_dialogs = {
 
     -- BOSS RAT
     ["boss_rat_root"] = {
-        line = "Listen, pal, if yous got a problem with me an' my boys squatting here, then I got a proposition for yous."
+        line = "Listen, pal, if yous got a problem with me an' my boys squatting and squeaking here, then I got a proposition for yous."
     },
 }

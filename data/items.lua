@@ -33,5 +33,5 @@ G_items = {
         sprite = 294,
         description = "An old wooden bookcase.",
         blocker = true,
-    } 
+    }
 }
