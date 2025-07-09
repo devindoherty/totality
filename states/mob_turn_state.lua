@@ -1,4 +1,4 @@
--- Goes through all mobs and decides what they're going to do
+-- Loops through all mobs and decides what they're going to do
 
 MobTurnState = State:new()
 
@@ -23,7 +23,8 @@ function MobTurnState:update(dt)
     local mob_turn_complete = false
     
     for _i, mob in pairs(self.map.mobs) do
-        if math.abs(self.player.x - mob.x) <= 16 and math.abs(self.player.y - mob.y) <= 8 then
+        if math.abs(self.player.x - mob.x) <= AWARENESS_X 
+        and math.abs(self.player.y - mob.y) <= AWARENESS_Y then
             if mob:line_of_sight(self.player) and mob.acted == false then
                 if mob.behavior == "aggressive" and mob.attack == nil then
                     mob:move_toward_target(self.player)
@@ -44,9 +45,10 @@ function MobTurnState:update(dt)
             mob.acted = true
         end
         if mob.attack then
+            -- Set mob back to not having acted if the attack animation isn't done yet
             mob.acted = false
             mob.attack:update(dt)
-            if mob.attack.frame > mob.attack.max_frame then
+            if mob.attack.frame >= mob.attack.max_frame then
                 mob.attack = nil
                 mob.acted = true
             end
@@ -61,8 +63,6 @@ function MobTurnState:update(dt)
             mob_turn_complete = true
         end
     end
-
-    print(mob_turn_complete)
 
     if mob_turn_complete == true then
         G_gs:change("world_turn_state", {map = self.map, player = self.player, log=self.log})

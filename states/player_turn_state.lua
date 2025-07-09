@@ -36,6 +36,7 @@ function PlayerTurnState:input(key)
         self.menu = Menu:new(SCREEN_WIDTH/2 - 32, SCREEN_HEIGHT/2, 75, 50, {
             Selection:new("Continue", function() G_gs:change("world_turn_state", {map = self.map, player = self.player, log=self.log}) return end),
             Selection:new("Help", function() G_gs:change("help_state", {origin="player_turn_state", player=self.player,map=self.map}) end),
+            Selection:new("Save", function() serialize(self.player) end),
             Selection:new("Quit", function() love.event.quit(0) end),
             },
             {

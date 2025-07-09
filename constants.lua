@@ -9,7 +9,8 @@ DEBUG = true
 MAP_HEIGHT = 64
 MAP_WIDTH = 128
 
-AWARENESS = 8
+AWARENESS_X = 16
+AWARENESS_Y = 8
 
 ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
 
