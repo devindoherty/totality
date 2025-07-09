@@ -28,6 +28,8 @@ require("data/items")
 require("data/tiles")
 require("data/maps")
 
+require("libraries/knife/serialize")
+
 function love.load()
     love.window.setMode(SCREEN_WIDTH, SCREEN_HEIGHT)
     love.window.setTitle("Path of Totality")
